@@ -1,0 +1,33 @@
+# ===== Android 构建工具链（体积大，可下载，不入库）=====
+apk-build/android-sdk/
+apk-build/jdk/
+apk-build/extract_b/
+apk-build/extract_p/
+apk-build/toolchain/
+
+# ===== 构建中间产物 =====
+apk-build/out/
+apk-build/dexdir/
+apk-build/compiled_res/
+apk-build/base.apk
+apk-build/app-unsigned.apk
+apk-build/app-aligned.apk
+apk-build/classes.dex
+apk-build/classes.jar
+
+# ===== 签名密钥（机密，不入库）=====
+apk-build/keystore.jks
+
+# ===== 签名产物 / 本地临时文件 =====
+*.idsig
+绿盾V算.apk.idsig
+check.py
+check_apk.py
+hello.py
+test.py
+stdout.log
+rebuild_log.txt
+gh_create.py
+
+# ===== WorkBuddy 项目数据 =====
+.workbuddy/

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#e8f7ef">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>绿盾V算 · 工况体积换算</title>
+<style>
+  :root{
+    --bg1:#eaf8f0; --bg2:#f4fcf8; --bg3:#e3f4ec;
+    --panel:rgba(255,255,255,.78);
+    --panel-solid:#ffffff;
+    --line:rgba(20,140,90,.18);
+    --line-strong:rgba(20,140,90,.34);
+    --txt:#103325; --sub:#5b7569;
+    --accent:#13b875; --accent2:#0fb8a0;
+    --glow:rgba(19,184,117,.18);
+    --std:#0e9f8e; --ref:#16a34a;
+    --err:#d8453b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;}
+  html,body{height:100%;}
+  body{
+    color:var(--txt);min-height:100vh;padding:28px 16px;
+    background:
+      radial-gradient(900px 520px at 10% -8%, rgba(19,184,117,.20), transparent 60%),
+      radial-gradient(820px 480px at 110% 16%, rgba(46,230,200,.16), transparent 55%),
+      radial-gradient(700px 600px at 50% 120%, rgba(20,140,90,.12), transparent 60%),
+      linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+    background-attachment:fixed;
+    position:relative;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(19,184,117,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(19,184,117,.05) 1px, transparent 1px);
+    background-size:34px 34px;
+    -webkit-mask-image:radial-gradient(circle at 50% 32%, #000 28%, transparent 80%);
+    mask-image:radial-gradient(circle at 50% 32%, #000 28%, transparent 80%);
+  }
+  .wrap{max-width:880px;margin:0 auto;position:relative;z-index:1;}
+  header{margin-bottom:22px;text-align:center;}
+  .logo{width:60px;height:60px;margin:0 auto 12px;display:block;
+    filter:drop-shadow(0 4px 12px rgba(19,184,117,.28));}
+  header h1{
+    font-size:26px;font-weight:800;letter-spacing:2px;
+    background:linear-gradient(95deg,#16a34a,#13b875 45%,#0fb8a0);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  header p{color:var(--sub);font-size:13px;margin-top:10px;line-height:1.7;max-width:640px;margin-left:auto;margin-right:auto;}
+  header p b{color:var(--accent);font-weight:600;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:680px){.grid{grid-template-columns:1fr;}}
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;padding:22px;
+    box-shadow:0 10px 28px rgba(16,51,37,.08), inset 0 1px 0 rgba(255,255,255,.6);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    position:relative;overflow:hidden;
+  }
+  .card::before{
+    content:"";position:absolute;top:0;left:14%;right:14%;height:2px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+    opacity:.6;
+  }
+  .card h2{font-size:15px;font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:9px;
+    color:#0f3a28;letter-spacing:.5px;}
+  .card h2 .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 10px var(--glow);}
+  .field{margin-bottom:15px;}
+  .field label{display:block;font-size:13px;color:var(--sub);margin-bottom:7px;letter-spacing:.3px;}
+  .field .hint{font-size:12px;color:var(--sub);margin-top:5px;line-height:1.6;opacity:.9;}
+  .row{display:flex;gap:8px;}
+  .row input[type=number]{flex:1;min-width:0;}
+  select,input[type=number]{
+    width:100%;height:42px;border:1px solid var(--line-strong);border-radius:10px;
+    padding:0 13px;font-size:16px;color:var(--txt);
+    background:rgba(255,255,255,.9);outline:none;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  select:focus,input[type=number]:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px var(--glow);
+  }
+  select{flex:0 0 110px;color:var(--sub);}
+  select option{background:var(--panel-solid);color:var(--txt);}
+  .actions{margin-top:8px;display:flex;gap:10px;}
+  button{
+    flex:1;height:44px;padding:0 18px;border-radius:11px;border:none;
+    background:linear-gradient(95deg,#1ecb80,#11a367);color:#fff;
+    font-size:15px;cursor:pointer;font-weight:700;letter-spacing:1px;
+    box-shadow:0 6px 16px rgba(19,184,117,.25), inset 0 1px 0 rgba(255,255,255,.25);
+    transition:transform .08s, box-shadow .15s;
+  }
+  button:active{transform:translateY(1px);}
+  button.ghost{background:rgba(19,184,117,.08);color:var(--accent);
+    border:1px solid var(--line-strong);box-shadow:none;font-weight:600;}
+  .res-box{
+    border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin-bottom:13px;
+    position:relative;overflow:hidden;background:rgba(255,255,255,.55);
+  }
+  .res-box.std{border-left:4px solid var(--std);}
+  .res-box.ref{border-left:4px solid var(--ref);}
+  .res-box .tag{font-size:12px;color:var(--sub);letter-spacing:.2px;}
+  .res-box .val{font-size:32px;font-weight:800;margin-top:5px;letter-spacing:.5px;font-variant-numeric:tabular-nums;}
+  .res-box.std .val{color:var(--std);}
+  .res-box.ref .val{color:var(--ref);}
+  .res-box .unit{font-size:15px;font-weight:600;color:var(--sub);margin-left:5px;}
+  .res-box .raw{font-size:12px;color:var(--sub);margin-top:7px;opacity:.9;}
+
+  /* 折叠触发条 */
+  .toggle{
+    margin-top:14px;display:flex;align-items:center;gap:8px;cursor:pointer;
+    font-size:13.5px;font-weight:600;color:var(--accent);
+    padding:11px 14px;border:1px solid var(--line-strong);border-radius:11px;
+    background:rgba(19,184,117,.06);user-select:none;transition:background .15s;
+  }
+  .toggle:active{background:rgba(19,184,117,.12);}
+  .toggle .arrow{display:inline-block;transition:transform .2s;font-size:12px;}
+  .toggle.open .arrow{transform:rotate(90deg);}
+
+  .collapse{display:none;margin-top:12px;}
+  .formula{font-size:12.5px;color:var(--sub);background:rgba(19,184,117,.05);
+    border:1px dashed var(--line-strong);border-radius:11px;padding:13px 15px;
+    line-height:1.85;word-break:break-all;letter-spacing:.2px;}
+  .formula b{color:var(--accent);}
+  .legend{font-size:12.5px;color:var(--sub);background:rgba(19,184,117,.05);
+    border:1px solid var(--line);border-radius:11px;padding:13px 15px;margin-top:12px;line-height:1.95;}
+  .legend b{color:#0f3a28;}
+  .err{color:var(--err);font-size:13px;margin-top:10px;min-height:18px;}
+  .brand-foot{text-align:center;color:#0f3a28;font-weight:600;letter-spacing:1.5px;font-size:12.5px;margin-top:22px;opacity:.9;}
+  @media (max-width:680px){
+    body{padding:16px 11px;padding-top:env(safe-area-inset-top,16px);}
+    .wrap{max-width:100%;}
+    .grid{grid-template-columns:1fr;gap:14px;}
+    .card{padding:17px;border-radius:14px;}
+    header h1{font-size:23px;}
+    .logo{width:52px;height:52px;}
+    .field label{font-size:14px;}
+    .field{margin-bottom:17px;}
+    select,input[type=number]{height:47px;font-size:17px;}
+    select{flex:0 0 100px;}
+    button{height:47px;font-size:16px;}
+    .res-box .val{font-size:30px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg class="logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="绿盾V算">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#16a34a"/><stop offset=".5" stop-color="#13b875"/><stop offset="1" stop-color="#0fb8a0"/>
+        </linearGradient>
+      </defs>
+      <path d="M32 3 L58 12 V30 C58 47 47 57 32 61 C17 57 6 47 6 30 V12 Z" fill="url(#g)" opacity=".16" stroke="url(#g)" stroke-width="2.4"/>
+      <path d="M32 3 L58 12 V30 C58 47 47 57 32 61 C17 57 6 47 6 30 V12 Z" fill="none" stroke="url(#g)" stroke-width="2.4"/>
+      <path d="M22 40 L29 24 L36 40 M24.5 34 H33.5" stroke="url(#g)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M40 22 C46 22 50 26 50 31 C50 26 46 22 42 22 C44 25 44 28 42 30 C40 27 39 24 40 22 Z" fill="#16a34a" opacity=".9"/>
+    </svg>
+    <h1>绿盾V算</h1>
+  </header>
+
+  <div class="grid">
+    <!-- 输入区 -->
+    <div class="card">
+      <h2><span class="dot"></span>输入参数</h2>
+
+      <div class="field">
+        <label>工况体积 V（L，采样器现场读数）</label>
+        <div class="row">
+          <input type="number" id="vol" value="1000" min="0" step="any">
+          <select disabled><option>L</option></select>
+        </div>
+        <div class="hint">采样器或流量计现场显示的体积读数（单位：升）</div>
+      </div>
+
+      <div class="field">
+        <label>采样点温度 t</label>
+        <div class="row">
+          <input type="number" id="temp" value="20" step="any">
+          <select disabled><option>℃</option></select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>采样点大气压 P（kPa）</label>
+        <div class="row">
+          <input type="number" id="pres" value="101.325" step="any">
+          <select disabled><option>kPa</option></select>
+        </div>
+        <div class="hint">采样现场实时大气压，常压近似取 101.325 kPa</div>
+      </div>
+
+      <div class="actions">
+        <button id="calcBtn">计算</button>
+        <button id="clearBtn" class="ghost">清空</button>
+      </div>
+      <div class="err" id="err"></div>
+    </div>
+
+    <!-- 结果区 -->
+    <div class="card">
+      <h2><span class="dot" style="background:var(--accent2);box-shadow:0 0 10px rgba(15,184,160,.5)"></span>换算结果</h2>
+      <div class="res-box std">
+        <div class="tag">标况体积 V₀（0℃ / 273.15 K / 101.325 kPa）</div>
+        <div class="val"><span id="vStd">—</span><span class="unit">L</span></div>
+        <div class="raw" id="vStdRaw"></div>
+      </div>
+      <div class="res-box ref">
+        <div class="tag">参比体积 Vr（25℃ / 298.15 K / 101.325 kPa）</div>
+        <div class="val"><span id="vRef">—</span><span class="unit">L</span></div>
+        <div class="raw" id="vRefRaw"></div>
+      </div>
+
+      <!-- 折叠：公式与计算过程 -->
+      <div class="toggle" id="toggleBtn">
+        <span class="arrow">▶</span><span id="toggleText">查看计算规则</span>
+      </div>
+      <div class="collapse" id="collapse">
+        <div class="legend" style="margin-top:0;">
+          <div><b>使用说明</b></div>
+          <div>输入采样器现场读数 <b>V</b>（L）、采样点大气压 <b>P</b>（kPa）和温度 <b>t</b>（℃），自动计算 <b>标况体积 V₀</b>（0℃ / 101.325 kPa）与 <b>参比体积 Vr</b>（25℃ / 101.325 kPa），结果按「四舍六入五成双」规则保留 1 位小数。</div>
+        </div>
+        <div class="formula" id="formula"></div>
+        <div class="legend">
+          <div><b>计算公式</b></div>
+          <div>标况：V₀ = V × (P / 101.325) × [273.15 / (273.15 + t)]</div>
+          <div>参比：Vr = V × (P / 101.325) × [298.15 / (273.15 + t)]</div>
+        </div>
+        <div class="legend" style="margin-top:10px;">
+          <div><b>符号含义</b></div>
+          <div><b>V₀</b> — 标况体积（0℃ / 101.325 kPa）</div>
+          <div><b>Vr</b> — 参比体积（25℃ / 101.325 kPa）</div>
+          <div><b>V</b> — 工况体积，采样器现场读数</div>
+          <div><b>P</b> — 采样点大气压（kPa）</div>
+          <div><b>t</b> — 采样点温度（℃）</div>
+          <div><b>101.325</b> — 标准大气压（kPa）</div>
+          <div><b>273.15</b> — 0℃ 的热力学温度（K）</div>
+        </div>
+        <div class="legend" style="margin-top:10px;">
+          <div><b>修约规则（四舍六入五成双）</b></div>
+          <div>拟舍弃数字 &lt;5 舍去，&gt;5 进位；恰为 5 时，其后有非零数则进位，其后全零则凑偶（使保留位为偶数）。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="brand-foot">湖南绿盾卫士检测技术有限公司</div>
+</div>
+
+<script>
+  // 四舍六入五成双（round-half-to-even），保留 d 位小数
+  function roundHalfEven(v, d){
+    if(!isFinite(v)) return NaN;
+    const neg = v < 0;
+    const a = Math.abs(v);
+    const fixed = a.toFixed(6);
+    let parts = fixed.split('.');
+    let int = parts[0];
+    let frac = (parts[1] || '').padEnd(6, '0').slice(0, 6);
+    let keep = parseInt(int + frac.slice(0, d), 10);
+    const next = frac[d];
+    const rest = frac.slice(d + 1);
+    if(next > '5'){
+      keep += 1;
+    } else if(next === '5'){
+      if(rest.replace(/0/g, '') !== ''){
+        keep += 1;
+      } else if(keep % 2 === 1){
+        keep += 1;
+      }
+    }
+    const out = keep / Math.pow(10, d);
+    return neg ? -out : out;
+  }
+
+  const $ = id => document.getElementById(id);
+
+  // 折叠：查看公式与计算过程
+  $('toggleBtn').addEventListener('click', ()=>{
+    const c = $('collapse');
+    const open = c.style.display !== 'none';
+    c.style.display = open ? 'none' : 'block';
+    $('toggleBtn').classList.toggle('open', !open);
+    $('toggleText').textContent = open ? '查看计算规则' : '收起计算规则';
+  });
+
+  // 本地持久化：记住上次输入
+  const LS_KEY = 'volconv_v1';
+  function saveInputs(){
+    try{
+      localStorage.setItem(LS_KEY, JSON.stringify({
+        vol:$('vol').value,
+        temp:$('temp').value, pres:$('pres').value
+      }));
+    }catch(e){}
+  }
+  function loadInputs(){
+    try{
+      const d = JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+      if(d.vol !== undefined) $('vol').value = d.vol;
+      if(d.temp !== undefined) $('temp').value = d.temp;
+      if(d.pres !== undefined) $('pres').value = d.pres;
+    }catch(e){}
+  }
+
+  function calc(){
+    const err = $('err'); err.textContent = '';
+    try{
+      const vol  = parseFloat($('vol').value);
+      const t    = parseFloat($('temp').value);
+      const Pk   = parseFloat($('pres').value);  // kPa
+
+      if(!Number.isFinite(vol) || !Number.isFinite(t) || !Number.isFinite(Pk))
+        throw new Error('请填写有效的数值');
+      if(vol <= 0)        throw new Error('工况体积必须大于 0');
+      if(t <= -273.15)    throw new Error('采样点温度必须高于 -273.15 ℃');
+      if(Pk <= 0)         throw new Error('采样点大气压必须大于 0');
+
+      const P_std = 101.325, T_std = 273.15;   // 标况：0℃
+      const T_ref = 298.15;                    // 参比：25℃
+
+      const V_std = vol * (Pk / P_std) * (T_std / (T_std + t));
+      const V_ref = vol * (Pk / P_std) * (T_ref / (T_std + t));
+
+      $('vStd').textContent = roundHalfEven(V_std, 1).toFixed(1);
+      $('vRef').textContent = roundHalfEven(V_ref, 1).toFixed(1);
+      $('vStdRaw').textContent = '未修约值：' + V_std.toFixed(4) + ' L';
+      $('vRefRaw').textContent = '未修约值：' + V_ref.toFixed(4) + ' L';
+
+      $('formula').innerHTML =
+        '代入参数：V = ' + vol.toFixed(3) + ' L，t = ' + t.toFixed(2) + ' ℃，P = ' + Pk.toFixed(3) + ' kPa<br><br>' +
+        'V₀ = V × (P / 101.325) × [273.15 / (273.15 + t)]<br>' +
+        '&nbsp;&nbsp;= ' + vol.toFixed(3) + ' × (' + Pk.toFixed(3) + ' / 101.325) × [273.15 / (273.15 + ' + t.toFixed(2) + ')]<br>' +
+        '&nbsp;&nbsp;= ' + V_std.toFixed(4) + ' → <b>' + roundHalfEven(V_std, 1).toFixed(1) + ' L</b><br><br>' +
+        'Vr = V × (P / 101.325) × [298.15 / (273.15 + t)]<br>' +
+        '&nbsp;&nbsp;= ' + vol.toFixed(3) + ' × (' + Pk.toFixed(3) + ' / 101.325) × [298.15 / (273.15 + ' + t.toFixed(2) + ')]<br>' +
+        '&nbsp;&nbsp;= ' + V_ref.toFixed(4) + ' → <b>' + roundHalfEven(V_ref, 1).toFixed(1) + ' L</b>';
+    }catch(e){
+      err.textContent = e.message;
+      $('vStd').textContent = '—'; $('vRef').textContent = '—';
+      $('vStdRaw').textContent = ''; $('vRefRaw').textContent = '';
+      $('formula').textContent = '';
+    }
+  }
+
+  ['vol','temp','pres'].forEach(id=>{
+    $(id).addEventListener('input', ()=>{ calc(); saveInputs(); });
+    $(id).addEventListener('change', ()=>{ calc(); saveInputs(); });
+  });
+  $('calcBtn').addEventListener('click', ()=>{ calc(); saveInputs(); });
+  $('clearBtn').addEventListener('click', ()=>{
+    $('vol').value=''; $('temp').value=''; $('pres').value='';
+    $('err').textContent='';
+    $('vStd').textContent='—'; $('vRef').textContent='—';
+    $('vStdRaw').textContent=''; $('vRefRaw').textContent='';
+    $('formula').textContent='';
+    saveInputs();
+  });
+
+  loadInputs();
+  calc();
+</script>
+</body>
+</html>
