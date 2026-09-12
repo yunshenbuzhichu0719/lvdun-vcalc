@@ -383,6 +383,7 @@
       <button class="sub-tab" data-sub="m-goods">用品用具采样</button>
       <button class="sub-tab" data-sub="m-xf">新风量检测</button>
       <button class="sub-tab" data-sub="m-sch">学校综合评价</button>
+      <button class="sub-tab" data-sub="m-ac">空调采样</button>
     </div>
 
     <!-- ====== 体积换算（二级：默认） ====== -->
@@ -760,6 +761,146 @@
       </div>
     </div>
     </div><!-- /m-sch -->
+
+    <!-- ====== 集中空调通风系统采样速查（二级） ====== -->
+    <div id="m-ac" class="sub-pane">
+    <div class="card">
+      <h2><span class="dot" style="background:#7c5cff;box-shadow:0 0 10px rgba(124,92,255,.45)"></span>集中空调通风系统采样速查</h2>
+      <p class="sub-note">依据 <b>GB/T 18204.5—2025《公共场所卫生检验方法 第5部分：集中空调通风系统》</b>。适用于公共场所集中空调通风系统（冷却水、冷凝水、送风、风管内表面）的微生物与积尘采样。送风与风管内表面采样应在系统<b>正常运转、关闭门窗 15 min～30 min 以上</b>条件下进行。</p>
+
+      <div style="overflow-x:auto;">
+      <table class="sch-table">
+        <thead>
+          <tr>
+            <th>检测项目</th>
+            <th>采样对象</th>
+            <th>采样点 / 数量</th>
+            <th>采样位置</th>
+            <th>采样量 · 面积 · 时长</th>
+            <th>采样器 / 方法</th>
+            <th>培养条件</th>
+            <th>结果单位</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>嗜肺军团菌</td>
+            <td>冷却水、冷凝水</td>
+            <td>每冷却塔 / 冷凝水盘 1 点</td>
+            <td>冷却水：距塔壁 20 cm、液面下 10 cm；冷凝水：排污管或冷凝水盘</td>
+            <td>500 mL / 点（广口瓶加 0.3～0.5 mL 硫代硫酸钠中和）</td>
+            <td>无菌广口瓶</td>
+            <td>GVPC 琼脂 36℃±1℃、5% CO₂、10 d</td>
+            <td>检出 / 未检出（CFU/mL）</td>
+          </tr>
+          <tr>
+            <td>嗜肺军团菌</td>
+            <td>送风</td>
+            <td>每套系统 3～5 个送风口，每口 1 点</td>
+            <td>送风口下方 15～20 cm、水平向外 50～100 cm</td>
+            <td>采集空气体积 2 m³ / 点</td>
+            <td>微生物气溶胶采样器（流量 ≥ 100 L/min）</td>
+            <td>GVPC 琼脂 36℃±1℃、5% CO₂、10 d</td>
+            <td>CFU/m³</td>
+          </tr>
+          <tr>
+            <td>细菌总数</td>
+            <td>送风</td>
+            <td>每套系统 3～5 个送风口，每口 1 点</td>
+            <td>送风口下方 15～20 cm、水平向外 50～100 cm</td>
+            <td>28.3 L/min × 5 min（≈141.5 L）</td>
+            <td>六级筛孔撞击式微生物采样器 → 营养琼脂</td>
+            <td>营养琼脂 36℃±1℃、48 h</td>
+            <td>CFU/m³</td>
+          </tr>
+          <tr>
+            <td>细菌总数</td>
+            <td>风管内表面积尘</td>
+            <td>至少 6 点：2 个代表性断面（送/回/新风），每断面上/底/侧各 1 点</td>
+            <td>风管内部上表面、底面、侧面</td>
+            <td>采样规格板 25 cm²（刮拭 / 擦拭）</td>
+            <td>刮拭法 / 擦拭法</td>
+            <td>营养琼脂 36℃±1℃、48 h</td>
+            <td>CFU/cm²</td>
+          </tr>
+          <tr>
+            <td>真菌总数</td>
+            <td>送风</td>
+            <td>同细菌总数</td>
+            <td>同细菌总数</td>
+            <td>28.3 L/min × 5 min</td>
+            <td>六级撞击式采样器 → 沙氏琼脂</td>
+            <td>沙氏琼脂 28℃±1℃、3～5 d</td>
+            <td>CFU/m³</td>
+          </tr>
+          <tr>
+            <td>真菌总数</td>
+            <td>风管内表面积尘</td>
+            <td>至少 6 点</td>
+            <td>风管内部</td>
+            <td>采样规格板 25 cm²</td>
+            <td>刮拭法 / 擦拭法</td>
+            <td>沙氏琼脂 28℃±1℃、5 d</td>
+            <td>CFU/cm²</td>
+          </tr>
+          <tr>
+            <td>β-溶血性链球菌</td>
+            <td>送风</td>
+            <td>同细菌总数（5.4.1）</td>
+            <td>同细菌总数</td>
+            <td>28.3 L/min × 5 min</td>
+            <td>六级撞击式采样器 → 血琼脂</td>
+            <td>血琼脂 36℃±1℃、18～24 h</td>
+            <td>CFU/m³</td>
+          </tr>
+          <tr>
+            <td>可吸入颗粒物 PM10</td>
+            <td>送风</td>
+            <td>每套 3～5 个送风口；面积＜0.1 m² 设 1 点（中心），≥0.1 m² 设 3 点（对角线四等分 3 点）</td>
+            <td>送风口下方 15～20 cm、水平向外 50～100 cm</td>
+            <td>每测点检测 3 次</td>
+            <td>光散射式粉尘仪（PM10，Da50=10 μm）</td>
+            <td>—（仪器直读 / K 值换算）</td>
+            <td>mg/m³</td>
+          </tr>
+          <tr>
+            <td>风管内表面积尘量</td>
+            <td>风管内表面</td>
+            <td>机器人 ≥3 点；手工擦拭 ≥6 点</td>
+            <td>机器人：3 个代表性断面各 1 点；手工：2 断面（送/回/新）各上/底/侧 3 点</td>
+            <td>采样规格板 50 或 100 cm²（机器人 / 手工）</td>
+            <td>刮拭法 / 擦拭法（无纺布）</td>
+            <td>称初质量、终质量，差值＝积尘质量</td>
+            <td>g/m²</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="req-box" style="margin-top:16px;">
+        <h3><span class="badge">通用</span>送风与风管内表面采样通用要求</h3>
+        <div class="step"><span class="num">1</span><span>采样前集中空调通风系统应<b>正常运转</b>，关闭门窗 <b>15 min～30 min 以上</b>，减少人员活动。</span></div>
+        <div class="step"><span class="num">2</span><span>采样器使用前用 <b>75% 酒精棉</b> 擦拭采样头，待酒精挥发后采样；定期在负载条件下用检定合格流量计校准，相对偏差 ≤ 5%。</span></div>
+        <div class="step"><span class="num">3</span><span>送风微生物：六级筛孔撞击式采样器以 <b>28.3 L/min</b> 采集 <b>5 min</b>，平皿倒置培养。</span></div>
+        <div class="step"><span class="num">4</span><span>风管内表面：机器人或人工采集规格板内全部积尘；积尘多者刮拭法，少者擦拭法，全程无菌操作。</span></div>
+      </div>
+
+      <div class="qc-box">
+        <h3>样品保存、运输与生物安全</h3>
+        <ul>
+          <li>冷却水 / 冷凝水：立即送检，<b>不应冷冻</b>；运输避光防受热；当天不能检则室温避光贮存 ≤ 15 d。</li>
+          <li>送风微生物气溶胶样品：<b>4 h 内</b>送实验室检验，不应冷冻，避光防受热。</li>
+          <li>嗜肺军团菌为致病菌，实验操作应符合 <b>GB 19489</b>，二级生物安全防护；现场采样人员戴一次性医用口罩与乳胶手套。</li>
+          <li>培养基与试剂应符合 <b>GB 4789.28</b>，在有效期内使用。</li>
+        </ul>
+      </div>
+
+      <div class="legend" style="margin-top:10px;">
+        <div><b>说明</b></div>
+        <div>本速查表依据 GB/T 18204.5—2025 原文整理，给出各检测项目的采样点位、采样量与培养条件要点，供现场采样与记录核对；具体检验步骤与结果计算以标准全文为准。</div>
+      </div>
+    </div>
+    </div><!-- /m-ac -->
   </section>
 
   <div class="brand-foot">湖南绿盾卫士检测技术有限公司</div>
