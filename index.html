@@ -903,6 +903,20 @@
         <div><b>说明</b></div>
         <div>本速查表依据 GB/T 18204.5—2025 原文整理，给出各检测项目的采样点位、采样量与培养条件要点，供现场采样与记录核对；具体检验步骤与结果计算以标准全文为准。</div>
       </div>
+
+      <!-- 建议布点图（空调采样） -->
+      <div class="sch-block" style="margin-top:16px;">
+        <h3>建议布点图 <span class="sch-badge" id="acBpBadge">送风口</span></h3>
+        <div class="std">按 GB/T 18204.5—2025：送风口每套系统选 3～5 个有代表性送风口布点；风管内表面机器人 ≥3 点、手工 ≥6 点；冷却水 / 冷凝水在冷却塔集水盘采样。下图按标准示意采样位置（非等比测量图，供现场定位参考）。</div>
+        <div class="field"><label>布点场景</label>
+          <select id="acBpSel" style="width:100%;max-width:360px;">
+            <option value="outlet">送风口采样布点</option>
+            <option value="duct">风管内表面采样布点</option>
+            <option value="water">冷却水 / 冷凝水采样布点</option>
+          </select></div>
+        <div class="bp-wrap" id="acBpBox"></div>
+        <div class="sch-grid-info" id="acBpInfo"></div>
+      </div>
     </div>
     </div><!-- /m-ac -->
 
@@ -934,6 +948,26 @@
       <div class="legend" style="margin-top:10px;">
         <div><b>说明</b></div>
         <div>本速查依据 GB/T 18204.1—2025 原文整理，给出各物理因素检测项的常用方法与测点布置要点；具体测量步骤与结果计算以标准全文为准。</div>
+      </div>
+
+      <!-- 建议布点图（物理因素） -->
+      <div class="sch-block" style="margin-top:16px;">
+        <h3>建议布点图 <span class="sch-badge" id="physBpBadge">待输入</span></h3>
+        <div class="std">按 GB/T 18204.1—2025 附录 A：室内面积 &lt;50 m² 设 1 点（中央）；50～200 m² 设 2 点（对称）；&gt;200 m² 设 3～5 点（对角线 / 梅花）。测点距地面 1 m～1.5 m、距墙 ≥ 0.5 m。下图按实际房间尺寸绘制（横向∶纵向同一比例尺），可直接量取测点位置。</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+          <div class="field" style="flex:1;min-width:130px;"><label>房间长 L（m）</label><input id="physLen" type="number" min="0" step="0.1" value="8" style="width:100%"></div>
+          <div class="field" style="flex:1;min-width:130px;"><label>房间宽 B（m）</label><input id="physWid" type="number" min="0" step="0.1" value="6" style="width:100%"></div>
+          <div class="field" style="flex:1;min-width:150px;"><label>布点方式</label>
+            <select id="physBpSel" style="width:100%">
+              <option value="auto">自动（按面积）</option>
+              <option value="1">1 点（中央）</option>
+              <option value="2">2 点（对称）</option>
+              <option value="3">3 点（对角线）</option>
+              <option value="5">5 点（梅花）</option>
+            </select></div>
+        </div>
+        <div class="bp-wrap" id="physBpBox"></div>
+        <div class="sch-grid-info" id="physBpInfo"></div>
       </div>
     </div>
     </div><!-- /m-phys -->
@@ -968,6 +1002,26 @@
       <div class="legend" style="margin-top:10px;">
         <div><b>说明</b></div>
         <div>本速查依据 GB/T 18204.2—2025 原文整理，给出各化学污染物的采样方法与布点要点，供现场采样与记录核对；其中苯、甲苯、二甲苯的采样方法、流量与保存条件依据 GB/T 18883—2022 附录 C.2（活性炭吸附-二硫化碳解吸-气相色谱法）。具体检验步骤与结果计算以标准全文为准。</div>
+      </div>
+
+      <!-- 建议布点图（化学因素） -->
+      <div class="sch-block" style="margin-top:16px;">
+        <h3>建议布点图 <span class="sch-badge" id="chemBpBadge">待输入</span></h3>
+        <div class="std">按 GB/T 18204.2—2025 附录 A：室内面积 &lt;50 m² 设 1 点；50～200 m² 设 2 点；&gt;200 m² 设 3～5 点。测点距地面 1.2 m～1.5 m、距墙及大型物件 ≥ 0.5 m、避开通风口；多指标同采间距 &gt;1 m。苯、甲苯、二甲苯依据 GB/T 18883—2022 附录 C.2。下图按实际房间尺寸绘制（同一比例尺），可直接量取测点位置。</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+          <div class="field" style="flex:1;min-width:130px;"><label>房间长 L（m）</label><input id="chemLen" type="number" min="0" step="0.1" value="10" style="width:100%"></div>
+          <div class="field" style="flex:1;min-width:130px;"><label>房间宽 B（m）</label><input id="chemWid" type="number" min="0" step="0.1" value="8" style="width:100%"></div>
+          <div class="field" style="flex:1;min-width:150px;"><label>布点方式</label>
+            <select id="chemBpSel" style="width:100%">
+              <option value="auto">自动（按面积）</option>
+              <option value="1">1 点（中央）</option>
+              <option value="2">2 点（对称）</option>
+              <option value="3">3 点（对角线）</option>
+              <option value="5">5 点（梅花）</option>
+            </select></div>
+        </div>
+        <div class="bp-wrap" id="chemBpBox"></div>
+        <div class="sch-grid-info" id="chemBpInfo"></div>
       </div>
     </div>
     </div><!-- /m-chem -->
@@ -2003,6 +2057,182 @@
     q.addEventListener('change', schCalcWD); q.addEventListener('input', schCalcWD); })();
   bpUpdate();
   /* ==SCH5-JS-END== */
+
+  /* ============ 采样布点图（物理因素 / 化学因素 / 空调） ============ */
+  function roomArrange(L, B, mode){
+    if(mode === '1') return [[L/2, B/2]];
+    if(mode === '2') return [[L/4, B/2], [3*L/4, B/2]];
+    if(mode === '3') return [[L/4, B/4], [L/2, B/2], [3*L/4, 3*B/4]];
+    if(mode === '5') return [[L/4, B/4], [L/4, 3*B/4], [L/2, B/2], [3*L/4, B/4], [3*L/4, 3*B/4]];
+    var a = L * B;                                  /* 自动（按面积） */
+    if(a < 50 - 1e-9) return [[L/2, B/2]];
+    if(a <= 200 + 1e-9) return [[L/4, B/2], [3*L/4, B/2]];
+    return [[L/4, B/4], [L/4, 3*B/4], [L/2, B/2], [3*L/4, B/4], [3*L/4, 3*B/4]];
+  }
+  function roomPlanSvg(L, B, pts, opt){
+    opt = opt || {};
+    var W = 680, PL = 70, PR = 46, PT = 34, PB = 70;
+    var PW = W - PL - PR, PH = 330, H = PH + PT + PB;
+    var s = Math.min(PW / L, PH / B);
+    var w = L * s, h = B * s;
+    var ox = PL + (PW - w) / 2, oy = PT + (PH - h) / 2;
+    var X = function(v){ return +(ox + v * s).toFixed(2); };
+    var Y = function(v){ return +(oy + v * s).toFixed(2); };
+    var C_TXT = '#103325', C_SUB = '#5b7569', C_LINE = '#9fb8ad', C_ACC = opt.accent || '#13b875';
+    var o = [], F = ' font-family=\'' + BP_FONT + '\'';
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img">');
+    o.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+    o.push('<text x="14" y="21" font-size="13" font-weight="700" fill="' + C_TXT + '"' + F + '>' + opt.title + '</text>');
+    o.push('<rect x="' + X(0) + '" y="' + Y(0) + '" width="' + w.toFixed(2) + '" height="' + h.toFixed(2) + '" fill="#f2fbf7" stroke="' + C_TXT + '" stroke-width="1.4"/>');
+    var m = 0.5;                                    /* 距墙 ≥0.5 m 内缩示意 */
+    if(L > 2*m + 0.01 && B > 2*m + 0.01){
+      o.push('<rect x="' + X(m) + '" y="' + Y(m) + '" width="' + ((L-2*m)*s).toFixed(2) + '" height="' + ((B-2*m)*s).toFixed(2) +
+             '" fill="none" stroke="' + C_LINE + '" stroke-width="1" stroke-dasharray="3 3"/>');
+    }
+    pts.forEach(function(p, i){
+      var cx = X(p[0]), cy = Y(p[1]);
+      o.push('<circle cx="' + cx + '" cy="' + cy + '" r="4" fill="' + C_ACC + '" stroke="#ffffff" stroke-width="1"/>');
+      o.push('<text x="' + (cx + 6) + '" y="' + (cy - 5) + '" font-size="9.5" fill="' + C_SUB + '"' + F + '>' + (i + 1) + '</text>');
+    });
+    var yD = oy + h + 24;
+    o.push('<line x1="' + ox + '" y1="' + yD + '" x2="' + (ox + w) + '" y2="' + yD + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + ox + '" y1="' + (yD - 4) + '" x2="' + ox + '" y2="' + (yD + 4) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + (ox + w) + '" y1="' + (yD - 4) + '" x2="' + (ox + w) + '" y2="' + (yD + 4) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<text x="' + (ox + w/2) + '" y="' + (yD - 6) + '" text-anchor="middle" font-size="11.5" fill="' + C_TXT + '"' + F + '>长 L ' + L.toFixed(2) + ' m</text>');
+    var xD = ox - 44;
+    o.push('<line x1="' + xD + '" y1="' + oy + '" x2="' + xD + '" y2="' + (oy + h) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + (xD - 4) + '" y1="' + oy + '" x2="' + (xD + 4) + '" y2="' + oy + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + (xD - 4) + '" y1="' + (oy + h) + '" x2="' + (xD + 4) + '" y2="' + (oy + h) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<text transform="rotate(-90 ' + xD + ' ' + (oy + h/2) + ')" x="' + xD + '" y="' + (oy + h/2 - 6) + '" text-anchor="middle" font-size="11.5" fill="' + C_TXT + '"' + F + '>宽 B ' + B.toFixed(2) + ' m</text>');
+    var barM = s > 110 ? 0.5 : (s < 44 ? 2 : 1);
+    var bw = barM * s, x2 = ox + w, y2s = oy - 14;
+    o.push('<line x1="' + (x2 - bw) + '" y1="' + y2s + '" x2="' + x2 + '" y2="' + y2s + '" stroke="' + C_TXT + '" stroke-width="2"/>');
+    o.push('<line x1="' + (x2 - bw) + '" y1="' + (y2s - 3.5) + '" x2="' + (x2 - bw) + '" y2="' + (y2s + 3.5) + '" stroke="' + C_TXT + '" stroke-width="2"/>');
+    o.push('<line x1="' + x2 + '" y1="' + (y2s - 3.5) + '" x2="' + x2 + '" y2="' + (y2s + 3.5) + '" stroke="' + C_TXT + '" stroke-width="2"/>');
+    o.push('<text x="' + (x2 - bw/2) + '" y="' + (y2s - 7) + '" text-anchor="middle" font-size="10.5" fill="' + C_TXT + '"' + F + '>' + barM + ' m</text>');
+    o.push('<text x="' + ox + '" y="' + (yD + 22) + '" font-size="10.5" fill="' + C_SUB + '"' + F + '>● 测点 ' + pts.length + ' 个｜距墙 ≥0.5 m｜' + opt.height + '</text>');
+    o.push('</svg>');
+    return o.join('');
+  }
+  function physBpUpdate(){
+    var L = parseFloat($sch('physLen').value), B = parseFloat($sch('physWid').value);
+    var mode = $sch('physBpSel').value;
+    var box = $sch('physBpBox'), info = $sch('physBpInfo'), badge = $sch('physBpBadge');
+    if(!(L > 0) || !(B > 0)){ box.innerHTML = '<div class="bp-empty">请输入房间长与宽（m）。</div>'; info.textContent = ''; badge.textContent = '待输入'; badge.className = 'sch-badge'; return; }
+    var pts = roomArrange(L, B, mode);
+    box.innerHTML = roomPlanSvg(L, B, pts, {title:'物理因素测点布点 · GB/T 18204.1—2025 附录 A', height:'距地面 1 m～1.5 m', accent:'#3b82f6'});
+    var nm = {1:'1 点（中央）',2:'2 点（对称）',3:'3 点（对角线）',5:'5 点（梅花）',auto:'自动（按面积）'}[mode];
+    info.innerHTML = '建议测点 <b>' + pts.length + '</b> 个（' + nm + '）；依据 GB/T 18204.1—2025 附录 A。';
+    badge.textContent = pts.length + ' 个测点'; badge.className = 'sch-badge sch-ok';
+  }
+  function chemBpUpdate(){
+    var L = parseFloat($sch('chemLen').value), B = parseFloat($sch('chemWid').value);
+    var mode = $sch('chemBpSel').value;
+    var box = $sch('chemBpBox'), info = $sch('chemBpInfo'), badge = $sch('chemBpBadge');
+    if(!(L > 0) || !(B > 0)){ box.innerHTML = '<div class="bp-empty">请输入房间长与宽（m）。</div>'; info.textContent = ''; badge.textContent = '待输入'; badge.className = 'sch-badge'; return; }
+    var pts = roomArrange(L, B, mode);
+    box.innerHTML = roomPlanSvg(L, B, pts, {title:'化学污染物采样布点 · GB/T 18204.2—2025 附录 A', height:'距地面 1.2 m～1.5 m', accent:'#0ea5e9'});
+    var nm = {1:'1 点（中央）',2:'2 点（对称）',3:'3 点（对角线）',5:'5 点（梅花）',auto:'自动（按面积）'}[mode];
+    info.innerHTML = '建议测点 <b>' + pts.length + '</b> 个（' + nm + '）；苯、甲苯、二甲苯按 GB/T 18883—2022 附录 C.2。';
+    badge.textContent = pts.length + ' 个测点'; badge.className = 'sch-badge sch-ok';
+  }
+
+  /* 空调采样示意布点图 */
+  function acOutSVG(){
+    var W = 680, H = 400, o = [], F = ' font-family=\'' + BP_FONT + '\'';
+    var C = '#8b5cf6', C2 = '#5b4b8a', C_SUB = '#5b7569', C_TXT = '#103325';
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img">');
+    o.push('<rect width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+    o.push('<text x="14" y="21" font-size="13" font-weight="700" fill="' + C_TXT + '"' + F + '>送风口采样布点 · GB/T 18204.5—2025（示意图）</text>');
+    o.push('<text x="60" y="52" font-size="11" fill="' + C_SUB + '"' + F + '>① 立面（送风口下方采样）</text>');
+    o.push('<line x1="60" y1="70" x2="430" y2="70" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<rect x="150" y="70" width="150" height="14" fill="' + C + '"/>');
+    o.push('<text x="225" y="106" text-anchor="middle" font-size="10.5" fill="' + C2 + '"' + F + '>送风口</text>');
+    o.push('<path d="M225 84 L225 180 L410 180" fill="none" stroke="' + C + '" stroke-width="1.4" stroke-dasharray="5 3"/>');
+    o.push('<circle cx="410" cy="180" r="4.5" fill="' + C + '" stroke="#fff" stroke-width="1"/>');
+    o.push('<text x="232" y="142" font-size="10.5" fill="' + C2 + '"' + F + '>↓ 15~20 cm</text>');
+    o.push('<text x="290" y="174" font-size="10.5" fill="' + C2 + '"' + F + '>→ 50~100 cm</text>');
+    o.push('<text x="418" y="184" font-size="10.5" fill="' + C_TXT + '"' + F + '>采样点</text>');
+    o.push('<text x="470" y="52" font-size="11" fill="' + C_SUB + '"' + F + '>② 送风口平面（按风口面积）</text>');
+    o.push('<rect x="470" y="80" width="90" height="90" fill="#f6f2ff" stroke="' + C_TXT + '" stroke-width="1.2"/>');
+    o.push('<circle cx="515" cy="125" r="4" fill="' + C + '" stroke="#fff" stroke-width="1"/>');
+    o.push('<text x="515" y="195" text-anchor="middle" font-size="10" fill="' + C2 + '"' + F + '>面积&lt;0.1m²：中心 1 点</text>');
+    o.push('<rect x="470" y="215" width="90" height="90" fill="#f6f2ff" stroke="' + C_TXT + '" stroke-width="1.2"/>');
+    o.push('<circle cx="497" cy="242" r="4" fill="' + C + '" stroke="#fff" stroke-width="1"/>');
+    o.push('<circle cx="515" cy="260" r="4" fill="' + C + '" stroke="#fff" stroke-width="1"/>');
+    o.push('<circle cx="533" cy="278" r="4" fill="' + C + '" stroke="#fff" stroke-width="1"/>');
+    o.push('<text x="515" y="325" text-anchor="middle" font-size="10" fill="' + C2 + '"' + F + '>面积≥0.1m²：对角线 3 点</text>');
+    o.push('<text x="60" y="372" font-size="10.5" fill="' + C_SUB + '"' + F + '>每套系统选 3～5 个有代表性送风口；采样点位于送风口下方 15～20 cm、水平向外 50～100 cm。</text>');
+    o.push('</svg>');
+    return o.join('');
+  }
+  function acDuctSVG(){
+    var W = 680, H = 360, o = [], F = ' font-family=\'' + BP_FONT + '\'';
+    var C = '#8b5cf6', C2 = '#5b4b8a', C_SUB = '#5b7569', C_TXT = '#103325';
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img">');
+    o.push('<rect width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+    o.push('<text x="14" y="21" font-size="13" font-weight="700" fill="' + C_TXT + '"' + F + '>风管内表面采样布点 · GB/T 18204.5—2025（示意图）</text>');
+    o.push('<rect x="120" y="70" width="440" height="170" fill="#f6f2ff" stroke="' + C_TXT + '" stroke-width="1.4"/>');
+    o.push('<circle cx="340" cy="70" r="4.5" fill="' + C + '" stroke="#fff" stroke-width="1"/>');
+    o.push('<circle cx="340" cy="240" r="4.5" fill="' + C + '" stroke="#fff" stroke-width="1"/>');
+    o.push('<circle cx="560" cy="155" r="4.5" fill="' + C + '" stroke="#fff" stroke-width="1"/>');
+    o.push('<line x1="340" y1="70" x2="300" y2="40" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<text x="246" y="38" font-size="11" fill="' + C2 + '"' + F + '>上</text>');
+    o.push('<line x1="340" y1="240" x2="300" y2="290" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<text x="246" y="295" font-size="11" fill="' + C2 + '"' + F + '>底</text>');
+    o.push('<line x1="560" y1="155" x2="600" y2="155" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<text x="604" y="159" font-size="11" fill="' + C2 + '"' + F + '>侧</text>');
+    o.push('<text x="340" y="262" text-anchor="middle" font-size="11" fill="' + C_SUB + '"' + F + '>风管断面（截面）</text>');
+    o.push('<text x="120" y="320" font-size="10.5" fill="' + C_SUB + '"' + F + '>手工：2 断面（送 / 回 / 新）各取 上·底·侧 3 点（共 ≥6 点）；机器人：3 个代表性断面各 1 点（≥3 点）。</text>');
+    o.push('<text x="120" y="340" font-size="10.5" fill="' + C_SUB + '"' + F + '>规格板 50 或 100 cm²；刮拭法（积尘多）/ 擦拭法（积尘少），全程无菌。</text>');
+    o.push('</svg>');
+    return o.join('');
+  }
+  function acWaterSVG(){
+    var W = 680, H = 360, o = [], F = ' font-family=\'' + BP_FONT + '\'';
+    var C = '#8b5cf6', C2 = '#5b4b8a', C_SUB = '#5b7569', C_TXT = '#103325';
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img">');
+    o.push('<rect width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+    o.push('<text x="14" y="21" font-size="13" font-weight="700" fill="' + C_TXT + '"' + F + '>冷却水 / 冷凝水采样布点 · GB/T 18204.5—2025（示意图）</text>');
+    o.push('<polygon points="200,280 480,280 440,110 240,110" fill="#f6f2ff" stroke="' + C_TXT + '" stroke-width="1.4"/>');
+    o.push('<text x="340" y="305" text-anchor="middle" font-size="11" fill="' + C2 + '"' + F + '>冷却塔（集水盘 / 冷却水）</text>');
+    o.push('<line x1="246" y1="170" x2="434" y2="170" stroke="' + C + '" stroke-width="1.6" stroke-dasharray="5 3"/>');
+    o.push('<text x="340" y="162" text-anchor="middle" font-size="10.5" fill="' + C2 + '"' + F + '>水面</text>');
+    var px = 434 - 46, py = 170 + 34;
+    o.push('<circle cx="' + px + '" cy="' + py + '" r="4.5" fill="' + C + '" stroke="#fff" stroke-width="1"/>');
+    o.push('<text x="' + (px + 8) + '" y="' + (py + 4) + '" font-size="10.5" fill="' + C_TXT + '"' + F + '>采样点</text>');
+    o.push('<line x1="434" y1="170" x2="' + px + '" y2="170" stroke="' + C_SUB + '" stroke-width="1" stroke-dasharray="3 3"/>');
+    o.push('<text x="392" y="150" font-size="10" fill="' + C2 + '"' + F + '>距塔壁20cm</text>');
+    o.push('<line x1="' + px + '" y1="170" x2="' + px + '" y2="' + py + '" stroke="' + C_SUB + '" stroke-width="1" stroke-dasharray="3 3"/>');
+    o.push('<text x="' + (px - 92) + '" y="' + (py - 6) + '" font-size="10" fill="' + C2 + '"' + F + '>液面下10cm</text>');
+    o.push('<text x="200" y="340" font-size="10.5" fill="' + C_SUB + '"' + F + '>冷却水 / 冷凝水：距塔壁 ≥20 cm、液面下 10～20 cm 处采样，500 mL/点，立即送检不应冷冻。</text>');
+    o.push('</svg>');
+    return o.join('');
+  }
+  function acBpUpdate(){
+    var mode = $sch('acBpSel').value;
+    var box = $sch('acBpBox'), info = $sch('acBpInfo'), badge = $sch('acBpBadge');
+    if(mode === 'outlet'){
+      box.innerHTML = acOutSVG();
+      info.innerHTML = '送风口每套系统选 3～5 个有代表性送风口；面积&lt;0.1 m² 设中心 1 点，≥0.1 m² 设对角线 3 点；采样点位于送风口下方 15～20 cm、水平向外 50～100 cm。';
+      badge.textContent = '送风口'; badge.className = 'sch-badge sch-ok';
+    } else if(mode === 'duct'){
+      box.innerHTML = acDuctSVG();
+      info.innerHTML = '风管内表面：手工 2 断面（送 / 回 / 新）各取 上·底·侧 3 点（共 ≥6 点）；机器人 3 个代表性断面各 1 点（≥3 点）。';
+      badge.textContent = '风管内表面'; badge.className = 'sch-badge sch-ok';
+    } else {
+      box.innerHTML = acWaterSVG();
+      info.innerHTML = '冷却水 / 冷凝水：距塔壁 ≥20 cm、液面下 10～20 cm 处采样，500 mL/点，立即送检不应冷冻。';
+      badge.textContent = '冷却水/冷凝水'; badge.className = 'sch-badge sch-ok';
+    }
+  }
+
+  ['physLen','physWid','physBpSel'].forEach(function(id){ var e = $sch(id); if(e){ e.addEventListener('input', physBpUpdate); e.addEventListener('change', physBpUpdate); } });
+  ['chemLen','chemWid','chemBpSel'].forEach(function(id){ var e = $sch(id); if(e){ e.addEventListener('input', chemBpUpdate); e.addEventListener('change', chemBpUpdate); } });
+  (function(){ var s = $sch('acBpSel'); if(s) s.addEventListener('change', acBpUpdate); })();
+  physBpUpdate(); chemBpUpdate(); acBpUpdate();
+  /* ==SAMPLING-BP-JS-END== */
+
   schCalcArea(); schCalcWD(); schCalcCL(); schCalcBD();   // winAddRow 已在绑定时初始化
 
   /* ==REC-JS-BEGIN== */
