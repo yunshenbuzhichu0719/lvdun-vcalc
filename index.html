@@ -384,6 +384,10 @@
       <button class="sub-tab" data-sub="m-xf">新风量检测</button>
       <button class="sub-tab" data-sub="m-sch">学校综合评价</button>
       <button class="sub-tab" data-sub="m-ac">空调采样</button>
+      <button class="sub-tab" data-sub="m-phys">物理因素</button>
+      <button class="sub-tab" data-sub="m-chem">化学污染物</button>
+      <button class="sub-tab" data-sub="m-airbio">空气微生物</button>
+      <button class="sub-tab" data-sub="m-monit">监测布点</button>
     </div>
 
     <!-- ====== 体积换算（二级：默认） ====== -->
@@ -901,6 +905,148 @@
       </div>
     </div>
     </div><!-- /m-ac -->
+
+    <!-- ====== 物理因素检测采样（18204.1） ====== -->
+    <div id="m-phys" class="sub-pane">
+    <div class="card">
+      <h2><span class="dot" style="background:#3b82f6;box-shadow:0 0 10px rgba(59,130,246,.45)"></span>物理因素检测采样（GB/T 18204.1—2025）</h2>
+      <p class="sub-note">依据 <b>GB/T 18204.1—2025《公共场所卫生检验方法 第1部分：物理因素》</b>。涵盖空气温度、相对湿度、风速、大气压、噪声、照度、新风量等现场物理性指标的仪器检测与测点布置。测点布置按下述附录 A 要求，<b>新风量</b>的专项计算详见「新风量检测」标签。</p>
+      <div style="overflow-x:auto;">
+      <table class="sch-table">
+        <thead><tr><th>检测项</th><th>常用方法</th><th>测点布置要点（附录 A）</th></tr></thead>
+        <tbody>
+          <tr><td>空气温度</td><td>玻璃液体温度计法 / 数显式温度计</td><td>距地面 1 m～1.5 m，距墙 ≥ 0.5 m，距热源 ≥ 0.5 m</td></tr>
+          <tr><td>相对湿度</td><td>电阻电容法 / 干湿球法 / 氯化锂露点法</td><td>同温度测点；干湿球法避免阳光直射</td></tr>
+          <tr><td>风速</td><td>热球式 / 热线式风速计</td><td>测点避开通风口、通风道；距地 1 m～1.5 m</td></tr>
+          <tr><td>大气压</td><td>空盒气压表 / 水银气压表</td><td>按场所均匀布点</td></tr>
+          <tr><td>噪声</td><td>积分平均声级计</td><td>噪声源在室内设 3 测点（源中心至对侧墙四等分 3 点）；距地 1 m～1.5 m，距反射面 ≥ 1 m</td></tr>
+          <tr><td>照度</td><td>照度计</td><td>整体照明按均匀布点；局部照明测代表性 1 点；白炽灯开 5 min、气体放电灯开 30 min 后测</td></tr>
+          <tr><td>新风量</td><td>示踪气体法 / 风管法 / 风量罩法</td><td>详见「新风量检测」标签（检测点按附录 A.5 要求）</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="req-box" style="margin-top:16px;">
+        <h3><span class="badge">通用</span>测点布置要求（附录 A）</h3>
+        <div class="step"><span class="num">1</span><span><b>测点数量</b>：室内面积 &lt;50 m² 设 1 点；50 m²～200 m² 设 2 点；&gt;200 m² 设 3～5 点。影剧院按座位数、体育场馆 / 商场等按面积另有规定（见「监测布点」）。</span></div>
+        <div class="step"><span class="num">2</span><span><b>布点方式</b>：1 点设中央；2 点设对称；3 点设对角线四等分 3 点；5 点按梅花布点；其余均匀布点。</span></div>
+        <div class="step"><span class="num">3</span><span><b>测点距离</b>：距地面 1 m～1.5 m，距墙壁 ≥ 0.5 m；风速、噪声测点避开通风口 / 通风道与主要反射面。</span></div>
+      </div>
+      <div class="legend" style="margin-top:10px;">
+        <div><b>说明</b></div>
+        <div>本速查依据 GB/T 18204.1—2025 原文整理，给出各物理因素检测项的常用方法与测点布置要点；具体测量步骤与结果计算以标准全文为准。</div>
+      </div>
+    </div>
+    </div><!-- /m-phys -->
+
+    <!-- ====== 化学污染物采样（18204.2） ====== -->
+    <div id="m-chem" class="sub-pane">
+    <div class="card">
+      <h2><span class="dot" style="background:#0ea5e9;box-shadow:0 0 10px rgba(14,165,233,.45)"></span>化学污染物采样（GB/T 18204.2—2025）</h2>
+      <p class="sub-note">依据 <b>GB/T 18204.2—2025《公共场所卫生检验方法 第2部分：化学污染物》</b>。涵盖一氧化碳、二氧化碳、可吸入颗粒物（PM10）、细颗粒物（PM2.5）、甲醛、氨、总挥发性有机物（TVOC）、苯系物、臭氧等室内空气污染物的现场采样。采样布点按附录 A。</p>
+      <div style="overflow-x:auto;">
+      <table class="sch-table">
+        <thead><tr><th>检测项</th><th>采样方法</th><th>采样器 / 介质</th><th>流量 · 体积 · 时间</th><th>结果时限</th></tr></thead>
+        <tbody>
+          <tr><td>一氧化碳 CO</td><td>不分光红外法（现场直读）/ 气相色谱法</td><td>仪器直读或塑料铝箔复合膜采气袋 400～600 mL</td><td>直读或采气 0.5～1.0 L</td><td>带回实验室分析</td></tr>
+          <tr><td>二氧化碳 CO₂</td><td>不分光红外法 / 气相色谱法</td><td>采气袋 400～600 mL</td><td>采气 400～600 mL</td><td>—</td></tr>
+          <tr><td>可吸入颗粒物 PM10</td><td>滤膜称重法 / 光散射法</td><td>PM10 切割器（Da50=10 μm）＋滤膜；光散射粉尘仪</td><td>流量 &lt;30 L/min；连续采样 ≥20 h 或间隔 ≥4 次累积 ≥20 h</td><td>滤膜 4 ℃ 冷藏</td></tr>
+          <tr><td>细颗粒物 PM2.5</td><td>滤膜称重法（GB/T 18883）/ 光散射法</td><td>PM2.5 切割器（Da50=2.5 μm）</td><td>光散射法每点重复 5 次；风速 &lt;1 m/s</td><td>—</td></tr>
+          <tr><td>甲醛</td><td>酚试剂分光光度法；高效液相色谱法</td><td>气泡吸收管 + 5 mL 酚试剂吸收液</td><td>0.5 L/min × 采气 10 L</td><td>24 h 内分析</td></tr>
+          <tr><td>氨</td><td>靛酚蓝分光光度法（水杨酸-次氯酸盐）</td><td>大型气泡吸收管 + 10 mL 吸收液</td><td>0.5 L/min × 采气 5 L</td><td>室温、24 h 内分析</td></tr>
+          <tr><td>总挥发性有机物 TVOC</td><td>固体吸附-热解吸-气相色谱质谱法 / 活性炭吸附-二硫化碳解吸</td><td>Tenax TA 吸附管 / 活性炭管</td><td>恒流采样（按 GB/T 18883）</td><td>按方法</td></tr>
+          <tr><td>苯、甲苯、二甲苯</td><td>毛细管气相色谱法</td><td>固体吸附-热解吸采样管</td><td>恒流采样器（0～1.0 L/min）</td><td>按 GB/T 18883</td></tr>
+          <tr><td>臭氧 O₃</td><td>靛蓝二磺酸钠分光光度法</td><td>两支多孔玻板吸收管各 9 mL 吸收液（避光套）</td><td>0.3 L/min × 采气 5～20 L</td><td>20 ℃ 以下暗处，一周内分析</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="req-box" style="margin-top:16px;">
+        <h3><span class="badge">布点</span>采样布点要求（附录 A）</h3>
+        <div class="step"><span class="num">1</span><span><b>测点数量</b>：室内面积 &lt;50 m² 设 1 点；50 m²～200 m² 设 2 点；&gt;200 m² 设 3～5 点。</span></div>
+        <div class="step"><span class="num">2</span><span><b>测点距离</b>：距地面 1.2 m～1.5 m，距墙壁及大型物件 ≥ 0.5 m；避开通风口、通风道、人流密集点。</span></div>
+        <div class="step"><span class="num">3</span><span><b>布点方式</b>：1 点设中央；2 点设对称；3 点设对角线四等分 3 点；5 点按梅花布点；其余均匀布点。多指标同采时间距 &gt;1 m。</span></div>
+        <div class="step"><span class="num">4</span><span><b>质量控制</b>：采样前用一级皂膜或经校准电子流量计校准流量，相对误差 ≤ 5%；化学指标设空白对照并采平行样。</span></div>
+      </div>
+      <div class="legend" style="margin-top:10px;">
+        <div><b>说明</b></div>
+        <div>本速查依据 GB/T 18204.2—2025 原文整理，给出各化学污染物的采样方法与布点要点，供现场采样与记录核对；具体检验步骤与结果计算以标准全文为准。</div>
+      </div>
+    </div>
+    </div><!-- /m-chem -->
+
+    <!-- ====== 空气微生物采样（18204.3） ====== -->
+    <div id="m-airbio" class="sub-pane">
+    <div class="card">
+      <h2><span class="dot" style="background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.45)"></span>空气微生物采样（GB/T 18204.3—2025）</h2>
+      <p class="sub-note">依据 <b>GB/T 18204.3—2025《公共场所卫生检验方法 第3部分：空气微生物》</b>。涵盖室内空气中细菌总数、真菌总数、β-溶血性链球菌的采样。采样方法分<b>撞击法</b>（六级筛孔撞击式）与<b>自然沉降法</b>。采样前关闭门窗 15 min～30 min，难以关闭的公共场所适当缩短。</p>
+      <div style="overflow-x:auto;">
+      <table class="sch-table">
+        <thead><tr><th>检测项</th><th>方法</th><th>采样器 / 培养基</th><th>采样量 · 时间</th><th>培养条件</th></tr></thead>
+        <tbody>
+          <tr><td>细菌总数</td><td>撞击法</td><td>六级筛孔撞击式 → 营养琼脂</td><td>28.3 L/min × 5 min（≈141.5 L）</td><td>营养琼脂 36℃±1℃、48 h</td></tr>
+          <tr><td>细菌总数</td><td>自然沉降法</td><td>营养琼脂平板</td><td>暴露 5 min</td><td>营养琼脂 36℃±1℃、48 h</td></tr>
+          <tr><td>真菌总数</td><td>撞击法</td><td>六级撞击式 → 沙氏琼脂</td><td>28.3 L/min × 5 min</td><td>沙氏琼脂 28℃±1℃、3～5 d</td></tr>
+          <tr><td>真菌总数</td><td>自然沉降法</td><td>沙氏琼脂平板</td><td>暴露 5 min</td><td>沙氏琼脂 28℃±1℃、5 d</td></tr>
+          <tr><td>β-溶血性链球菌</td><td>撞击法</td><td>六级撞击式 → 血琼脂</td><td>28.3 L/min × 5 min</td><td>血琼脂 36℃±1℃、18～24 h</td></tr>
+          <tr><td>β-溶血性链球菌</td><td>自然沉降法</td><td>血琼脂平板</td><td>暴露 5 min</td><td>血琼脂 36℃±1℃、18～24 h</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="req-box" style="margin-top:16px;">
+        <h3><span class="badge">布点</span>采样布点要求（附录 A）</h3>
+        <div class="step"><span class="num">1</span><span><b>撞击法</b>：按场所面积 / 座位数布点（同 18204.2 附录 A）：面积 &lt;50 m² 设 1 点，50～200 m² 设 2 点，&gt;200 m² 设 3～5 点。</span></div>
+        <div class="step"><span class="num">2</span><span><b>自然沉降法</b>：室内面积 &lt;50 m² 设 3 个测点；≥50 m² 设 5 个测点。</span></div>
+        <div class="step"><span class="num">3</span><span><b>采样高度</b>：距地面 1.2 m～1.5 m（成人呼吸带）；避开通风口、通风道、热源；距墙 &gt;0.5 m，距门窗 &gt;1 m；多指标同采时间距 &gt;1 m。</span></div>
+        <div class="step"><span class="num">4</span><span><b>样品保存</b>：采集后平板 4 ℃ 保存，4 h 内送实验室培养；无菌操作，设现场空白对照。</span></div>
+      </div>
+      <div class="qc-box">
+        <h3>生物安全</h3>
+        <ul>
+          <li>采样与废弃物处理应符合 <b>GB 19489</b>，实验人员做好个体防护。</li>
+          <li>采样器定期在负载条件下用合格流量计校准，相对偏差 ≤ 5%。</li>
+        </ul>
+      </div>
+      <div class="legend" style="margin-top:10px;">
+        <div><b>说明</b></div>
+        <div>本速查依据 GB/T 18204.3—2025 原文整理；集中空调送风微生物采样见「空调采样」标签（GB/T 18204.5）。</div>
+      </div>
+    </div>
+    </div><!-- /m-airbio -->
+
+    <!-- ====== 卫生监测布点（18204.6） ====== -->
+    <div id="m-monit" class="sub-pane">
+    <div class="card">
+      <h2><span class="dot" style="background:#f59e0b;box-shadow:0 0 10px rgba(245,158,11,.45)"></span>各类场所卫生监测布点（GB/T 18204.6—2025）</h2>
+      <p class="sub-note">依据 <b>GB/T 18204.6—2025《公共场所卫生检验方法 第6部分：卫生监测技术规范》</b>。给出宾馆、影剧院、公共浴室（游泳馆）、美容理发、体育场馆、商场候车室等场所的<b>监测频次、样本量与布点</b>。物理 / 化学 / 微生物指标采样方法分别按 18204.1 / 18204.2 / 18204.3。</p>
+      <div style="overflow-x:auto;">
+      <table class="sch-table">
+        <thead><tr><th>场所</th><th>监测频次</th><th>监测样本量 / 布点</th><th>采样要求</th></tr></thead>
+        <tbody>
+          <tr><td>宾馆旅店等住宿</td><td>上、下午各 1 次</td><td>客房 ≤100 间抽 3%～5%，&gt;100 间抽 1%～3%，≥3 间；客房 &lt;50 m² 设 1 点，50～200 m² 设 2 点，&gt;200 m² 设 3～5 点</td><td>物理按 18204.1；化学按 18204.2；微生物按 18204.3；记空调状态、采样高度、温湿度</td></tr>
+          <tr><td>影剧院 / 音乐厅 / 录像厅</td><td>高峰、平峰各 1 次</td><td>营业厅 / 室 20% 抽且 ≥1 个；座位 &lt;300 设 1～2 点，300～500 设 2～3 点，501～1000 设 3～4 点，&gt;1000 设 5 点</td><td>测试高度与呼吸带一致，避开通风口</td></tr>
+          <tr><td>游艺厅 / 歌舞厅</td><td>同影剧院</td><td>面积 &lt;50 m² 设 1 点，50～200 m² 设 2 点，&gt;200 m² 设 3～5 点</td><td>同影剧院</td></tr>
+          <tr><td>公共浴室 / 游泳馆（室内空气）</td><td>同影剧院</td><td>按功能区（浴室 / 泳池 / 更衣 / 休息）分类计算，每区 &lt;50 m² 设 1 点，50～200 m² 设 2 点，&gt;200 m² 设 3～5 点</td><td>同影剧院</td></tr>
+          <tr><td>游泳池水</td><td>客流高峰期；夏、冬季各 ≥1 次</td><td>儿童池 1～2 点；成人池 ≤1000 m² 设 2 点，&gt;1000 m² 设 3 点；浸脚池 1 点</td><td>水面下 30 cm 与浸脚池各采 2 份 500 mL；避开进/排水口</td></tr>
+          <tr><td>沐浴水</td><td>客流高峰期；夏、冬季各 ≥1 次</td><td>随机 5 个淋浴喷头；浴池 3 个测点</td><td>喷头热水 500 mL（理化）+ 冷水 500 mL（微生物）；浴池水面下 30 cm 各 2 份 500 mL</td></tr>
+          <tr><td>美容店 / 理（美）发店</td><td>同影剧院</td><td>美容房间 20% 抽且 ≥2 间，每间 1 点；理发店 &lt;50 m² 设 1 点，50～200 m² 设 2 点，&gt;200 m² 设 3～5 点</td><td>分区采样；避开通风口</td></tr>
+          <tr><td>体育场（馆）</td><td>同影剧院</td><td>面积 &lt;1000 m² 设 2 点，1000～5000 m² 设 3 点，&gt;5000 m² 设 5 点</td><td>同影剧院</td></tr>
+          <tr><td>展览馆 / 商场 / 候车室等</td><td>同影剧院</td><td>面积 &lt;200 m² 设 1 点，200～1000 m² 设 2 点，&gt;1000 m² 设 3 点</td><td>同影剧院</td></tr>
+          <tr><td>集中空调通风系统</td><td>—</td><td>按 GB/T 18204.5 执行（见「空调采样」）</td><td>—</td></tr>
+          <tr><td>公共用品用具</td><td>—</td><td>按 GB/T 18204.4 执行（见「用品用具采样」）；备用总数 3%～5% 抽，每类 ≥3 件 ≤10 件</td><td>—</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="req-box" style="margin-top:16px;">
+        <h3><span class="badge">通用</span>现场采样质量控制</h3>
+        <div class="step"><span class="num">1</span><span>采样前对仪器检定 / 校准，每年期间核查与维护；空气采样前检查系统气密性，采样前后负载条件下流量校准。</span></div>
+        <div class="step"><span class="num">2</span><span>化学指标设空白对照并采平行样；微生物指标无菌操作，采样后 4 ℃ 冷藏避光、宜 4 h 内送实验室。</span></div>
+        <div class="step"><span class="num">3</span><span>采样后立即标记，填写采样记录单（名称、编号、采样量、地点、时间、环境条件、采样人）。</span></div>
+      </div>
+      <div class="legend" style="margin-top:10px;">
+        <div><b>说明</b></div>
+        <div>本速查依据 GB/T 18204.6—2025 原文整理，给出各场所监测布点要点；具体指标采样方法以 18204.1～18204.5 为准。</div>
+      </div>
+    </div>
+    </div><!-- /m-monit -->
   </section>
 
   <div class="brand-foot">湖南绿盾卫士检测技术有限公司</div>
