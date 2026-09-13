@@ -1058,6 +1058,30 @@
           <li>采样器定期在负载条件下用合格流量计校准，相对偏差 ≤ 5%。</li>
         </ul>
       </div>
+      <!-- 建议布点图（空气微生物） -->
+      <div class="sch-block" style="margin-top:16px;">
+        <h3>建议布点图 <span class="sch-badge" id="airbioBpBadge">待输入</span></h3>
+        <div class="std">撞击法按 GB/T 18204.3—2025 附录 A.1：采样点按场所面积 / 座位数设置（如住宿场所 &lt;50 m²→1 点、50～200 m²→2 点、&gt;200 m²→3～5 点），多点按对角线或梅花式均匀布点；自然沉降法按附录 A.2：室内面积 &lt;50 m² 设 3 点、≥50 m² 设 5 点。采样点距地面 1.2 m～1.5 m（呼吸带），离墙 &gt;0.5 m、离门窗 &gt;1 m。下图按实际房间尺寸绘制（横向∶纵向同一比例尺），可直接量取测点位置。</div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+          <div class="field" style="flex:1;min-width:150px;"><label>采样方法</label>
+            <select id="airbioMethod" style="width:100%">
+              <option value="impact">撞击法（六级筛孔撞击式）</option>
+              <option value="settle">自然沉降法（平板暴露 5 min）</option>
+            </select></div>
+          <div class="field" style="flex:1;min-width:130px;"><label>房间长 L（m）</label><input id="airbioLen" type="number" min="0" step="0.1" value="8" style="width:100%"></div>
+          <div class="field" style="flex:1;min-width:130px;"><label>房间宽 B（m）</label><input id="airbioWid" type="number" min="0" step="0.1" value="6" style="width:100%"></div>
+          <div class="field" style="flex:1;min-width:150px;"><label>布点方式</label>
+            <select id="airbioBpSel" style="width:100%">
+              <option value="auto">自动（按面积 / 标准）</option>
+              <option value="1">1 点（中央）</option>
+              <option value="2">2 点（对称）</option>
+              <option value="3">3 点（对角线 / 梅花）</option>
+              <option value="5">5 点（梅花 / 四角+中心）</option>
+            </select></div>
+        </div>
+        <div class="bp-wrap" id="airbioBpBox"></div>
+        <div class="sch-grid-info" id="airbioBpInfo"></div>
+      </div>
       <div class="legend" style="margin-top:10px;">
         <div><b>说明</b></div>
         <div>本速查依据 GB/T 18204.3—2025 原文整理；集中空调送风微生物采样见「空调采样」标签（GB/T 18204.5）。</div>
@@ -2136,6 +2160,32 @@
     info.innerHTML = '建议测点 <b>' + pts.length + '</b> 个（' + nm + '）；苯、甲苯、二甲苯按 GB/T 18883—2022 附录 C.2。';
     badge.textContent = pts.length + ' 个测点'; badge.className = 'sch-badge sch-ok';
   }
+  function airbioBpUpdate(){
+    var L = parseFloat($sch('airbioLen').value), B = parseFloat($sch('airbioWid').value);
+    var method = $sch('airbioMethod').value, mode = $sch('airbioBpSel').value;
+    var box = $sch('airbioBpBox'), info = $sch('airbioBpInfo'), badge = $sch('airbioBpBadge');
+    if(!(L > 0) || !(B > 0)){ box.innerHTML = '<div class="bp-empty">请输入房间长与宽（m）。</div>'; info.textContent = ''; badge.textContent = '待输入'; badge.className = 'sch-badge'; return; }
+    var pts, nm, base;
+    if(method === 'settle'){
+      base = '自然沉降法（附录 A.2.1）：室内面积 &lt;50 m² 设 3 点、≥50 m² 设 5 点；按对角线或梅花式均匀布点，离墙 &gt;0.5 m、离门窗 &gt;1 m。';
+      if(mode === 'auto'){
+        var sc = (L * B < 50 - 1e-9) ? 3 : 5;
+        pts = roomArrange(L, B, sc === 3 ? '3' : '5');
+        nm = sc + ' 点（' + (sc === 3 ? '对角线 / 梅花' : '梅花 / 四角+中心') + '）';
+      } else {
+        pts = roomArrange(L, B, mode);
+        nm = {1:'1 点（中央）',2:'2 点（对称）',3:'3 点（对角线 / 梅花）',5:'5 点（梅花 / 四角+中心）'}[mode];
+      }
+    } else {
+      base = '撞击法（附录 A.1）：采样点按场所类型 / 面积设置（如住宿场所 &lt;50 m²→1、50～200 m²→2、&gt;200 m²→3～5；体育场 &lt;1000 m²→2、1000～5000 m²→3、&gt;5000 m²→5）；均匀布点，离墙 &gt;0.5 m、离门窗 &gt;1 m。';
+      pts = roomArrange(L, B, mode);
+      nm = {1:'1 点（中央）',2:'2 点（对称）',3:'3 点（对角线 / 梅花）',5:'5 点（梅花）',auto:'自动（按面积 / 标准）'}[mode];
+    }
+    var title = method === 'settle' ? '空气微生物采样布点 · 自然沉降法（GB/T 18204.3—2025 附录 A.2）' : '空气微生物采样布点 · 撞击法（GB/T 18204.3—2025 附录 A.1）';
+    box.innerHTML = roomPlanSvg(L, B, pts, {title:title, height:'距地面 1.2 m～1.5 m（呼吸带）', accent:'#22c55e'});
+    info.innerHTML = '建议测点 <b>' + pts.length + '</b> 个（' + nm + '）；' + base;
+    badge.textContent = pts.length + ' 个测点'; badge.className = 'sch-badge sch-ok';
+  }
 
   /* 空调采样示意布点图 */
   function acOutSVG(){
@@ -2230,7 +2280,8 @@
   ['physLen','physWid','physBpSel'].forEach(function(id){ var e = $sch(id); if(e){ e.addEventListener('input', physBpUpdate); e.addEventListener('change', physBpUpdate); } });
   ['chemLen','chemWid','chemBpSel'].forEach(function(id){ var e = $sch(id); if(e){ e.addEventListener('input', chemBpUpdate); e.addEventListener('change', chemBpUpdate); } });
   (function(){ var s = $sch('acBpSel'); if(s) s.addEventListener('change', acBpUpdate); })();
-  physBpUpdate(); chemBpUpdate(); acBpUpdate();
+  ['airbioLen','airbioWid','airbioBpSel','airbioMethod'].forEach(function(id){ var e = $sch(id); if(e){ e.addEventListener('input', airbioBpUpdate); e.addEventListener('change', airbioBpUpdate); } });
+  physBpUpdate(); chemBpUpdate(); acBpUpdate(); airbioBpUpdate();
   /* ==SAMPLING-BP-JS-END== */
 
   schCalcArea(); schCalcWD(); schCalcCL(); schCalcBD();   // winAddRow 已在绑定时初始化
