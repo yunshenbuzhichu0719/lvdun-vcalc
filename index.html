@@ -1208,16 +1208,16 @@
         area:'每 25 cm² 为 1 份，每件共采集 2 份',
         method:'各取 5 cm×5 cm（25 cm²）范围均匀涂抹 5 次。' }
     ]},
-    { group:'美容美发美甲用品', items:[
-      { name:'理发推子', img:'salon', meta:'达 25 cm² 为 1 份',
+    { group:'美容美发美甲用品', img:'salon', items:[
+      { name:'理发推子', meta:'达 25 cm² 为 1 份',
         part:'推子前部（与皮肤接触处）',
         area:'涂抹达到 25 cm² 记为 1 份；单件不足可加采其他推子合并',
         method:'前部均匀涂抹 5 次，使采样面积达到 25 cm²。单把不足则加采同类合并为 1 份。' },
-      { name:'理发刀、剪', img:'salon', meta:'达 25 cm² 为 1 份',
+      { name:'理发刀、剪', meta:'达 25 cm² 为 1 份',
         part:'刀、剪两个面（与皮肤接触处）',
         area:'涂抹达到 25 cm² 记为 1 份；单件不足可加采其他刀剪合并',
         method:'两个面各均匀涂抹 5 次，使采样面积达到 25 cm²。不足则加采同类合并为 1 份。' },
-      { name:'美容美甲用品', img:'salon', meta:'达 25 cm² 为 1 份',
+      { name:'美容美甲用品', meta:'达 25 cm² 为 1 份',
         part:'用品表面（与皮肤接触处）',
         area:'涂抹达到 25 cm² 记为 1 份；单套不足可加采其他合并',
         method:'表面均匀涂抹 5 次，使采样面积达到 25 cm²。不足则加采同类合并为 1 份。' }
@@ -1253,6 +1253,9 @@
     let html = '';
     samplingData.forEach(g=>{
       html += '<div class="cat-title">'+g.group+'</div>';
+      if(g.img && SAMP_IMG[g.img]){
+        html += '<div class="s-fig"><img src="'+SAMP_IMG[g.img]+'" alt="'+g.group+' 采样位置示意图"><div class="cap">采样位置示意图 · 依据 GB/T 18204.4—2025 附录A</div></div>';
+      }
       g.items.forEach(it=>{
         html +=
           '<div class="s-item">'+
