@@ -245,6 +245,8 @@
   .sch-table th{background:rgba(19,184,117,.08);color:var(--txt);font-weight:800;text-align:left;white-space:nowrap;}
   .sch-table td{color:var(--sub);}
   .sch-table td:first-child{color:var(--txt);font-weight:600;white-space:nowrap;}
+  /* 空调采样表：检测项目列收窄约 4 字宽，长项自动换行 */
+  #m-ac .sch-table td:first-child{white-space:normal;width:5em;}
   .sch-block{background:rgba(19,184,117,.035);border:1px solid var(--line);border-radius:12px;
     padding:14px;margin-top:14px;}
   .sch-block h3{font-size:14px;color:var(--txt);margin:0 0 5px;font-weight:800;
