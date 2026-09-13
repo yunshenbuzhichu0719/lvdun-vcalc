@@ -87,6 +87,11 @@
     background:linear-gradient(95deg,#0f3a6e,#16559c);color:#fff;border-color:transparent;
     box-shadow:0 6px 16px rgba(15,58,110,.25), inset 0 1px 0 rgba(255,255,255,.22);
   }
+  /* 采样速查 一级按钮：绿色品牌色（始终） */
+  .top-tab[data-top="sampling"]{
+    background:linear-gradient(95deg,#1ecb80,#11a367);color:#fff;border-color:transparent;
+    box-shadow:0 6px 16px rgba(19,184,117,.25), inset 0 1px 0 rgba(255,255,255,.22);
+  }
   /* ===== 公共卫生检测 三级目录 ===== */
   .sub-sub-tabs{display:none;gap:7px;margin:0 0 16px 14px;padding-left:14px;
     border-left:3px solid #13b879;overflow-x:auto;-webkit-overflow-scrolling:touch;}
@@ -277,6 +282,8 @@
   .sch-table td:first-child{color:var(--txt);font-weight:600;white-space:nowrap;}
   /* 空调采样表：检测项目列收窄约 4 字宽，长项自动换行 */
   #m-ac .sch-table td.col-item{white-space:normal;width:5em;}
+  /* 监测布点：场所列收窄（覆盖默认 nowrap，允许换行） */
+  .monit-table th:first-child,.monit-table td:first-child{width:6.5em;max-width:6.5em;white-space:normal;}
   .sch-block{background:rgba(19,184,117,.035);border:1px solid var(--line);border-radius:12px;
     padding:14px;margin-top:14px;}
   .sch-block h3{font-size:14px;color:var(--txt);margin:0 0 5px;font-weight:800;
@@ -1158,7 +1165,7 @@
       <h2><span class="dot" style="background:#f59e0b;box-shadow:0 0 10px rgba(245,158,11,.45)"></span>各类场所卫生监测布点（GB/T 18204.6—2025）</h2>
       <p class="sub-note">依据 <b>GB/T 18204.6—2025《公共场所卫生检验方法 第6部分：卫生监测技术规范》</b>。给出宾馆、影剧院、公共浴室（游泳馆）、美容理发、体育场馆、商场候车室等场所的<b>监测频次、样本量与布点</b>。物理 / 化学 / 微生物指标采样方法分别按 18204.1 / 18204.2 / 18204.3。</p>
       <div style="overflow-x:auto;">
-      <table class="sch-table">
+      <table class="sch-table monit-table">
         <thead><tr><th>场所</th><th>监测频次</th><th>监测样本量 / 布点</th><th>采样要求</th></tr></thead>
         <tbody>
           <tr><td>宾馆旅店等住宿</td><td>上、下午各 1 次</td><td>客房 ≤100 间抽 3%～5%，&gt;100 间抽 1%～3%，≥3 间；客房 &lt;50 m² 设 1 点，50～200 m² 设 2 点，&gt;200 m² 设 3～5 点</td><td>物理按 18204.1；化学按 18204.2；微生物按 18204.3；记空调状态、采样高度、温湿度</td></tr>
