@@ -246,7 +246,7 @@
   .sch-table td{color:var(--sub);}
   .sch-table td:first-child{color:var(--txt);font-weight:600;white-space:nowrap;}
   /* 空调采样表：检测项目列收窄约 4 字宽，长项自动换行 */
-  #m-ac .sch-table td:first-child{white-space:normal;width:5em;}
+  #m-ac .sch-table td.col-item{white-space:normal;width:5em;}
   .sch-block{background:rgba(19,184,117,.035);border:1px solid var(--line);border-radius:12px;
     padding:14px;margin-top:14px;}
   .sch-block h3{font-size:14px;color:var(--txt);margin:0 0 5px;font-weight:800;
@@ -790,7 +790,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>嗜肺军团菌</td>
+            <td rowspan="2" class="col-item">嗜肺军团菌</td>
             <td>冷却水、冷凝水</td>
             <td>每冷却塔 / 冷凝水盘 1 点</td>
             <td>冷却水：距塔壁 20 cm、液面下 10 cm；冷凝水：排污管或冷凝水盘</td>
@@ -800,7 +800,6 @@
             <td>检出 / 未检出（CFU/mL）</td>
           </tr>
           <tr>
-            <td>嗜肺军团菌</td>
             <td>送风</td>
             <td>每套系统 3～5 个送风口，每口 1 点</td>
             <td>送风口下方 15～20 cm、水平向外 50～100 cm</td>
@@ -810,7 +809,7 @@
             <td>CFU/m³</td>
           </tr>
           <tr>
-            <td>细菌总数</td>
+            <td rowspan="2" class="col-item">细菌总数</td>
             <td>送风</td>
             <td>每套系统 3～5 个送风口，每口 1 点</td>
             <td>送风口下方 15～20 cm、水平向外 50～100 cm</td>
@@ -820,7 +819,6 @@
             <td>CFU/m³</td>
           </tr>
           <tr>
-            <td>细菌总数</td>
             <td>风管内表面积尘</td>
             <td>至少 6 点：2 个代表性断面（送/回/新风），每断面上/底/侧各 1 点</td>
             <td>风管内部上表面、底面、侧面</td>
@@ -830,7 +828,7 @@
             <td>CFU/cm²</td>
           </tr>
           <tr>
-            <td>真菌总数</td>
+            <td rowspan="2" class="col-item">真菌总数</td>
             <td>送风</td>
             <td>同细菌总数</td>
             <td>同细菌总数</td>
@@ -840,7 +838,6 @@
             <td>CFU/m³</td>
           </tr>
           <tr>
-            <td>真菌总数</td>
             <td>风管内表面积尘</td>
             <td>至少 6 点</td>
             <td>风管内部</td>
@@ -850,7 +847,7 @@
             <td>CFU/cm²</td>
           </tr>
           <tr>
-            <td>β-溶血性链球菌</td>
+            <td class="col-item">β-溶血性链球菌</td>
             <td>送风</td>
             <td>同细菌总数（5.4.1）</td>
             <td>同细菌总数</td>
@@ -860,7 +857,7 @@
             <td>CFU/m³</td>
           </tr>
           <tr>
-            <td>可吸入颗粒物 PM10</td>
+            <td class="col-item">可吸入颗粒物 PM10</td>
             <td>送风</td>
             <td>每套 3～5 个送风口；面积＜0.1 m² 设 1 点（中心），≥0.1 m² 设 3 点（对角线四等分 3 点）</td>
             <td>送风口下方 15～20 cm、水平向外 50～100 cm</td>
@@ -870,7 +867,7 @@
             <td>mg/m³</td>
           </tr>
           <tr>
-            <td>风管内表面积尘量</td>
+            <td class="col-item">风管内表面积尘量</td>
             <td>风管内表面</td>
             <td>机器人 ≥3 点；手工擦拭 ≥6 点</td>
             <td>机器人：3 个代表性断面各 1 点；手工：2 断面（送/回/新）各上/底/侧 3 点</td>
@@ -1037,12 +1034,12 @@
       <table class="sch-table">
         <thead><tr><th>检测项</th><th>方法</th><th>采样器 / 培养基</th><th>采样量 · 时间</th><th>培养条件</th></tr></thead>
         <tbody>
-          <tr><td>细菌总数</td><td>撞击法</td><td>六级筛孔撞击式 → 营养琼脂</td><td>28.3 L/min × 5 min（≈141.5 L）</td><td>营养琼脂 36℃±1℃、48 h</td></tr>
-          <tr><td>细菌总数</td><td>自然沉降法</td><td>营养琼脂平板</td><td>暴露 5 min</td><td>营养琼脂 36℃±1℃、48 h</td></tr>
-          <tr><td>真菌总数</td><td>撞击法</td><td>六级撞击式 → 沙氏琼脂</td><td>28.3 L/min × 5 min</td><td>沙氏琼脂 28℃±1℃、3～5 d</td></tr>
-          <tr><td>真菌总数</td><td>自然沉降法</td><td>沙氏琼脂平板</td><td>暴露 5 min</td><td>沙氏琼脂 28℃±1℃、5 d</td></tr>
-          <tr><td>β-溶血性链球菌</td><td>撞击法</td><td>六级撞击式 → 血琼脂</td><td>28.3 L/min × 5 min</td><td>血琼脂 36℃±1℃、18～24 h</td></tr>
-          <tr><td>β-溶血性链球菌</td><td>自然沉降法</td><td>血琼脂平板</td><td>暴露 5 min</td><td>血琼脂 36℃±1℃、18～24 h</td></tr>
+          <tr><td rowspan="2">细菌总数</td><td>撞击法</td><td>六级筛孔撞击式 → 营养琼脂</td><td>28.3 L/min × 5 min（≈141.5 L）</td><td>营养琼脂 36℃±1℃、48 h</td></tr>
+          <tr><td>自然沉降法</td><td>营养琼脂平板</td><td>暴露 5 min</td><td>营养琼脂 36℃±1℃、48 h</td></tr>
+          <tr><td rowspan="2">真菌总数</td><td>撞击法</td><td>六级撞击式 → 沙氏琼脂</td><td>28.3 L/min × 5 min</td><td>沙氏琼脂 28℃±1℃、3～5 d</td></tr>
+          <tr><td>自然沉降法</td><td>沙氏琼脂平板</td><td>暴露 5 min</td><td>沙氏琼脂 28℃±1℃、5 d</td></tr>
+          <tr><td rowspan="2">β-溶血性链球菌</td><td>撞击法</td><td>六级撞击式 → 血琼脂</td><td>28.3 L/min × 5 min</td><td>血琼脂 36℃±1℃、18～24 h</td></tr>
+          <tr><td>自然沉降法</td><td>血琼脂平板</td><td>暴露 5 min</td><td>血琼脂 36℃±1℃、18～24 h</td></tr>
         </tbody>
       </table>
       </div>
