@@ -1938,8 +1938,148 @@
     if(!open && !c.dataset.built){ c.dataset.built='1'; c.innerHTML = xfFormulaHTML(); }
   });
 
+  /* ===== 新风量：管道系统示意 / 断面布点示意 ===== */
+  function xfDuctSysSVG(){
+    var W = 680, H = 396, o = [], F = ' font-family=\'' + BP_FONT + '\'';
+    var C = '#0fb8a0', C2 = '#0b7a6b', C_SUB = '#5b7569', C_TXT = '#103325', DU = '#eafff9';
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img">');
+    o.push('<rect width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+    o.push('<text x="14" y="21" font-size="13" font-weight="700" fill="' + C_TXT + '"' + F + '>管道系统示意 · 新风管 / 总风管（送风管）/ 回风管</text>');
+    /* 新风管 */
+    o.push('<rect x="50" y="180" width="220" height="24" fill="' + DU + '" stroke="' + C + '" stroke-width="1.4"/>');
+    o.push('<polygon points="252,183 252,201 268,192" fill="' + C + '"/>');
+    o.push('<text x="52" y="174" font-size="10.5" fill="' + C_SUB + '"' + F + '>室外新风</text>');
+    o.push('<text x="176" y="174" text-anchor="middle" font-size="11.5" font-weight="700" fill="' + C2 + '"' + F + '>新风管（Q新）</text>');
+    o.push('<line x1="150" y1="176" x2="150" y2="208" stroke="' + C + '" stroke-width="1.3" stroke-dasharray="4 3"/>');
+    o.push('<text x="150" y="223" text-anchor="middle" font-size="10" fill="' + C2 + '"' + F + '>① 测断面</text>');
+    /* 空调机组（新回风混合段） */
+    o.push('<rect x="270" y="154" width="110" height="76" fill="#f2fffc" stroke="' + C_TXT + '" stroke-width="1.5"/>');
+    o.push('<text x="325" y="187" text-anchor="middle" font-size="11" font-weight="700" fill="' + C_TXT + '"' + F + '>空调机组</text>');
+    o.push('<text x="325" y="204" text-anchor="middle" font-size="10" fill="' + C_SUB + '"' + F + '>（新回风混合段）</text>');
+    /* 总风管（送风管） */
+    o.push('<rect x="380" y="176" width="140" height="32" fill="' + DU + '" stroke="' + C + '" stroke-width="1.4"/>');
+    o.push('<polygon points="504,183 504,201 520,192" fill="' + C + '"/>');
+    o.push('<text x="450" y="167" text-anchor="middle" font-size="11.5" font-weight="700" fill="' + C2 + '"' + F + '>总风管（送风管）Q总</text>');
+    o.push('<line x1="450" y1="170" x2="450" y2="214" stroke="' + C + '" stroke-width="1.3" stroke-dasharray="4 3"/>');
+    o.push('<text x="450" y="229" text-anchor="middle" font-size="10" fill="' + C2 + '"' + F + '>② 测断面</text>');
+    /* 房间（服务区） */
+    o.push('<rect x="520" y="140" width="130" height="104" fill="#f7fffd" stroke="' + C_TXT + '" stroke-width="1.5"/>');
+    o.push('<text x="585" y="186" text-anchor="middle" font-size="11" font-weight="700" fill="' + C_TXT + '"' + F + '>房间（服务区）</text>');
+    o.push('<text x="585" y="203" text-anchor="middle" font-size="10" fill="' + C_SUB + '"' + F + '>服务区人数 P</text>');
+    /* 回风管（房间 → 机组） */
+    o.push('<path d="M585,244 V310 H325 V230" fill="none" stroke="' + C + '" stroke-width="20" stroke-linejoin="round"/>');
+    o.push('<path d="M585,244 V310 H325 V230" fill="none" stroke="' + DU + '" stroke-width="16" stroke-linejoin="round"/>');
+    o.push('<polygon points="317,241 333,241 325,227" fill="' + C + '"/>');
+    o.push('<line x1="490" y1="296" x2="490" y2="324" stroke="' + C + '" stroke-width="1.3" stroke-dasharray="4 3"/>');
+    o.push('<text x="490" y="291" text-anchor="middle" font-size="10" fill="' + C2 + '"' + F + '>③ 测断面（可选）</text>');
+    o.push('<text x="390" y="345" font-size="11.5" font-weight="700" fill="' + C2 + '"' + F + '>回风管（Q回）</text>');
+    /* 说明 */
+    o.push('<text x="40" y="368" font-size="10.5" fill="' + C_SUB + '"' + F + '>无回风：Z = 1，逐根测新风管风量求和即为总新风量。</text>');
+    o.push('<text x="40" y="386" font-size="10.5" fill="' + C_SUB + '"' + F + '>有回风：另测总风管 Q总（或输入回风量 Q回，Q总 = Q新 + Q回），新风比 Z = Q新 / Q总 ≤ 1。</text>');
+    o.push('</svg>');
+    return o.join('');
+  }
+  function xfRoundDuctSVG(){
+    var W = 680, H = 336, o = [], F = ' font-family=\'' + BP_FONT + '\'';
+    var C = '#0fb8a0', C2 = '#0b7a6b', C_SUB = '#5b7569', C_TXT = '#103325';
+    var cx = 178, cy = 188, R = 116, n = 3, i, k, d = 0.7071;
+    var fills = ['#eafff9', '#d3fff2', '#baf5e8'];
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img">');
+    o.push('<rect width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+    o.push('<text x="14" y="21" font-size="13" font-weight="700" fill="' + C_TXT + '"' + F + '>圆形风管断面 · 等面积同心环分环布点（共 4n 个测点）</text>');
+    /* 等面积同心环（由外向内叠放） */
+    for(i = n; i >= 1; i--){
+      o.push('<circle cx="' + cx + '" cy="' + cy + '" r="' + (R * Math.sqrt(i / n)).toFixed(2) + '" fill="' + fills[i - 1] + '"/>');
+    }
+    o.push('<circle cx="' + cx + '" cy="' + cy + '" r="' + R + '" fill="none" stroke="' + C_TXT + '" stroke-width="1.6"/>');
+    /* 环分界（虚线） */
+    for(i = 1; i < n; i++){
+      o.push('<circle cx="' + cx + '" cy="' + cy + '" r="' + (R * Math.sqrt(i / n)).toFixed(2) + '" fill="none" stroke="' + C2 + '" stroke-width="1" stroke-dasharray="4 3"/>');
+    }
+    /* 两条互相垂直的直径线 */
+    o.push('<line x1="' + (cx - R) + '" y1="' + cy + '" x2="' + (cx + R) + '" y2="' + cy + '" stroke="' + C_SUB + '" stroke-width="0.9" stroke-dasharray="6 4"/>');
+    o.push('<line x1="' + cx + '" y1="' + (cy - R) + '" x2="' + cx + '" y2="' + (cy + R) + '" stroke="' + C_SUB + '" stroke-width="0.9" stroke-dasharray="6 4"/>');
+    /* 测点：各环中心线与两条直径线的交点 */
+    var dirs = [[1, 0], [0, 1], [-1, 0], [0, -1]];
+    for(i = 1; i <= n; i++){
+      var rc = R * Math.sqrt((i - 0.5) / n);
+      for(k = 0; k < 4; k++){
+        o.push('<circle cx="' + (cx + dirs[k][0] * rc).toFixed(2) + '" cy="' + (cy + dirs[k][1] * rc).toFixed(2) + '" r="5" fill="' + C + '" stroke="#fff" stroke-width="1.2"/>');
+      }
+    }
+    /* 环号（左上 225 度方向） */
+    for(i = 1; i <= n; i++){
+      var rl = R * Math.sqrt((i - 0.5) / n);
+      o.push('<text x="' + (cx - d * rl).toFixed(1) + '" y="' + (cy - d * rl + 3).toFixed(1) + '" text-anchor="middle" font-size="9.5" fill="' + C2 + '"' + F + '>环' + i + '</text>');
+    }
+    /* 半径标注 */
+    o.push('<text x="' + (cx + R * Math.sqrt(1 / n)).toFixed(1) + '" y="' + (cy - 10) + '" text-anchor="middle" font-size="9.5" fill="' + C_SUB + '"' + F + '>r1</text>');
+    o.push('<text x="' + (cx + R * Math.sqrt(2 / n)).toFixed(1) + '" y="' + (cy - 10) + '" text-anchor="middle" font-size="9.5" fill="' + C_SUB + '"' + F + '>r2</text>');
+    o.push('<text x="' + (cx + R - 7) + '" y="' + (cy - 10) + '" text-anchor="middle" font-size="9.5" fill="' + C_SUB + '"' + F + '>R</text>');
+    /* 说明 */
+    o.push('<text x="336" y="60" font-size="11.5" font-weight="700" fill="' + C_TXT + '"' + F + '>分环与布点规则</text>');
+    o.push('<text x="336" y="82" font-size="10.5" fill="' + C_SUB + '"' + F + '>① 等面积分环：把断面分成 n 个面积相等的同心环，</text>');
+    o.push('<text x="350" y="99" font-size="10.5" fill="' + C_SUB + '"' + F + '>环分界半径 ri = R·√(i / n)，i = 1 … n</text>');
+    o.push('<text x="336" y="123" font-size="10.5" fill="' + C_SUB + '"' + F + '>② 测点位置：各环中心线（半径 r = R·√((i−0.5) / n)）</text>');
+    o.push('<text x="350" y="140" font-size="10.5" fill="' + C_SUB + '"' + F + '>与两条互相垂直的直径线的交点 → 共 4n 个测点</text>');
+    o.push('<text x="336" y="164" font-size="10.5" fill="' + C_SUB + '"' + F + '>③ 分环数 n：按风管直径查 GB/T 18204.1—2025 表 1 确定</text>');
+    o.push('<text x="350" y="181" font-size="10.5" fill="' + C_SUB + '"' + F + '>（直径越大，分环数越多）</text>');
+    o.push('<text x="336" y="205" font-size="10.5" font-weight="700" fill="' + C2 + '"' + F + '>④ 本图示例：n = 3 → 4n = 12 个测点</text>');
+    o.push('<text x="336" y="229" font-size="10.5" fill="' + C_SUB + '"' + F + '>⑤ 风管直径 &lt; 0.3 m 且气流均匀时，可只取管中心 1 个点</text>');
+    o.push('<text x="336" y="253" font-size="10.5" fill="' + C_SUB + '"' + F + '>⑥ 取各测点风速的算术平均值作为平均风速 V</text>');
+    o.push('<text x="336" y="283" font-size="10.5" fill="' + C_SUB + '"' + F + '>检测断面应选在气流平稳的直管段，避开弯头、</text>');
+    o.push('<text x="336" y="300" font-size="10.5" fill="' + C_SUB + '"' + F + '>变径、阀门等气流扰动部位。</text>');
+    o.push('</svg>');
+    return o.join('');
+  }
+  function xfRectDuctSVG(){
+    var W = 680, H = 312, o = [], F = ' font-family=\'' + BP_FONT + '\'';
+    var C = '#0fb8a0', C2 = '#0b7a6b', C_SUB = '#5b7569', C_TXT = '#103325';
+    var x0 = 60, y0 = 80, RW = 300, RH = 200, cols = 5, rows = 3, i, j;
+    var bw = RW / cols, bh = RH / rows;
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img">');
+    o.push('<rect width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+    o.push('<text x="14" y="21" font-size="13" font-weight="700" fill="' + C_TXT + '"' + F + '>矩形风管断面 · 等面积分块布点（各块中心为测点）</text>');
+    o.push('<rect x="' + x0 + '" y="' + y0 + '" width="' + RW + '" height="' + RH + '" fill="#eafff9" stroke="' + C_TXT + '" stroke-width="1.6"/>');
+    /* 网格（等面积分块） */
+    for(i = 1; i < cols; i++){
+      o.push('<line x1="' + (x0 + bw * i).toFixed(1) + '" y1="' + y0 + '" x2="' + (x0 + bw * i).toFixed(1) + '" y2="' + (y0 + RH) + '" stroke="' + C2 + '" stroke-width="1" stroke-dasharray="4 3"/>');
+    }
+    for(j = 1; j < rows; j++){
+      o.push('<line x1="' + x0 + '" y1="' + (y0 + bh * j).toFixed(1) + '" x2="' + (x0 + RW) + '" y2="' + (y0 + bh * j).toFixed(1) + '" stroke="' + C2 + '" stroke-width="1" stroke-dasharray="4 3"/>');
+    }
+    /* 测点：各块中心 */
+    for(j = 0; j < rows; j++){
+      for(i = 0; i < cols; i++){
+        o.push('<circle cx="' + (x0 + bw * (i + 0.5)).toFixed(1) + '" cy="' + (y0 + bh * (j + 0.5)).toFixed(1) + '" r="5" fill="' + C + '" stroke="#fff" stroke-width="1.2"/>');
+      }
+    }
+    /* 单块尺寸标注（近正方形 a ≈ b） */
+    o.push('<line x1="' + x0 + '" y1="' + (y0 - 10) + '" x2="' + (x0 + bw) + '" y2="' + (y0 - 10) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + x0 + '" y1="' + (y0 - 14) + '" x2="' + x0 + '" y2="' + (y0 - 6) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + (x0 + bw) + '" y1="' + (y0 - 14) + '" x2="' + (x0 + bw) + '" y2="' + (y0 - 6) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<text x="' + (x0 + bw / 2) + '" y="' + (y0 - 16) + '" text-anchor="middle" font-size="10" fill="' + C_SUB + '"' + F + '>a</text>');
+    o.push('<line x1="' + (x0 - 12) + '" y1="' + y0 + '" x2="' + (x0 - 12) + '" y2="' + (y0 + bh) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + (x0 - 16) + '" y1="' + y0 + '" x2="' + (x0 - 8) + '" y2="' + y0 + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + (x0 - 16) + '" y1="' + (y0 + bh) + '" x2="' + (x0 - 8) + '" y2="' + (y0 + bh) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<text x="' + (x0 - 20) + '" y="' + (y0 + bh / 2 + 3) + '" text-anchor="end" font-size="10" fill="' + C_SUB + '"' + F + '>b</text>');
+    /* 说明 */
+    o.push('<text x="396" y="60" font-size="11.5" font-weight="700" fill="' + C_TXT + '"' + F + '>分块与布点规则</text>');
+    o.push('<text x="396" y="82" font-size="10.5" fill="' + C_SUB + '"' + F + '>① 等面积分块：把断面划分成若干个小矩形，</text>');
+    o.push('<text x="410" y="99" font-size="10.5" fill="' + C_SUB + '"' + F + '>各小块面积相等且尽量近正方形（a ≈ b）</text>');
+    o.push('<text x="396" y="123" font-size="10.5" fill="' + C_SUB + '"' + F + '>② 测点位置：每个小矩形的中心点即为测点</text>');
+    o.push('<text x="396" y="147" font-size="10.5" fill="' + C_SUB + '"' + F + '>③ 分块数：按风管边长查 GB/T 18204.1—2025 表 2 确定</text>');
+    o.push('<text x="410" y="164" font-size="10.5" fill="' + C_SUB + '"' + F + '>（边长越大，分块越多）</text>');
+    o.push('<text x="396" y="188" font-size="10.5" font-weight="700" fill="' + C2 + '"' + F + '>④ 本图示例：5 × 3 = 15 块 → 15 个测点</text>');
+    o.push('<text x="396" y="212" font-size="10.5" fill="' + C_SUB + '"' + F + '>⑤ 取各测点风速的算术平均值作为平均风速 V</text>');
+    o.push('<text x="396" y="242" font-size="10.5" fill="' + C_SUB + '"' + F + '>检测断面应选在气流平稳的直管段，避开弯头、</text>');
+    o.push('<text x="396" y="259" font-size="10.5" fill="' + C_SUB + '"' + F + '>变径、阀门等气流扰动部位。</text>');
+    o.push('</svg>');
+    return o.join('');
+  }
+
   function xfFormulaHTML(){
-    return '<div class="legend"><b>风速计法计算公式（GB/T 18204.1—2025 §7.2）</b><br>'+
+    var h = '<div class="legend"><b>风速计法计算公式（GB/T 18204.1—2025 §7.2）</b><br>'+
       '单管新风量：Qᵢ = 3600 × Sᵢ × Vᵢ × Zᵢ（m³/h）<br>'+
       '系统新风量：Q = Σ Qᵢ / P = Σ(3600·S·V·Z) / P（m³/(人·h)）<br>'+
       '换气次数：A = Q × P / V（次/h）<br>'+
@@ -1953,6 +2093,14 @@
       '<b>总风管风量 Q总 = 新风量 + 回风量</b>（总风管输送的是新风与回风混合后的送风），故 Q总 ≥ Q新。Q总 可由总风管断面×风速测得，也可直接输入，或输入回风量 Q回 由 Q总 = Q新 + Q回 自动求和。'+
       '<br><b>注意</b>：若算出 Z > 1，说明 Q总 取值有误（小于新风量），程序会红字提示。'+
       '<br><br><b>修约</b>：四舍六入五成双。</div>';
+    h += '<div style="margin-top:16px;font-size:12.5px;font-weight:700">管道与断面布点示意图</div>';
+    h += '<div class="s-fig" style="margin-top:8px">' + xfDuctSysSVG() +
+         '<div class="cap">新风管 / 总风管（送风管）/ 回风管 的相对位置与测风量断面。无回风时只测新风管（Z = 1）；有回风时需另测总风管，Z = Q新 / Q总，且 Q总 = Q新 + Q回。</div></div>';
+    h += '<div class="s-fig">' + xfRoundDuctSVG() +
+         '<div class="cap">圆形风管断面：按等面积同心环分环，测点取各环中心线与两条互相垂直直径线的交点，共 4n 个测点。</div></div>';
+    h += '<div class="s-fig">' + xfRectDuctSVG() +
+         '<div class="cap">矩形风管断面：划分为若干等面积、近正方形的小矩形，每个小矩形的中心即为测点。</div></div>';
+    return h;
   }
 
   xfAddDuct();
