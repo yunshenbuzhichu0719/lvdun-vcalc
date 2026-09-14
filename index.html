@@ -294,6 +294,14 @@
   .dl-table{min-width:640px;}
   .dl-table th:first-child,.dl-table td:first-child{white-space:normal;}
   .dl-table.dl-fill td{height:26px;}
+  .dl-fold-h{font-size:14px;color:var(--txt);font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap;cursor:pointer;list-style:none;user-select:none;margin:0;}
+  .dl-fold-h::-webkit-details-marker{display:none;}
+  .dl-fold-h:hover .dl-fold-t{color:var(--accent);}
+  .dl-fold-cue{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--sub);background:rgba(120,140,130,.12);border:1px solid transparent;border-radius:20px;padding:2px 10px;white-space:nowrap;}
+  .dl-fold-cue::before{content:"展开 ▾";}
+  .dl-fold[open] > .dl-fold-h{margin-bottom:9px;}
+  .dl-fold[open] > .dl-fold-h > .dl-fold-cue{color:var(--accent);background:rgba(19,184,117,.12);border-color:rgba(19,184,117,.30);}
+  .dl-fold[open] > .dl-fold-h > .dl-fold-cue::before{content:"收起 ▴";}
   /* ==DL-CSS-END== */
   .sch-block{background:rgba(19,184,117,.035);border:1px solid var(--line);border-radius:12px;
     padding:14px;margin-top:14px;}
@@ -752,15 +760,17 @@
           <div class="field"><label>教室宽度 B（m）</label>
             <input type="number" id="schWid" step="any" placeholder="如 6"></div>
         </div>
-        <div class="res-box std sch-sub-res" style="margin-top:2px">
-          <div class="tag">教室面积 S₂ = L × B</div>
-          <div class="val"><span id="schS2V">—</span><span class="unit">m²</span></div>
-          <div class="raw" id="schS2Raw"></div>
-        </div>
-        <div class="res-box std">
-          <div class="tag">人均面积 S₁ = S₂ / a</div>
-          <div class="val"><span id="schAreaV">—</span><span class="unit">m²/人</span></div>
-          <div class="raw" id="schAreaRaw"></div>
+        <div class="sch-2col" style="margin-top:2px">
+          <div class="res-box std sch-sub-res">
+            <div class="tag">教室面积 S₂ = L × B</div>
+            <div class="val"><span id="schS2V">—</span><span class="unit">m²</span></div>
+            <div class="raw" id="schS2Raw"></div>
+          </div>
+          <div class="res-box std">
+            <div class="tag">人均面积 S₁ = S₂ / a</div>
+            <div class="val"><span id="schAreaV">—</span><span class="unit">m²/人</span></div>
+            <div class="raw" id="schAreaRaw"></div>
+          </div>
         </div>
       </div>
 
@@ -950,9 +960,11 @@
       </div>
 <!-- ==REC-UI-END== -->
 <!-- ==DL-UI-BEGIN== -->
-      <!-- 采光系数测量速查 -->
+      <!-- 采光系数测量速查（折叠式：点击标题展开） -->
       <div class="sch-block">
-        <h3>⑧ 采光系数测量速查 <span class="sch-badge" id="dlBadge">待输入</span></h3>
+        <details class="dl-fold" id="dlFold">
+          <summary class="dl-fold-h"><span class="dl-fold-t">⑧ 采光系数测量速查</span><span class="sch-badge" id="dlBadge">待输入</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
+          <div class="dl-body">
         <div class="std">
           <b>核心关系（GB/T 5699-2025《采光测量方法》）：</b>采光系数 <b>C = E<sub>室内</sub> / E<sub>室外</sub> × 100%</b>。分子为室内该参考平面上由<b>天空漫射光</b>产生的照度；分母为<b>同一时刻</b>该天空半球在室外无遮挡水平面上产生的天空漫射光照度。
           <br><b>室内测点按网格布点（N 个），室外只需 1 个代表测点</b>——室外测点<b>不与室内测点一一对应</b>，需要"一一对应"的是<b>测量时刻</b>：每个室内点的采光系数用该点测量时刻的室外照度计算。
@@ -1022,6 +1034,8 @@
           </tbody>
         </table>
         <div class="sch-grid-info">室外测点（1 个）<b>全程连续记录</b>，第 5 列按<b>同一时刻</b>对应填入；采光系数平均值 C<sub>av</sub> = ΣC<sub>i</sub> / n，采光均匀度 U = C<sub>min</sub> / C<sub>av</sub>。序号行数按实际测点数增减。</div>
+          </div><!-- /dl-body -->
+        </details>
       </div>
 <!-- ==DL-UI-END== -->
       <div class="qc-box">
