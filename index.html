@@ -315,6 +315,8 @@
   .sch-bad{color:#b8302a;background:rgba(192,57,43,.11);border-color:rgba(192,57,43,.33);}
   .sch-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .sch-2col .res-box .val{font-size:21px;}
+  .sch-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:start;}
+  .sch-3col .res-box .val{font-size:18px;}
   .sch-grid-info{font-size:12px;color:var(--sub);background:rgba(15,184,160,.07);
     border-left:3px solid var(--accent2);padding:7px 10px;border-radius:0 8px 8px 0;
     margin-top:9px;line-height:1.6;}
@@ -396,6 +398,7 @@
     .s-meta{font-size:12.5px;}
     .s-brief{font-size:12.5px;flex:1 1 100%;}
     .sch-2col{grid-template-columns:1fr;}
+    .sch-3col{grid-template-columns:1fr;}
     .win-head,.win-row{grid-template-columns:1fr 1fr 50px 68px 26px;gap:5px;}
     .win-row input[type=number]{height:40px;font-size:15px;}
     .sch-table{font-size:11.5px;}
@@ -781,12 +784,6 @@
         <div class="win-head"><span>窗洞长(m)</span><span>窗洞宽(m)</span><span>数量</span><span>小计(m²)</span><span></span></div>
         <div id="schWinList"></div>
         <button type="button" class="win-add" id="schWinAdd">+ 增加一扇窗户</button>
-        <div class="res-box std sch-sub-res" style="margin-top:12px">
-          <div class="tag">窗洞口总面积 A<sub>c</sub> = Σ（长 × 宽 × 数量）</div>
-          <div class="val"><span id="schAcV">—</span><span class="unit">m²</span></div>
-          <div class="raw" id="schAcRaw"></div>
-        </div>
-
         <div class="field"><label>光气候区（GB 50033 分区，决定窗地面积比限值）</label>
           <select id="schQH">
             <option value="1">Ⅰ类光气候区（窗地比 ≥0.85:5）</option>
@@ -795,12 +792,19 @@
             <option value="4" selected>Ⅳ类光气候区（窗地比 ≥1.10:5）— 长沙及湖南大部</option>
             <option value="5">Ⅴ类光气候区（窗地比 ≥1.20:5）— 张家界、怀化、湘西</option>
           </select></div>
-        <div class="field"><label>室内地面净面积 A<sub>d</sub>（m²）</label>
-          <input type="number" id="schAd" step="any" placeholder="如 54"></div>
-        <div class="res-box std">
-          <div class="tag">窗地面积比 A<sub>c</sub> : A<sub>d</sub></div>
-          <div class="val"><span id="schWDV">—</span></div>
-          <div class="raw" id="schWDRaw"></div>
+        <div class="sch-3col" style="margin-top:11px">
+          <div class="field"><label>室内地面净面积 A<sub>d</sub>（m²）</label>
+            <input type="number" id="schAd" step="any" placeholder="如 54"></div>
+          <div class="res-box std">
+            <div class="tag">窗地面积比 A<sub>c</sub> : A<sub>d</sub></div>
+            <div class="val"><span id="schWDV">—</span></div>
+            <div class="raw" id="schWDRaw"></div>
+          </div>
+          <div class="res-box std sch-sub-res">
+            <div class="tag">窗洞口总面积 A<sub>c</sub> = Σ（长 × 宽 × 数量）</div>
+            <div class="val"><span id="schAcV">—</span><span class="unit">m²</span></div>
+            <div class="raw" id="schAcRaw"></div>
+          </div>
         </div>
       </div>
 
@@ -890,80 +894,11 @@
         <div class="sch-grid-info" id="schCdList" style="margin-top:10px"></div>
       </div>
 
-<!-- ==SCH5-UI-BEGIN== -->
-      <!-- 建议布点图 -->
-      <div class="sch-block">
-        <h3>⑥ 建议布点图 <span class="sch-badge" id="bpBadge">待输入</span></h3>
-        <div class="std">布点方法严格按国标：
-          课桌面照度按 <b>GB/T 5700-2023 6.1.1 + 表 D.9</b>（矩形网格、网格中心为测点，教室课桌面最大测点间距 <b>2.0 m×2.0 m</b>，测点高度取课桌面）；
-          书写板（黑板）照度按 <b>表 D.9</b>（黑板面垂直面上布置，最大测点间距 <b>0.5 m×0.5 m</b>）；
-          采光测点按 <b>GB/T 5699-2025 附录 B.1</b>（距书写板 2.2 m 起、其后每 1 m 一条线；横向首条线距左墙为教室宽度去整数后的一半，其后每 1 m，1 m×1 m 网格中心为测点）。
-          <br>下图横向、纵向采用<b>同一比例尺</b>按实际尺寸绘制，可直接量取测点位置。</div>
-        <div class="field"><label>布点图选择</label>
-          <select id="bpSel">
-            <option value="cl">课桌面照度布点（2.0 m×2.0 m，GB/T 5700-2023 表 D.9）</option>
-            <option value="bd">书写板（黑板）照度布点（0.5 m×0.5 m，GB/T 5700-2023 表 D.9）</option>
-            <option value="dl">采光测点布点（1 m×1 m，GB/T 5699-2025 附录 B.1）</option>
-          </select></div>
-        <div class="bp-wrap" id="bpBox"></div>
-        <div class="sch-grid-info" id="bpInfo"></div>
-      </div>
-<!-- ==SCH5-UI-END== -->
-
-
-
-
-
-<!-- ==REC-UI-BEGIN== -->
-      <!-- 原始记录导出 -->
-      <div class="sch-block">
-        <h3>⑦ 原始记录导出 <span class="sch-badge" id="recBadge">未导出</span></h3>
-        <div class="std">下方信息可选填；填好后点击按钮，会将上面<b>①〜④</b>（教室人均面积、窗地面积比、课桌面与黑板面照度）的计算结果自动填入
-          <b>LDWS-JS01-013《中小学校、幼儿园教室卫生监测检测记录表（1）》</b>，并导出为 Word 文件。第<b>⑤</b>项采光系数按 GB/T 5699-2025 计算，该记录表暂未设采光系数列，建议另页留存原始数据。
-          未填写的项在表格中保持空白，可打印后手写补全；表格的字体、版式与模板完全一致。
-          照度按记录表固定列数填入：<b>课桌面 9 格、黑板 4 格</b>（超出自动压缩合并）；窗地面积比只有 <b>3 组窗</b> 格位；检测地点会同时填入四个分项。
-          建议用系统浏览器（Edge / Chrome）打开本页；若点导出后没有弹出保存窗口，用下方的"手动保存 Word"链接即可。</div>
-        <div class="sch-2col">
-          <div class="field"><label>任务编号</label>
-            <input type="text" id="recTaskNo" placeholder="选填"></div>
-          <div class="field"><label>项目名称</label>
-            <input type="text" id="recProjName" placeholder="选填"></div>
-        </div>
-        <div class="sch-2col">
-          <div class="field"><label>被测单位</label>
-            <input type="text" id="recUnit" placeholder="如 长沙市XX小学"></div>
-          <div class="field"><label>检测地点</label>
-            <input type="text" id="recPlace" placeholder="如 三年级二班教室"></div>
-        </div>
-        <div class="field"><label>单位地址</label>
-          <input type="text" id="recAddr" placeholder="选填"></div>
-        <div class="field"><label>仪器名称、型号/编号</label>
-          <input type="text" id="recInstr" placeholder="如 数字照度计 TES-1332A / LDWS-YQ-021"></div>
-        <div class="sch-2col">
-          <div class="field"><label>采样/检测人</label>
-            <input type="text" id="recOper" placeholder="选填"></div>
-          <div class="field"><label>复核人</label>
-            <input type="text" id="recChecker" placeholder="选填"></div>
-        </div>
-        <div class="sch-2col">
-          <div class="field"><label>陪同人</label>
-            <input type="text" id="recWitness" placeholder="选填"></div>
-          <div class="field"><label>检测日期</label>
-            <input type="text" id="recDate" placeholder="如 2026年9月11日"></div>
-        </div>
-        <div class="actions">
-          <button type="button" id="recExport">导出原始记录（Word）</button>
-        </div>
-        <div class="err" id="recMsg"></div>
-        <div class="sch-grid-info" id="recSave" style="display:none"></div>
-        <div class="sch-grid-info" id="recWarn"></div>
-      </div>
-<!-- ==REC-UI-END== -->
 <!-- ==DL-UI-BEGIN== -->
       <!-- 采光系数测量速查（折叠式：点击标题展开） -->
       <div class="sch-block">
         <details class="dl-fold" id="dlFold">
-          <summary class="dl-fold-h"><span class="dl-fold-t">⑧ 采光系数测量速查</span><span class="sch-badge" id="dlBadge">待输入</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
+          <summary class="dl-fold-h"><span class="dl-fold-t">⑥ 采光系数测量速查</span><span class="sch-badge" id="dlBadge">待输入</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
           <div class="dl-body">
         <div class="std">
           <b>核心关系（GB/T 5699-2025《采光测量方法》）：</b>采光系数 <b>C = E<sub>室内</sub> / E<sub>室外</sub> × 100%</b>。分子为室内该参考平面上由<b>天空漫射光</b>产生的照度；分母为<b>同一时刻</b>该天空半球在室外无遮挡水平面上产生的天空漫射光照度。
@@ -980,7 +915,7 @@
             <tr><td>S &gt; 50</td><td>2 或 4</td><td>1 ≤ d<sub>q</sub> ≤ 2</td></tr>
           </tbody>
         </table>
-        <div class="sch-grid-info">矩形网格等间距布点，测点取网格中心；非矩形场地在场地内均匀布点；走廊、通道、楼梯沿长度方向中心线按 1 m 或 2 m 布点。学校教室另按 <b>GB/T 5699-2025 附录 B.1</b> 布置（见上方⑥布点图中"采光测点布点"）。测点<b>密于标准间距不违规</b>（结果更细，仅工作量增加），但布点方式须在原始记录中说明。</div>
+        <div class="sch-grid-info">矩形网格等间距布点，测点取网格中心；非矩形场地在场地内均匀布点；走廊、通道、楼梯沿长度方向中心线按 1 m 或 2 m 布点。学校教室另按 <b>GB/T 5699-2025 附录 B.1</b> 布置（见下方⑦布点图中"采光测点布点"）。测点<b>密于标准间距不违规</b>（结果更细，仅工作量增加），但布点方式须在原始记录中说明。</div>
 
         <div class="dl-h">室外测点与测量条件</div>
         <table class="sch-table dl-table">
@@ -1038,6 +973,76 @@
         </details>
       </div>
 <!-- ==DL-UI-END== -->
+<!-- ==SCH5-UI-BEGIN== -->
+      <!-- 建议布点图 -->
+      <div class="sch-block">
+        <h3>⑦ 建议布点图 <span class="sch-badge" id="bpBadge">待输入</span></h3>
+        <div class="std">布点方法严格按国标：
+          课桌面照度按 <b>GB/T 5700-2023 6.1.1 + 表 D.9</b>（矩形网格、网格中心为测点，教室课桌面最大测点间距 <b>2.0 m×2.0 m</b>，测点高度取课桌面）；
+          书写板（黑板）照度按 <b>表 D.9</b>（黑板面垂直面上布置，最大测点间距 <b>0.5 m×0.5 m</b>）；
+          采光测点按 <b>GB/T 5699-2025 附录 B.1</b>（距书写板 2.2 m 起、其后每 1 m 一条线；横向首条线距左墙为教室宽度去整数后的一半，其后每 1 m，1 m×1 m 网格中心为测点）。
+          <br>下图横向、纵向采用<b>同一比例尺</b>按实际尺寸绘制，可直接量取测点位置。</div>
+        <div class="field"><label>布点图选择</label>
+          <select id="bpSel">
+            <option value="cl">课桌面照度布点（2.0 m×2.0 m，GB/T 5700-2023 表 D.9）</option>
+            <option value="bd">书写板（黑板）照度布点（0.5 m×0.5 m，GB/T 5700-2023 表 D.9）</option>
+            <option value="dl">采光测点布点（1 m×1 m，GB/T 5699-2025 附录 B.1）</option>
+          </select></div>
+        <div class="bp-wrap" id="bpBox"></div>
+        <div class="sch-grid-info" id="bpInfo"></div>
+      </div>
+<!-- ==SCH5-UI-END== -->
+
+
+
+
+
+<!-- ==REC-UI-BEGIN== -->
+      <!-- 原始记录导出 -->
+      <div class="sch-block">
+        <h3>⑧ 原始记录导出 <span class="sch-badge" id="recBadge">未导出</span></h3>
+        <div class="std">下方信息可选填；填好后点击按钮，会将上面<b>①〜④</b>（教室人均面积、窗地面积比、课桌面与黑板面照度）的计算结果自动填入
+          <b>LDWS-JS01-013《中小学校、幼儿园教室卫生监测检测记录表（1）》</b>，并导出为 Word 文件。第<b>⑤</b>项采光系数按 GB/T 5699-2025 计算，该记录表暂未设采光系数列，建议另页留存原始数据。
+          未填写的项在表格中保持空白，可打印后手写补全；表格的字体、版式与模板完全一致。
+          照度按记录表固定列数填入：<b>课桌面 9 格、黑板 4 格</b>（超出自动压缩合并）；窗地面积比只有 <b>3 组窗</b> 格位；检测地点会同时填入四个分项。
+          建议用系统浏览器（Edge / Chrome）打开本页；若点导出后没有弹出保存窗口，用下方的"手动保存 Word"链接即可。</div>
+        <div class="sch-2col">
+          <div class="field"><label>任务编号</label>
+            <input type="text" id="recTaskNo" placeholder="选填"></div>
+          <div class="field"><label>项目名称</label>
+            <input type="text" id="recProjName" placeholder="选填"></div>
+        </div>
+        <div class="sch-2col">
+          <div class="field"><label>被测单位</label>
+            <input type="text" id="recUnit" placeholder="如 长沙市XX小学"></div>
+          <div class="field"><label>检测地点</label>
+            <input type="text" id="recPlace" placeholder="如 三年级二班教室"></div>
+        </div>
+        <div class="field"><label>单位地址</label>
+          <input type="text" id="recAddr" placeholder="选填"></div>
+        <div class="field"><label>仪器名称、型号/编号</label>
+          <input type="text" id="recInstr" placeholder="如 数字照度计 TES-1332A / LDWS-YQ-021"></div>
+        <div class="sch-2col">
+          <div class="field"><label>采样/检测人</label>
+            <input type="text" id="recOper" placeholder="选填"></div>
+          <div class="field"><label>复核人</label>
+            <input type="text" id="recChecker" placeholder="选填"></div>
+        </div>
+        <div class="sch-2col">
+          <div class="field"><label>陪同人</label>
+            <input type="text" id="recWitness" placeholder="选填"></div>
+          <div class="field"><label>检测日期</label>
+            <input type="text" id="recDate" placeholder="如 2026年9月11日"></div>
+        </div>
+        <div class="actions">
+          <button type="button" id="recExport">导出原始记录（Word）</button>
+        </div>
+        <div class="err" id="recMsg"></div>
+        <div class="sch-grid-info" id="recSave" style="display:none"></div>
+        <div class="sch-grid-info" id="recWarn"></div>
+      </div>
+<!-- ==REC-UI-END== -->
+
       <div class="qc-box">
         <h3>卫生限值速查</h3>
         <ul>
@@ -3559,7 +3564,7 @@
       }
     }
   })();
-  /* ============ ⑧ 采光系数测量速查（GB/T 5699-2025） ============ */
+  /* ============ ⑥ 采光系数测量速查（GB/T 5699-2025） ============ */
   /* ==DL-JS-BEGIN== */
   function dlTier(S){
     if(S <= 20 + 1e-9) return {lo:0.5, hi:1, dq:0.5, range:'d = 0.5 或 1 m，距墙 0.5 ≤ dq < 1 m'};
