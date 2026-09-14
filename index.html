@@ -432,6 +432,7 @@
       <button class="sub-tab" data-sub="__pub_sampling">公共卫生检测</button>
       <button class="sub-tab" data-sub="m-sch">学校综合评价</button>
       <button class="sub-tab" data-sub="m-monit">监测布点</button>
+      <button class="sub-tab" data-sub="m-water">水质检测</button>
     </div>
 
     <!-- 采样速查 · 公共卫生检测（三级） -->
@@ -445,22 +446,7 @@
     </div>
 
     <!-- 分析速查 · 二级目录（默认隐藏） -->
-    <div class="sub-tabs" data-group="analysis" style="display:none">
-      <button class="sub-tab active" data-sub="__pub_analysis">公共卫生检测</button>
-      <button class="sub-tab" data-sub="m-water">水质检测</button>
-    </div>
-
-    <!-- 分析速查 · 公共卫生检测（三级，默认隐藏） -->
-    <div class="sub-sub-tabs" data-parent="analysis" style="display:none">
-      <button class="sub-sub-tab" data-sub="m-phys">物理因素</button>
-      <button class="sub-sub-tab" data-sub="m-chem">化学因素</button>
-      <button class="sub-sub-tab" data-sub="m-airbio">空气微生物</button>
-      <button class="sub-sub-tab" data-sub="m-ac">空调采样</button>
-      <button class="sub-sub-tab" data-sub="m-xf">新风量检测</button>
-      <button class="sub-sub-tab" data-sub="m-goods">用品用具采样</button>
-    </div>
-
-        <!-- 水质检测（分析速查） -->
+    <!-- 水质检测（采样速查） -->
     <div id="m-water" class="sub-pane">
       <h2><span class="dot"></span>水质检测</h2>
       <div class="card">
@@ -493,6 +479,22 @@
         </div>
       </div>
     </div>
+
+<div class="sub-tabs" data-group="analysis" style="display:none">
+      <button class="sub-tab active" data-sub="__pub_analysis">公共卫生检测</button>
+    </div>
+
+    <!-- 分析速查 · 公共卫生检测（三级，默认隐藏） -->
+    <div class="sub-sub-tabs" data-parent="analysis" style="display:none">
+      <button class="sub-sub-tab" data-sub="m-phys">物理因素</button>
+      <button class="sub-sub-tab" data-sub="m-chem">化学因素</button>
+      <button class="sub-sub-tab" data-sub="m-airbio">空气微生物</button>
+      <button class="sub-sub-tab" data-sub="m-ac">空调采样</button>
+      <button class="sub-sub-tab" data-sub="m-xf">新风量检测</button>
+      <button class="sub-sub-tab" data-sub="m-goods">用品用具采样</button>
+    </div>
+
+        
 
     <!-- ====== 体积换算（二级：默认） ====== -->
     <div id="m-volconv" class="sub-pane active">
