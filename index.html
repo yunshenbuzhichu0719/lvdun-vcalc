@@ -944,6 +944,30 @@
           <br>注意区分：<b>采光系数</b>（关灯、天然光、比值 %）≠ <b>课桌面照度</b>（开灯、人工照明、绝对值 lx，按 GB 7793-2025 5.3.2 ≥300 lx）。
         </div>
 
+        <div class="dl-h">布点间距与点数估算</div>
+        <div class="sch-2col">
+          <div class="field"><label>房间长度 L（m）</label><input type="number" id="dlLen" step="any" placeholder="如 9"></div>
+          <div class="field"><label>房间宽度 B（m）</label><input type="number" id="dlWid" step="any" placeholder="如 6"></div>
+        </div>
+        <div class="sch-2col" style="margin-top:10px">
+          <div class="res-box std sch-sub-res">
+            <div class="tag">房间面积 S = L × B</div>
+            <div class="val"><span id="dlAreaV">—</span><span class="unit">m²</span></div>
+            <div class="raw" id="dlAreaRaw"></div>
+          </div>
+          <div class="res-box ref">
+            <div class="tag">建议网格间距 d（m）</div>
+            <div class="val"><span id="dlSpV">—</span><span class="unit">m</span></div>
+            <div class="raw" id="dlSpRaw"></div>
+          </div>
+        </div>
+        <div class="res-box std">
+          <div class="tag">室内建议测点数（按标准间距估算）</div>
+          <div class="val"><span id="dlNv">—</span><span class="unit">个</span></div>
+          <div class="raw" id="dlNRaw"></div>
+        </div>
+        <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div>
+
         <div class="dl-h">室内测点布置（GB/T 5699-2025 测点间距）</div>
         <table class="sch-table dl-table">
           <thead><tr><th>房间面积 S（m²）</th><th>网格间距 d（m）</th><th>测点距墙 d<sub>q</sub>（m）</th><th>参考平面</th></tr></thead>
@@ -969,31 +993,6 @@
             <tr><td>结果判定</td><td>采光系数平均值、采光均匀度按 <b>GB 50033</b>；<b>采光均匀度 ≥0.5</b>（GB 7793-2025 4.3）；教室课桌面采光系数标准值：Ⅳ类光气候区 <b>≥3.30%</b>（GB 7793-2025 表 1）</td></tr>
           </tbody>
         </table>
-
-        <div class="dl-h">布点间距与点数估算</div>
-        <div class="sch-2col">
-          <div class="field"><label>房间长度 L（m）</label><input type="number" id="dlLen" step="any" placeholder="如 9"></div>
-          <div class="field"><label>房间宽度 B（m）</label><input type="number" id="dlWid" step="any" placeholder="如 6"></div>
-        </div>
-        <div class="sch-2col" style="margin-top:10px">
-          <div class="res-box std sch-sub-res">
-            <div class="tag">房间面积 S = L × B</div>
-            <div class="val"><span id="dlAreaV">—</span><span class="unit">m²</span></div>
-            <div class="raw" id="dlAreaRaw"></div>
-          </div>
-          <div class="res-box ref">
-            <div class="tag">建议网格间距 d（m）</div>
-            <div class="val"><span id="dlSpV">—</span><span class="unit">m</span></div>
-            <div class="raw" id="dlSpRaw"></div>
-          </div>
-        </div>
-        <div class="res-box std">
-          <div class="tag">室内建议测点数（按标准间距估算）</div>
-          <div class="val"><span id="dlNv">—</span><span class="unit">个</span></div>
-          <div class="raw" id="dlNRaw"></div>
-        </div>
-        <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div>
-
         <div class="dl-h">原始记录表头（可打印后手填）</div>
         <table class="sch-table dl-table dl-fill">
           <thead><tr><th>序号</th><th>测点位置/编号</th><th>室内照度 E<sub>室内</sub>（lx）</th><th>测量时刻</th><th>室外照度 E<sub>室外</sub>（lx）</th><th>采光系数 C（%）</th></tr></thead>
