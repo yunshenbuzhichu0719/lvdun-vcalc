@@ -402,8 +402,16 @@
     .s-title{font-size:15px;}
     .s-meta{font-size:12.5px;}
     .s-brief{font-size:12.5px;flex:1 1 100%;}
-    .sch-2col{grid-template-columns:1fr;}
-    .sch-3col{grid-template-columns:1fr;}
+    .sch-2col{grid-template-columns:1fr 1fr;gap:8px;}
+    .sch-3col{grid-template-columns:1fr 1fr 1fr;gap:5px;align-items:start;}
+    .sch-block .field{margin-bottom:11px;}
+    .sch-2col .field label,.sch-3col .field label{font-size:11.5px;line-height:1.25;margin-bottom:5px;}
+    .sch-2col select,.sch-3col select{width:100%;}
+    .sch-2col .res-box,.sch-3col .res-box{padding:11px 11px;margin-bottom:9px;}
+    .sch-2col .res-box .val{font-size:18px;}
+    .sch-3col .res-box .val{font-size:13.5px;}
+    .sch-2col .res-box .tag,.sch-3col .res-box .tag{font-size:11px;line-height:1.3;}
+    .sch-2col .res-box .raw,.sch-3col .res-box .raw{font-size:11px;margin-top:4px;}
     .win-head,.win-row{grid-template-columns:1fr 1fr 50px 68px 26px;gap:5px;}
     .win-row input[type=number]{height:40px;font-size:15px;}
     .sch-table{font-size:11.5px;}
