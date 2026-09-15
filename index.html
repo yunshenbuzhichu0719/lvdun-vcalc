@@ -980,7 +980,7 @@
             <tr><td>S &gt; 50</td><td>2 或 4</td><td>1 ≤ d<sub>q</sub> ≤ 2</td></tr>
           </tbody>
         </table>
-        <div class="sch-grid-info">矩形网格等间距布点，测点取网格中心；非矩形场地在场地内均匀布点；走廊、通道、楼梯沿长度方向中心线按 1 m 或 2 m 布点。学校教室另按 <b>GB/T 5699-2025 附录 B.1</b> 布置（见下方"采光测点布点示意图"）。测点<b>密于标准间距不违规</b>（结果更细，仅工作量增加），但布点方式须在原始记录中说明。</div>
+        <div class="sch-grid-info">矩形网格等间距布点，测点取网格中心；非矩形场地在场地内均匀布点；走廊、通道、楼梯沿长度方向中心线按 1 m 或 2 m 布点。学校教室另按 <b>GB/T 5699-2025 附录 B.1</b> 布置。测点<b>密于标准间距不违规</b>（结果更细，仅工作量增加），但布点方式须在原始记录中说明。</div>
 
         <div class="dl-h">室外测点与测量条件</div>
         <table class="sch-table dl-table">
@@ -996,22 +996,7 @@
             <tr><td>结果判定</td><td>采光系数平均值、采光均匀度按 <b>GB 50033</b>；<b>采光均匀度 ≥0.5</b>（GB 7793-2025 4.3）；教室课桌面采光系数标准值：Ⅳ类光气候区 <b>≥3.30%</b>（GB 7793-2025 表 1）</td></tr>
           </tbody>
         </table>
-        <div class="dl-h">原始记录表头（可打印后手填）</div>
-        <table class="sch-table dl-table dl-fill">
-          <thead><tr><th>序号</th><th>测点位置/编号</th><th>室内照度 E<sub>室内</sub>（lx）</th><th>测量时刻</th><th>室外照度 E<sub>室外</sub>（lx）</th><th>采光系数 C（%）</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>…</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>N</td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>平均</td><td>—</td><td>—</td><td>—</td><td>—</td><td>C<sub>av</sub> = ΣC<sub>i</sub> / n</td></tr>
-            <tr><td>最小</td><td>—</td><td>C<sub>min</sub> 对应点</td><td>—</td><td>—</td><td>C<sub>min</sub>（算均匀度用）</td></tr>
-          </tbody>
-        </table>
-        <div class="sch-grid-info">室外测点（1 个）<b>全程连续记录</b>，第 5 列按<b>同一时刻</b>对应填入；采光系数平均值 C<sub>av</sub> = ΣC<sub>i</sub> / n，采光均匀度 U = C<sub>min</sub> / C<sub>av</sub>。序号行数按实际测点数增减。</div>
-          <div class="dl-h">采光测点布点示意图（GB/T 5699-2025 附录 B.1，实时按上方填写的房间尺寸绘制）</div>
-<div class="bp-wrap" id="bpBoxDl"></div>
-<div class="sch-grid-info" id="bpInfoDl"></div>
+                <div class="sch-grid-info">室外测点（1 个）<b>全程连续记录</b>，第 5 列按<b>同一时刻</b>对应填入；采光系数平均值 C<sub>av</sub> = ΣC<sub>i</sub> / n，采光均匀度 U = C<sub>min</sub> / C<sub>av</sub>。序号行数按实际测点数增减。</div>
           </div><!-- /dl-body -->
         </details>
       </div>
@@ -2803,16 +2788,13 @@
     if(badge){ badge.textContent = r.n + ' 个测点'; badge.className = 'sch-badge sch-ok'; }
   }
 
-  function bpSyncCl(){ bpRender('cl', 'bpBoxCl', 'bpInfoCl', null); bpRender('dl', 'bpBoxDl', 'bpInfoDl', null); }
+  function bpSyncCl(){ bpRender('cl', 'bpBoxCl', 'bpInfoCl', null); }
   function bpSyncBd(){ bpRender('bd', 'bpBoxBd', 'bpInfoBd', null); }
-  function bpSyncDl(){ bpRender('dl', 'bpBoxDl', 'bpInfoDl', null); }
   ['schClA','schClB'].forEach(function(id){ var el = $sch(id); if(!el) return;
     el.addEventListener('input', bpSyncCl); el.addEventListener('change', bpSyncCl); });
   ['schBdL','schBdH'].forEach(function(id){ var el = $sch(id); if(!el) return;
     el.addEventListener('input', bpSyncBd); el.addEventListener('change', bpSyncBd); });
-  ['dlLen','dlWid'].forEach(function(id){ var el = $sch(id); if(!el) return;
-    el.addEventListener('input', bpSyncDl); el.addEventListener('change', bpSyncDl); });
-  bpSyncCl(); bpSyncBd(); bpSyncDl();
+  bpSyncCl(); bpSyncBd();
   /* ==SCH5-JS-END== */
 
   /* ============ 采样布点图（物理因素 / 化学因素 / 空调） ============ */
