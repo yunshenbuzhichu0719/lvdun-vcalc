@@ -908,37 +908,9 @@
       <div class="sch-block">
         <h3>⑤ 采光系数 <span class="sch-badge" id="schCdBadge">待输入</span></h3>
         <details class="dl-fold note-fold">
-          <summary class="dl-fold-h"><span class="dl-fold-t">说明（国标及限值）</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
-          <div class="dl-body"><div class="std">>GB/T 5699-2025 <b>6</b>：采光系数 C 为室内参考平面上某点由天空漫射光产生的照度与同一时刻室外无遮挡水平面上天空漫射光照度之比，按公式（2）<b>Cᵢ = Eₙ / Ew × 100%</b>（Eₙ 室内该点照度，Ew 室外漫射光照度，二者<b>同时测量</b>，6.1.3）。测点按 <b>附录 B.1</b>（距书写板 2.2 m 起、其后每 1 m 一条线；横向 1 m×1 m 网格中心为测点，参考平面取距地 0.75 m 或课桌面）。<br><b>卫生限值依据（GB 7793-2025）：</b>课桌面采光系数<b>平均值</b>按 <b>4.2 表 1</b> 分光气候区判定（采用上方②中已选光气候区）；<b>采光均匀度</b>（4.3）不应低于 <b>0.5</b>（U = C_min / C_av）。</div></div>
-        </details>
-        <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量）</label>
-          <input type="number" id="schEw" step="any" placeholder="如 8500"></div>
-        <div class="field" style="margin-top:11px"><label>室内各测点照度值 Eₙ（lx，空格或逗号分隔，对应采光测点）</label>
-          <textarea id="schCdE" rows="2" placeholder="如 320 335 310 300 345 328 360 300 315 340（空格、逗号或换行分隔，可多行输入）"></textarea></div>
-        <div class="sch-2col">
-          <div class="res-box std">
-            <div class="tag">采光系数平均值 C<sub>av</sub></div>
-            <div class="val"><span id="schCdAvg">—</span><span class="unit">%</span></div>
-            <div class="raw" id="schCdAvgRaw"></div>
-          </div>
-          <div class="res-box ref">
-            <div class="tag">采光系数最低值 C<sub>min</sub></div>
-            <div class="val"><span id="schCdMin">—</span><span class="unit">%</span></div>
-            <div class="raw" id="schCdMinRaw"></div>
-          </div>
-        </div>
-        <div class="res-box std" style="margin-top:10px">
-          <div class="tag">采光均匀度 U = C<sub>min</sub> / C<sub>av</sub></div>
-          <div class="val"><span id="schCdUni">—</span></div>
-          <div class="raw" id="schCdUniRaw"></div>
-        </div>
-        <div class="sch-grid-info" id="schCdList" style="margin-top:10px"></div>
-      </div>
-
-<!-- ==DL-UI-BEGIN== -->
-      <!-- 采光系数测量速查（折叠式：点击标题展开） -->
-      <div class="sch-block">
-        <details class="dl-fold" id="dlFold">
+          <summary class="dl-fold-h"><span class="dl-fold-t">说明（国标、限值及点位图）</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
+          <div class="dl-body"><div class="std">>GB/T 5699-2025 <b>6</b>：采光系数 C 为室内参考平面上某点由天空漫射光产生的照度与同一时刻室外无遮挡水平面上天空漫射光照度之比，按公式（2）<b>Cᵢ = Eₙ / Ew × 100%</b>（Eₙ 室内该点照度，Ew 室外漫射光照度，二者<b>同时测量</b>，6.1.3）。测点按 <b>附录 B.1</b>（距书写板 2.2 m 起、其后每 1 m 一条线；横向 1 m×1 m 网格中心为测点，参考平面取距地 0.75 m 或课桌面）。<br><b>卫生限值依据（GB 7793-2025）：</b>课桌面采光系数<b>平均值</b>按 <b>4.2 表 1</b> 分光气候区判定（采用上方②中已选光气候区）；<b>采光均匀度</b>（4.3）不应低于 <b>0.5</b>（U = C_min / C_av）。</div>
+<details class="dl-fold" id="dlFold">
           <summary class="dl-fold-h"><span class="dl-fold-t">⑥ 采光系数测量速查</span><span class="sch-badge" id="dlBadge">待输入</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
           <div class="dl-body">
         <div class="std">
@@ -999,8 +971,33 @@
                 <div class="sch-grid-info">室外测点（1 个）<b>全程连续记录</b>，第 5 列按<b>同一时刻</b>对应填入；采光系数平均值 C<sub>av</sub> = ΣC<sub>i</sub> / n，采光均匀度 U = C<sub>min</sub> / C<sub>av</sub>。序号行数按实际测点数增减。</div>
           </div><!-- /dl-body -->
         </details>
+        </div>
+      </details>
+
+        <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量）</label>
+          <input type="number" id="schEw" step="any" placeholder="如 8500"></div>
+        <div class="field" style="margin-top:11px"><label>室内各测点照度值 Eₙ（lx，空格或逗号分隔，对应采光测点）</label>
+          <textarea id="schCdE" rows="2" placeholder="如 320 335 310 300 345 328 360 300 315 340（空格、逗号或换行分隔，可多行输入）"></textarea></div>
+        <div class="sch-2col">
+          <div class="res-box std">
+            <div class="tag">采光系数平均值 C<sub>av</sub></div>
+            <div class="val"><span id="schCdAvg">—</span><span class="unit">%</span></div>
+            <div class="raw" id="schCdAvgRaw"></div>
+          </div>
+          <div class="res-box ref">
+            <div class="tag">采光系数最低值 C<sub>min</sub></div>
+            <div class="val"><span id="schCdMin">—</span><span class="unit">%</span></div>
+            <div class="raw" id="schCdMinRaw"></div>
+          </div>
+        </div>
+        <div class="res-box std" style="margin-top:10px">
+          <div class="tag">采光均匀度 U = C<sub>min</sub> / C<sub>av</sub></div>
+          <div class="val"><span id="schCdUni">—</span></div>
+          <div class="raw" id="schCdUniRaw"></div>
+        </div>
+        <div class="sch-grid-info" id="schCdList" style="margin-top:10px"></div>
       </div>
-<!-- ==DL-UI-END== -->
+
 
 
 
