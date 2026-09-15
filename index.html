@@ -170,6 +170,8 @@
   .res-box .unit{font-size:15px;font-weight:600;color:var(--sub);margin-left:5px;}
   .res-box .raw{font-size:12px;color:var(--sub);margin-top:7px;opacity:.9;}
   .res-box .val .raw-in{font-size:14px;font-weight:600;color:var(--sub);margin-left:5px;font-variant-numeric:tabular-nums;}
+  .res-box .tag .inline-res{font-size:16px;font-weight:800;color:var(--std);margin-left:3px;font-variant-numeric:tabular-nums;}
+  .res-box .tag .inline-res .raw-in{font-size:12.5px;font-weight:600;color:var(--sub);margin-left:4px;}
 
   /* 折叠触发条 */
   .toggle{
@@ -818,14 +820,12 @@
           <div class="field"><label>室内地面净面积 A<sub>d</sub>（m²）</label>
             <input type="number" id="schAd" step="any" placeholder="如 54"></div>
           <div class="res-box std">
-            <div class="tag">窗地面积比 A<sub>c</sub> : A<sub>d</sub></div>
-            <div class="val"><span id="schWDV">—</span></div>
+            <div class="tag">窗地面积比 A<sub>c</sub> : A<sub>d</sub> = <b class="inline-res" id="schWDV">—</b></div>
             <div class="raw" id="schWDRaw"></div>
           </div>
           <div class="res-box std sch-sub-res">
-            <div class="tag">窗洞口总面积 A<sub>c</sub> = Σ（长 × 宽 × 数量）</div>
+            <div class="tag">窗洞口总面积 A<sub>c</sub></div>
             <div class="val"><span id="schAcV">—</span><span class="unit">m²</span></div>
-            <div class="raw" id="schAcRaw"></div>
           </div>
         </div>
       </div>
@@ -2459,7 +2459,7 @@
     syncWinDel();
   }
   function schCalcWD(){
-    let sum = 0; const parts = [];
+    let sum = 0;
     winRows().forEach(function(row, i){
       const L = parseFloat(row.querySelector('.wL').value);
       const B = parseFloat(row.querySelector('.wW').value);
@@ -2469,13 +2469,10 @@
       if(isFinite(L) && L>0 && isFinite(B) && B>0){
         const s = L*B*N; sum += s;
         if(subEl) subEl.textContent = roundHalfEven(s,2).toFixed(2);
-        parts.push('第' + (i+1) + '扇 ' + L + '×' + B + '×' + N + ' = ' + roundHalfEven(s,2).toFixed(2) + ' m²');
       } else if(subEl){ subEl.textContent = '—'; }
     });
 
-    schSetBox('schAcV','schAcRaw', sum > 0 ? roundHalfEven(sum,2).toFixed(2) : '—',
-      parts.length ? 'A_c = ' + parts.join('；') + '，合计 ' + roundHalfEven(sum,2).toFixed(2) + ' m²'
-                   : '填写窗洞长、宽后自动计算（数量默认 1）。');
+    schSetBox('schAcV', null, sum > 0 ? roundHalfEven(sum,2).toFixed(2) : '—', '');
 
     const Ad = parseFloat($sch('schAd').value);
     if(sum > 0 && isFinite(Ad) && Ad>0){
