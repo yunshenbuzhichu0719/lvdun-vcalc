@@ -3604,44 +3604,85 @@
     if(!isFinite(L) || !isFinite(B) || L<=0 || B<=0 || !isFinite(d) || d<=0 || !isFinite(dq) || dq<0 || nx<=0 || ny<=0){
       fig.style.display='none'; fig.innerHTML=''; return;
     }
-    var W=340, H=230, mx=52, my=38;
-    var availW=W-mx*2, availH=H-my*2;
-    var scale = Math.min(availW/L, availH/B);
-    var rw = L*scale, rh = B*scale;
-    var ox = mx + (availW-rw)/2, oy = my + (availH-rh)/2;
+    var W=340, H=254, PL=78, PR=30, PT=52, PB=50;
+    var PW=W-PL-PR, PH=H-PT-PB;
+    var s = Math.min(PW/L, PH/B);
+    var rw = L*s, rh = B*s;
+    var ox = PL + (PW-rw)/2, oy = PT + (PH-rh)/2;
+    var X = function(v){ return +(ox + v*s).toFixed(1); };
+    var Y = function(v){ return +(oy + v*s).toFixed(1); };
+    var C_TXT='#103325', C_SUB='#5b7569', C_LINE='#9fb8ad', C_ACC='#13b875', C_BD='#4a5f57';
+    var F = ' font-family="Arial,Microsoft YaHei,sans-serif"';
+    /* 书写板：贴在房间左墙内侧（采光测点自其 2.2 m 起，GB/T 5699-2025 附录 B.1） */
+    var bdW = Math.max(5, Math.min(9, rw*0.09));
+    var mark = (L > 2.2 + 1e-9);
+    var out=[];
+    out.push('<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">');
+    /* 房间 */
+    out.push('<rect x="'+ox.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="#f5f7fa" stroke="'+C_TXT+'" stroke-width="2" rx="4"/>');
+    /* 书写板（左侧内墙面） */
+    out.push('<rect x="'+ox.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+bdW.toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="'+C_BD+'" rx="2"/>');
+    out.push('<text transform="rotate(-90 '+(ox+bdW/2).toFixed(1)+' '+(oy+rh/2).toFixed(1)+')" x="'+(ox+bdW/2).toFixed(1)+'" y="'+(oy+rh/2).toFixed(1)+'" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff"'+F+'>书写板</text>');
+    /* 非测点区斜线填充（进深方向 书写板 ~ 2.2 m） */
+    if(mark){
+      var x22 = X(2.2);
+      var hx0 = ox + bdW, hx1 = x22 - 1;
+      if(hx1 > hx0 + 2){
+        out.push('<rect x="'+hx0.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+(hx1-hx0).toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="#e4ece8"/>');
+        for(var hx = hx0 + 3; hx < hx1; hx += 6){
+          var hlen = Math.min(rh*0.55, 7);
+          var hy1 = oy + hlen, hxr = Math.min(hx + hlen, hx1);
+          out.push('<line x1="'+hx.toFixed(1)+'" y1="'+hy1.toFixed(1)+'" x2="'+hxr.toFixed(1)+'" y2="'+oy.toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="1"/>');
+        }
+      }
+      out.push('<line x1="'+x22.toFixed(1)+'" y1="'+oy.toFixed(1)+'" x2="'+x22.toFixed(1)+'" y2="'+(oy+rh).toFixed(1)+'" stroke="'+C_SUB+'" stroke-width="1.2" stroke-dasharray="5 3"/>');
+    }
     var xs=[], ys=[];
     for(var ix=0; ix<nx; ix++){
-      var x = dq + ix*d; if(x > L-dq) x = L-dq; xs.push(ox + x*scale);
+      var xv = dq + ix*d; if(xv > L-dq) xv = L-dq;
+      if(mark && xv < 2.2) xv = 2.2;                 /* GB/T 5699-2025 附录 B.1：距书写板 2.2 m 起 */
+      xs.push(X(xv));
     }
     for(var iy=0; iy<ny; iy++){
-      var y = dq + iy*d; if(y > B-dq) y = B-dq; ys.push(oy + y*scale);
+      var yv = dq + iy*d; if(yv > B-dq) yv = B-dq;
+      ys.push(Y(yv));
     }
-    var pts=[];
-    for(iy=0; iy<ny; iy++){
-      for(ix=0; ix<nx; ix++){
-        pts.push({x:xs[ix], y:ys[iy]});
-      }
-    }
-    var s=[];
-    s.push('<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">');
-    s.push('<rect x="'+ox.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="#f5f7fa" stroke="var(--txt)" stroke-width="2" rx="4"/>');
+    /* 网格虚线 */
     for(var gx=1; gx<xs.length-1; gx++){
-      s.push('<line x1="'+xs[gx].toFixed(1)+'" y1="'+oy.toFixed(1)+'" x2="'+xs[gx].toFixed(1)+'" y2="'+(oy+rh).toFixed(1)+'" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 3"/>');
+      out.push('<line x1="'+xs[gx].toFixed(1)+'" y1="'+oy.toFixed(1)+'" x2="'+xs[gx].toFixed(1)+'" y2="'+(oy+rh).toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="1" stroke-dasharray="4 3"/>');
     }
     for(var gy=1; gy<ys.length-1; gy++){
-      s.push('<line x1="'+ox.toFixed(1)+'" y1="'+ys[gy].toFixed(1)+'" x2="'+(ox+rw).toFixed(1)+'" y2="'+ys[gy].toFixed(1)+'" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 3"/>');
+      out.push('<line x1="'+ox.toFixed(1)+'" y1="'+ys[gy].toFixed(1)+'" x2="'+(ox+rw).toFixed(1)+'" y2="'+ys[gy].toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="1" stroke-dasharray="4 3"/>');
+    }
+    /* 测点 */
+    var pts=[];
+    for(iy=0; iy<ny; iy++){
+      for(ix=0; ix<nx; ix++){ pts.push({x:xs[ix], y:ys[iy]}); }
     }
     pts.forEach(function(p, idx){
-      s.push('<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/>');
+      out.push('<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="4.5" fill="'+C_ACC+'" stroke="#fff" stroke-width="1.5"/>');
       if(n <= 36){
-        s.push('<text x="'+(p.x+6).toFixed(1)+'" y="'+(p.y-6).toFixed(1)+'" font-size="10" fill="var(--txt)" font-family="Arial,Microsoft YaHei,sans-serif">'+(idx+1)+'</text>');
+        out.push('<text x="'+(p.x+6).toFixed(1)+'" y="'+(p.y-6).toFixed(1)+'" font-size="10" fill="'+C_TXT+'"'+F+'>'+(idx+1)+'</text>');
       }
     });
-    s.push('<text x="'+W/2+'" y="'+(H-10)+'" font-size="12" fill="var(--sub)" text-anchor="middle" font-family="Arial,Microsoft YaHei,sans-serif">房间 '+L.toFixed(2)+' m × '+B.toFixed(2)+' m</text>');
-    s.push('<text x="'+W/2+'" y="22" font-size="13" fill="var(--accent)" text-anchor="middle" font-family="Arial,Microsoft YaHei,sans-serif" font-weight="700">建议测点布点图（共 '+n+' 个）</text>');
-    s.push('</svg>');
-    s.push('<div class="grid-cap">按间距 d = '+d+' m、距墙 d<sub>q</sub> = '+dq+' m 估算；实际布点请结合房间形状并在原始记录中注明布点方式。</div>');
-    fig.innerHTML = s.join('');
+    /* 距书写板尺寸线（图题与图之间）：自书写板内侧面到首个测点 */
+    if(pts.length){
+      var x0 = ox, x1 = xs[0], yD0 = Math.max(38, oy - 14);
+      if(x1 - x0 >= 1){
+        out.push('<line x1="'+x0.toFixed(1)+'" y1="'+yD0.toFixed(1)+'" x2="'+x1.toFixed(1)+'" y2="'+yD0.toFixed(1)+'" stroke="'+C_SUB+'" stroke-width="1"/>');
+        out.push('<line x1="'+x0.toFixed(1)+'" y1="'+(yD0-4).toFixed(1)+'" x2="'+x0.toFixed(1)+'" y2="'+(yD0+4).toFixed(1)+'" stroke="'+C_SUB+'" stroke-width="1"/>');
+        out.push('<line x1="'+x1.toFixed(1)+'" y1="'+(yD0-4).toFixed(1)+'" x2="'+x1.toFixed(1)+'" y2="'+(yD0+4).toFixed(1)+'" stroke="'+C_SUB+'" stroke-width="1"/>');
+      }
+    }
+    /* 图题 */
+    out.push('<text x="'+(W/2)+'" y="20" font-size="13" font-weight="700" fill="'+C_ACC+'" text-anchor="middle"'+F+'>建议测点布点图（共 '+n+' 个）</text>');
+    /* 底边房间长度 */
+    out.push('<text x="'+(W/2)+'" y="'+(H-10)+'" font-size="12" fill="'+C_SUB+'" text-anchor="middle"'+F+'>房间 '+L.toFixed(2)+' m × '+B.toFixed(2)+' m</text>');
+    out.push('</svg>');
+    out.push('<div class="grid-cap">按间距 d = '+d+' m、距墙 d<sub>q</sub> = '+dq+' m 估算'+
+      (mark ? '；<b>首列测点距书写板 2.2 m</b>（GB/T 5699-2025 附录 B.1，图中上方尺寸线，斜线区不测）' : '')+
+      '。实际布点请结合房间形状并在原始记录中注明布点方式。</div>');
+    fig.innerHTML = out.join('');
     fig.style.display='block';
   }
   function dlCalc(){
