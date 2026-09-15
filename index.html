@@ -309,6 +309,9 @@
   .note-fold > .dl-fold-h:hover .dl-fold-t{color:var(--accent);}
   .note-fold .dl-body > .std{margin-bottom:0;}
   .note-fold .dl-body > ul{margin:0;}
+  .dl-grid-fig{margin-top:10px;text-align:center;display:none;}
+  .dl-grid-fig svg{max-width:100%;height:auto;background:#f8fbfa;border:1px solid var(--line);border-radius:10px;}
+  .dl-grid-fig .grid-cap{font-size:11.5px;color:var(--sub);margin-top:6px;line-height:1.6;}
   /* ==DL-CSS-END== */
   .sch-block{background:rgba(19,184,117,.035);border:1px solid var(--line);border-radius:12px;
     padding:14px;margin-top:14px;}
@@ -913,12 +916,6 @@
 <details class="dl-fold" id="dlFold">
           <summary class="dl-fold-h"><span class="dl-fold-t">⑥ 采光系数测量速查</span><span class="sch-badge" id="dlBadge">待输入</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
           <div class="dl-body">
-        <div class="std">
-          <b>核心关系（GB/T 5699-2025《采光测量方法》）：</b>采光系数 <b>C = E<sub>室内</sub> / E<sub>室外</sub> × 100%</b>。分子为室内该参考平面上由<b>天空漫射光</b>产生的照度；分母为<b>同一时刻</b>该天空半球在室外无遮挡水平面上产生的天空漫射光照度。
-          <br><b>室内测点按网格布点（N 个），室外只需 1 个代表测点</b>——室外测点<b>不与室内测点一一对应</b>，需要"一一对应"的是<b>测量时刻</b>：每个室内点的采光系数用该点测量时刻的室外照度计算。
-          <br>注意区分：<b>采光系数</b>（关灯、天然光、比值 %）≠ <b>课桌面照度</b>（开灯、人工照明、绝对值 lx，按 GB 7793-2025 5.3.2 ≥300 lx）。
-        </div>
-
         <div class="dl-h">布点间距与点数估算</div>
         <div class="sch-2col">
           <div class="field"><label>房间长度 L（m）</label><input type="number" id="dlLen" step="any" placeholder="如 9"></div>
@@ -941,6 +938,7 @@
           <div class="val"><span id="dlNv">—</span><span class="unit">个</span></div>
           <div class="raw" id="dlNRaw"></div>
         </div>
+        <div class="dl-grid-fig" id="dlGridFig"></div>
         <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div>
 
         <div class="dl-h">室内测点布置（GB/T 5699-2025 测点间距）</div>
@@ -3595,6 +3593,52 @@
     var ny = (B <= 2*dq + 1e-9) ? 1 : Math.max(1, Math.floor((B - 2*dq)/d + 1e-9) + 1);
     return {nx:nx, ny:ny, n:nx*ny};
   }
+  function dlRenderGrid(L, B, d, dq, nx, ny, n){
+    var fig = $sch('dlGridFig');
+    if(!fig){ return; }
+    if(!isFinite(L) || !isFinite(B) || L<=0 || B<=0 || !isFinite(d) || d<=0 || !isFinite(dq) || dq<0 || nx<=0 || ny<=0){
+      fig.style.display='none'; fig.innerHTML=''; return;
+    }
+    var W=340, H=230, mx=52, my=38;
+    var availW=W-mx*2, availH=H-my*2;
+    var scale = Math.min(availW/L, availH/B);
+    var rw = L*scale, rh = B*scale;
+    var ox = mx + (availW-rw)/2, oy = my + (availH-rh)/2;
+    var xs=[], ys=[];
+    for(var ix=0; ix<nx; ix++){
+      var x = dq + ix*d; if(x > L-dq) x = L-dq; xs.push(ox + x*scale);
+    }
+    for(var iy=0; iy<ny; iy++){
+      var y = dq + iy*d; if(y > B-dq) y = B-dq; ys.push(oy + y*scale);
+    }
+    var pts=[];
+    for(iy=0; iy<ny; iy++){
+      for(ix=0; ix<nx; ix++){
+        pts.push({x:xs[ix], y:ys[iy]});
+      }
+    }
+    var s=[];
+    s.push('<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">');
+    s.push('<rect x="'+ox.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="#f5f7fa" stroke="var(--txt)" stroke-width="2" rx="4"/>');
+    for(var gx=1; gx<xs.length-1; gx++){
+      s.push('<line x1="'+xs[gx].toFixed(1)+'" y1="'+oy.toFixed(1)+'" x2="'+xs[gx].toFixed(1)+'" y2="'+(oy+rh).toFixed(1)+'" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 3"/>');
+    }
+    for(var gy=1; gy<ys.length-1; gy++){
+      s.push('<line x1="'+ox.toFixed(1)+'" y1="'+ys[gy].toFixed(1)+'" x2="'+(ox+rw).toFixed(1)+'" y2="'+ys[gy].toFixed(1)+'" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 3"/>');
+    }
+    pts.forEach(function(p, idx){
+      s.push('<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5"/>');
+      if(n <= 36){
+        s.push('<text x="'+(p.x+6).toFixed(1)+'" y="'+(p.y-6).toFixed(1)+'" font-size="10" fill="var(--txt)" font-family="Arial,Microsoft YaHei,sans-serif">'+(idx+1)+'</text>');
+      }
+    });
+    s.push('<text x="'+W/2+'" y="'+(H-10)+'" font-size="12" fill="var(--sub)" text-anchor="middle" font-family="Arial,Microsoft YaHei,sans-serif">房间 '+L.toFixed(2)+' m × '+B.toFixed(2)+' m</text>');
+    s.push('<text x="'+W/2+'" y="22" font-size="13" fill="var(--accent)" text-anchor="middle" font-family="Arial,Microsoft YaHei,sans-serif" font-weight="700">建议测点布点图（共 '+n+' 个）</text>');
+    s.push('</svg>');
+    s.push('<div class="grid-cap">按间距 d = '+d+' m、距墙 d<sub>q</sub> = '+dq+' m 估算；实际布点请结合房间形状并在原始记录中注明布点方式。</div>');
+    fig.innerHTML = s.join('');
+    fig.style.display='block';
+  }
   function dlCalc(){
     var elL = $sch('dlLen'), elB = $sch('dlWid'), tip = $sch('dlTip');
     if(!elL || !elB) return;
@@ -3606,6 +3650,7 @@
       schSetBox('dlNv','dlNRaw','—','');
       schBadge('dlBadge','待输入','');
       if(tip) tip.textContent = '室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。';
+      var fig=$sch('dlGridFig'); if(fig){ fig.style.display='none'; fig.innerHTML=''; }
       return;
     }
     var S = L * B;
@@ -3616,6 +3661,7 @@
     schSetBox('dlSpV','dlSpRaw', t.lo + '~' + t.hi, t.range + '。');
     schSetBox('dlNv','dlNRaw', gLo.n + '~' + gHi.n,
       '间距 ' + t.hi + ' m：' + gLo.nx + '×' + gLo.ny + ' = ' + gLo.n + ' 个；间距 ' + t.lo + ' m：' + gHi.nx + '×' + gHi.ny + ' = ' + gHi.n + ' 个（均取距墙 ' + t.dq + ' m）。');
+    dlRenderGrid(L, B, t.hi, t.dq, gLo.nx, gLo.ny, gLo.n);
     schBadge('dlBadge', gLo.n === gHi.n ? (gLo.n + ' 个测点') : (gLo.n + '~' + gHi.n + ' 个测点'), 'sch-ok');
     if(tip) tip.innerHTML = '室外测点仍为 <b>1 个</b>（置于无遮挡空地或屋顶，全程连续记录），室内外<b>同时测量</b>；上方点数为按标准间距的估算，若因场地形状或加密需要增加测点，按实际布点记录并注明布点方式。';
   }
