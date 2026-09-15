@@ -22,9 +22,9 @@
     --err:#d8453b;
   }
   *{box-sizing:border-box;margin:0;padding:0;font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;}
-  html,body{height:100%;}
+  html,body{height:100%;overscroll-behavior:none;}
   body{
-    color:var(--txt);min-height:100vh;padding:28px 16px;
+    color:var(--txt);min-height:100vh;padding:28px 16px;overflow-x:hidden;
     background:
       radial-gradient(900px 520px at 10% -8%, rgba(19,184,117,.20), transparent 60%),
       radial-gradient(820px 480px at 110% 16%, rgba(46,230,200,.16), transparent 55%),
@@ -3650,5 +3650,27 @@
 </script>
 
 <!-- 构建触发标记 2026-09-13 19:42:25 -->
+<!-- 移动端：禁止左右滑动退出（边缘横向滑动不触发浏览器前进/后退），仅按系统返回键或退出才离开 -->
+<script>
+(function(){
+  if(!("ontouchstart" in window)) return;      // 仅触摸设备生效
+  var EDGE = 36;                                // 距左右边缘触发浏览器前进/后退的区域(px)
+  var sx=0, sy=0, active=false, dir=0;
+  document.addEventListener("touchstart", function(e){
+    if(e.touches.length!==1){ active=false; return; }
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY; active=true; dir=0;
+  }, {passive:true});
+  document.addEventListener("touchmove", function(e){
+    if(!active || e.touches.length!==1) return;
+    var dx=e.touches[0].clientX-sx, dy=e.touches[0].clientY-sy;
+    if(dir===0 && (Math.abs(dx)>8 || Math.abs(dy)>8)) dir = Math.abs(dx)>Math.abs(dy) ? 1 : 2;
+    // 仅拦截“从左右边缘发起的横向滑动”，避免误伤竖向滚动与表格横向滚动
+    if(dir===1 && (sx<=EDGE || sx>=(window.innerWidth-EDGE))) e.preventDefault();
+  }, {passive:false});
+  document.addEventListener("touchend", function(){ active=false; }, {passive:true});
+  document.addEventListener("touchcancel", function(){ active=false; }, {passive:true});
+})();
+</script>
+
 </body>
 </html>
