@@ -941,6 +941,29 @@
           <div class="raw" id="dlNRaw"></div>
         </div>
         <div class="dl-grid-fig" id="dlGridFig"></div>
+
+        <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量）</label>
+          <input type="number" id="schEw" step="any" placeholder="如 8500"></div>
+        <div class="field" style="margin-top:11px"><label>室内各测点照度值 Eₙ（lx，空格或逗号分隔，对应采光测点）</label>
+          <textarea id="schCdE" rows="2" placeholder="如 320 335 310 300 345 328 360 300 315 340（空格、逗号或换行分隔，可多行输入）"></textarea></div>
+        <div class="sch-2col">
+          <div class="res-box std">
+            <div class="tag">采光系数平均值 C<sub>av</sub></div>
+            <div class="val"><span id="schCdAvg">—</span><span class="unit">%</span></div>
+            <div class="raw" id="schCdAvgRaw"></div>
+          </div>
+          <div class="res-box ref">
+            <div class="tag">采光系数最低值 C<sub>min</sub></div>
+            <div class="val"><span id="schCdMin">—</span><span class="unit">%</span></div>
+            <div class="raw" id="schCdMinRaw"></div>
+          </div>
+        </div>
+        <div class="res-box std" style="margin-top:10px">
+          <div class="tag">采光均匀度 U = C<sub>min</sub> / C<sub>av</sub></div>
+          <div class="val"><span id="schCdUni">—</span></div>
+          <div class="raw" id="schCdUniRaw"></div>
+        </div>
+        <div class="sch-grid-info" id="schCdList" style="margin-top:10px"></div>
         <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div>
 
         <details class="dl-fold dl-fold-sub" style="margin-top:4px">
@@ -975,28 +998,6 @@
         </details>
 
 
-        <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量）</label>
-          <input type="number" id="schEw" step="any" placeholder="如 8500"></div>
-        <div class="field" style="margin-top:11px"><label>室内各测点照度值 Eₙ（lx，空格或逗号分隔，对应采光测点）</label>
-          <textarea id="schCdE" rows="2" placeholder="如 320 335 310 300 345 328 360 300 315 340（空格、逗号或换行分隔，可多行输入）"></textarea></div>
-        <div class="sch-2col">
-          <div class="res-box std">
-            <div class="tag">采光系数平均值 C<sub>av</sub></div>
-            <div class="val"><span id="schCdAvg">—</span><span class="unit">%</span></div>
-            <div class="raw" id="schCdAvgRaw"></div>
-          </div>
-          <div class="res-box ref">
-            <div class="tag">采光系数最低值 C<sub>min</sub></div>
-            <div class="val"><span id="schCdMin">—</span><span class="unit">%</span></div>
-            <div class="raw" id="schCdMinRaw"></div>
-          </div>
-        </div>
-        <div class="res-box std" style="margin-top:10px">
-          <div class="tag">采光均匀度 U = C<sub>min</sub> / C<sub>av</sub></div>
-          <div class="val"><span id="schCdUni">—</span></div>
-          <div class="raw" id="schCdUniRaw"></div>
-        </div>
-        <div class="sch-grid-info" id="schCdList" style="margin-top:10px"></div>
       </div>
 
 
