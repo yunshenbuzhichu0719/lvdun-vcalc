@@ -296,6 +296,8 @@
   .dl-table{min-width:640px;}
   .dl-table th:first-child,.dl-table td:first-child{white-space:normal;}
   .dl-table.dl-fill td{height:26px;}
+  .dl-fold,.dl-fold > *{display:block;}
+  .dl-fold:not([open]) > *:not(summary){display:none;}
   .dl-fold-h{font-size:14px;color:var(--txt);font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap;cursor:pointer;list-style:none;user-select:none;margin:0;}
   .dl-fold-h::-webkit-details-marker{display:none;}
   .dl-fold-h:hover .dl-fold-t{color:var(--accent);}
@@ -309,6 +311,11 @@
   .note-fold > .dl-fold-h:hover .dl-fold-t{color:var(--accent);}
   .note-fold .dl-body > .std{margin-bottom:0;}
   .note-fold .dl-body > ul{margin:0;}
+  .dl-fold-sub{margin:12px 0 0;padding:9px 0 2px 12px;border-left:3px solid rgba(19,184,117,.28);}
+  .dl-fold-sub > .dl-fold-h{font-size:12.5px;font-weight:800;color:var(--sub);gap:6px;}
+  .dl-fold-sub > .dl-fold-h:hover .dl-fold-t{color:var(--accent);}
+  .dl-fold-sub > .dl-fold-h > .dl-fold-cue{font-size:11px;padding:1px 9px;}
+  .dl-fold-sub > .dl-h:first-of-type{margin-top:12px;}
   .dl-grid-fig{margin-top:10px;text-align:center;display:none;}
   .dl-grid-fig svg{max-width:100%;height:auto;background:#f8fbfa;border:1px solid var(--line);border-radius:10px;}
   .dl-grid-fig .grid-cap{font-size:11.5px;color:var(--sub);margin-top:6px;line-height:1.6;}
@@ -936,6 +943,9 @@
         <div class="dl-grid-fig" id="dlGridFig"></div>
         <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div>
 
+        <details class="dl-fold dl-fold-sub" style="margin-top:4px">
+          <summary class="dl-fold-h"><span class="dl-fold-t">室内测点布置与室外测量条件</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
+
         <div class="dl-h">室内测点布置（GB/T 5699-2025 测点间距）</div>
         <table class="sch-table dl-table">
           <thead><tr><th>房间面积 S（m²）</th><th>网格间距 d（m）</th><th>测点距墙 d<sub>q</sub>（m）</th><th>参考平面</th></tr></thead>
@@ -961,7 +971,8 @@
             <tr><td>结果判定</td><td>采光系数平均值、采光均匀度按 <b>GB 50033</b>；<b>采光均匀度 ≥0.5</b>（GB 7793-2025 4.3）；教室课桌面采光系数标准值：Ⅳ类光气候区 <b>≥3.30%</b>（GB 7793-2025 表 1）</td></tr>
           </tbody>
         </table>
-                <div class="sch-grid-info">室外测点（1 个）<b>全程连续记录</b>，第 5 列按<b>同一时刻</b>对应填入；采光系数平均值 C<sub>av</sub> = ΣC<sub>i</sub> / n，采光均匀度 U = C<sub>min</sub> / C<sub>av</sub>。序号行数按实际测点数增减。</div>
+        <div class="sch-grid-info">室外测点（1 个）<b>全程连续记录</b>，第 5 列按<b>同一时刻</b>对应填入；采光系数平均值 C<sub>av</sub> = ΣC<sub>i</sub> / n，采光均匀度 U = C<sub>min</sub> / C<sub>av</sub>。序号行数按实际测点数增减。</div>
+        </details>
 
 
         <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量）</label>
