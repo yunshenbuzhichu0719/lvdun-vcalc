@@ -917,10 +917,12 @@
       <div class="sch-block">
         <h3>⑤ 采光系数 <span class="sch-badge" id="schCdBadge">待输入</span></h3>
 
-        <div class="dl-h">布点间距与点数估算</div>
+        <div class="dl-sub" style="border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:rgba(255,255,255,.5)">
+          <div class="dl-h" style="margin-top:2px">室内布点 · 学校教室（GB/T 5699-2025 附录 B.1）</div>
+          <p class="sub-note" style="margin:0 0 10px">学校教室固定按 <b>1 m×1 m</b> 正方形网格（6.3 e) 转附录 B.1.1）：进深自书写板 2.2 m 起、横向自首条竖线（教室宽度值去整数后的 1/2）起，测点取网格中心。</p>
         <div class="sch-2col">
-          <div class="field"><label>房间长度 L（m）</label><input type="number" id="dlLen" step="any" placeholder="如 9"></div>
-          <div class="field"><label>房间宽度 B（m）<span style="font-weight:400;color:var(--sub)">（教室宽度）</span></label><input type="number" id="dlWid" step="any" placeholder="如 6"></div>
+          <div class="field"><label>教室长度 L（m）</label><input type="number" id="dlLen" step="any" placeholder="如 9"></div>
+          <div class="field"><label>教室宽度 B（m）</label><input type="number" id="dlWid" step="any" placeholder="如 6"></div>
         </div>
         <div class="sch-2col" style="margin-top:10px">
           <div class="res-box std sch-sub-res">
@@ -947,6 +949,42 @@
         <div class="dl-grid-fig" id="dlGridFig"></div>
 
         <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div>
+        </div><!-- /⑤-A 学校教室 -->
+
+        <div class="dl-sub" style="border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:rgba(255,255,255,.5)">
+          <div class="dl-h" style="margin-top:2px">室内布点 · 其他室内（GB/T 5699-2025 表 1 面积分级）</div>
+          <p class="sub-note" style="margin:0 0 10px">非教室的一般室内场所按房间面积分档确定网格间距 d 与测点距墙距离 d<sub>q</sub>，矩形等间距布点、测点取网格中心。</p>
+          <div class="sch-2col">
+            <div class="field"><label>房间长度 L（m）</label><input type="number" id="dlLen2" step="any" placeholder="如 12"></div>
+            <div class="field"><label>房间宽度 B（m）</label><input type="number" id="dlWid2" step="any" placeholder="如 8"></div>
+          </div>
+          <div class="sch-2col" style="margin-top:10px">
+            <div class="res-box std sch-sub-res">
+              <div class="tag">房间面积 S = L × B</div>
+              <div class="val"><span id="dlAreaV2">—</span><span class="unit">m²</span></div>
+              <div class="raw" id="dlAreaRaw2"></div>
+            </div>
+            <div class="res-box ref">
+              <div class="tag">网格间距 d（m）</div>
+              <div class="val"><span id="dlSpV2">—</span><span class="unit">m</span></div>
+              <div class="raw" id="dlSpRaw2"></div>
+            </div>
+          </div>
+          <div class="sch-2col" style="margin-top:10px">
+            <div class="res-box std">
+              <div class="tag">测点距墙 d<sub>q</sub>（m）</div>
+              <div class="val"><span id="dlDqV2">—</span><span class="unit">m</span></div>
+              <div class="raw" id="dlDqRaw2"></div>
+            </div>
+            <div class="res-box ref">
+              <div class="tag">室内测点数（网格中心）</div>
+              <div class="val"><span id="dlNv2">—</span><span class="unit">个</span></div>
+              <div class="raw" id="dlNRaw2"></div>
+            </div>
+          </div>
+          <div class="dl-grid-fig" id="dlGridFig2"></div>
+          <div class="sch-grid-info" id="dlTip2"></div>
+        </div><!-- /⑤-B 其他室内 -->
 
         <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量）</label>
           <input type="number" id="schEw" step="any" placeholder="如 8500"></div>
@@ -3724,6 +3762,92 @@
     fig.innerHTML = out.join('');
     fig.style.display='block';
   }
+  /* 其他室内布点网格（GB/T 5699-2025 表 1 面积分级）：
+     距墙 dq 起、每隔 d 划一条线，到对面距墙 dq 止；划出的矩形网格为测量区域，网格中心为测点 */
+  function dlGridBounds2(L, B, d, dq){
+    var xb = (L - 2 * dq > 1e-9) ? dlAxis(dq, L - dq, d) : [dq, L - dq];
+    var yb = (B - 2 * dq > 1e-9) ? dlAxis(dq, B - dq, d) : [dq, B - dq];
+    if(xb.length < 2) xb = [dq, L - dq];
+    if(yb.length < 2) yb = [dq, B - dq];
+    return {xb:xb, yb:yb, nx:xb.length - 1, ny:yb.length - 1, n:(xb.length - 1) * (yb.length - 1), dq:dq};
+  }
+  function dlRenderGrid2(L, B, d, dq, nx, ny, n){
+    var fig = $sch('dlGridFig2');
+    if(!fig){ return; }
+    if(!isFinite(L) || !isFinite(B) || L<=0 || B<=0 || !isFinite(d) || d<=0 || !isFinite(dq) || dq<0 || nx<=0 || ny<=0){
+      fig.style.display='none'; fig.innerHTML=''; return;
+    }
+    var W=340, H=280, PL=64, PR=26, PT=58, PB=74;
+    var PW=W-PL-PR, PH=H-PT-PB;
+    var s = Math.min(PW/L, PH/B);
+    var rw = L*s, rh = B*s;
+    var ox = PL + (PW-rw)/2, oy = PT + (PH-rh)/2;
+    var X = function(v){ return +(ox + v*s).toFixed(1); };
+    var Y = function(v){ return +(oy + v*s).toFixed(1); };
+    var C_TXT='#103325', C_SUB='#5b7569', C_LINE='#9fb8ad', C_ACC='#13b875';
+    var F = ' font-family="Arial,Microsoft YaHei,sans-serif"';
+    var gb = dlGridBounds2(L, B, d, dq);
+    var xbs = gb.xb, ybs = gb.yb, gnx = gb.nx, gny = gb.ny;
+    var out=[];
+    out.push('<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">');
+    /* 房间 */
+    out.push('<rect x="'+ox.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="#f5f7fa" stroke="'+C_TXT+'" stroke-width="2" rx="4"/>');
+    /* 网格：距墙 dq 的边界线（首末）用实线，内部用虚线 */
+    var gy0 = Y(ybs[0]), gy1 = Y(ybs[ybs.length - 1]);
+    var gx0 = X(xbs[0]), gx1 = X(xbs[xbs.length - 1]);
+    for(var gi = 0; gi < xbs.length; gi++){
+      var gxv = X(xbs[gi]);
+      var edgeX = (gi === 0 || gi === xbs.length - 1);
+      out.push('<line x1="'+gxv.toFixed(1)+'" y1="'+gy0.toFixed(1)+'" x2="'+gxv.toFixed(1)+'" y2="'+gy1.toFixed(1)+
+               '" stroke="'+(edgeX ? C_TXT : C_LINE)+'" stroke-width="'+(edgeX ? 1.6 : 1)+'" stroke-dasharray="'+(edgeX ? 'none' : '5 3')+'"/>');
+    }
+    for(var gj = 0; gj < ybs.length; gj++){
+      var gyv = Y(ybs[gj]);
+      var edgeY = (gj === 0 || gj === ybs.length - 1);
+      out.push('<line x1="'+gx0.toFixed(1)+'" y1="'+gyv.toFixed(1)+'" x2="'+gx1.toFixed(1)+'" y2="'+gyv.toFixed(1)+
+               '" stroke="'+(edgeY ? C_TXT : C_LINE)+'" stroke-width="'+(edgeY ? 1.6 : 1)+'" stroke-dasharray="'+(edgeY ? 'none' : '5 3')+'"/>');
+    }
+    /* 测点：单元格中心 */
+    var pts=[];
+    for(var cj = 0; cj < gny; cj++){
+      for(var ci = 0; ci < gnx; ci++){
+        pts.push({x:X((xbs[ci] + xbs[ci+1]) / 2), y:Y((ybs[cj] + ybs[cj+1]) / 2), i:cj*gnx + ci + 1});
+      }
+    }
+    var showNum = (pts.length <= 36);
+    pts.forEach(function(p){
+      out.push('<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="4.2" fill="'+C_ACC+'" stroke="#fff" stroke-width="1.5"/>');
+      if(showNum){
+        out.push('<text x="'+(p.x+5.5).toFixed(1)+'" y="'+(p.y-5).toFixed(1)+'" font-size="9.5" fill="'+C_TXT+'"'+F+'>'+p.i+'</text>');
+      }
+    });
+    /* 距墙 dq 尺寸线（房间左侧外，竖向）：上墙(房间上边缘) -> 首条横线 */
+    var xD1 = ox - 44;
+    var yL0 = oy, yL1 = Y(dq);
+    if(yL1 - yL0 >= 0.5){
+      out.push('<line x1="'+(ox-4).toFixed(1)+'" y1="'+yL0.toFixed(1)+'" x2="'+(xD1+5).toFixed(1)+'" y2="'+yL0.toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
+      out.push('<line x1="'+(ox-4).toFixed(1)+'" y1="'+yL1.toFixed(1)+'" x2="'+(xD1+5).toFixed(1)+'" y2="'+yL1.toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
+      out.push('<line x1="'+xD1.toFixed(1)+'" y1="'+yL0.toFixed(1)+'" x2="'+xD1.toFixed(1)+'" y2="'+yL1.toFixed(1)+'" stroke="'+C_SUB+'" stroke-width="1.3"/>');
+      out.push('<line x1="'+(xD1-3.2).toFixed(1)+'" y1="'+(yL0+3.2).toFixed(1)+'" x2="'+(xD1+3.2).toFixed(1)+'" y2="'+(yL0-3.2).toFixed(1)+'" stroke="'+C_SUB+'" stroke-width="1.2"/>');
+      out.push('<line x1="'+(xD1-3.2).toFixed(1)+'" y1="'+(yL1+3.2).toFixed(1)+'" x2="'+(xD1+3.2).toFixed(1)+'" y2="'+(yL1-3.2).toFixed(1)+'" stroke="'+C_SUB+'" stroke-width="1.2"/>');
+      var yLbl = '距墙 ' + dq.toFixed(dq < 1 ? 1 : 0) + ' m';
+      var yLblW = yLbl.length * 5.6 + 6;
+      var yLblCy = (yL0 + yL1) / 2;
+      out.push('<rect x="'+(xD1-7-yLblW).toFixed(1)+'" y="'+(yLblCy-6.5).toFixed(1)+'" width="'+yLblW.toFixed(1)+'" height="13" rx="3" fill="#ffffff" opacity="0.92"/>');
+      out.push('<text x="'+(xD1-10).toFixed(1)+'" y="'+(yLblCy+3.6).toFixed(1)+'" text-anchor="end" font-size="10.5" font-weight="700" fill="'+C_SUB+'"'+F+'>'+yLbl+'</text>');
+    }
+    /* 侧墙标注 */
+    out.push('<text x="'+(ox+rw/2).toFixed(1)+'" y="'+(oy-7).toFixed(1)+'" text-anchor="middle" font-size="10" font-weight="700" fill="'+C_SUB+'"'+F+'>上墙</text>');
+    out.push('<text x="'+(ox+rw/2).toFixed(1)+'" y="'+(oy+rh+13).toFixed(1)+'" text-anchor="middle" font-size="10" font-weight="700" fill="'+C_SUB+'"'+F+'>下墙</text>');
+    /* 图题 */
+    out.push('<text x="'+(W/2)+'" y="20" font-size="13" font-weight="700" fill="'+C_ACC+'" text-anchor="middle"'+F+'>建议测点布点图（共 '+pts.length+' 个）· 其他室内</text>');
+    /* 底边房间尺寸 */
+    out.push('<text x="'+(W/2)+'" y="'+(H-8)+'" font-size="11.5" fill="'+C_SUB+'" text-anchor="middle"'+F+'>房间 '+L.toFixed(2)+' m × '+B.toFixed(2)+' m</text>');
+    out.push('</svg>');
+    out.push('<div class="grid-cap">按间距 d = '+d.toFixed(d<1?1:0)+' m、距墙 dq = '+dq.toFixed(dq<1?1:0)+' m 划分，共 <b>'+gnx+' 列 × '+gny+' 行 = '+pts.length+' 个测点</b>，测点取<b>网格中心</b>；图中实线即距墙 dq 处的网格边界。实际布点请结合房间形状并在原始记录中注明方式。</div>');
+    fig.innerHTML = out.join('');
+    fig.style.display='block';
+  }
   function dlCalc(){
     var elL = $sch('dlLen'), elB = $sch('dlWid'), tip = $sch('dlTip');
     if(!elL || !elB) return;
@@ -3758,6 +3882,39 @@
     e.addEventListener('input', dlCalc); e.addEventListener('change', dlCalc);
   });
   dlCalc();
+  function dlCalc2(){
+    var elL = $sch('dlLen2'), elB = $sch('dlWid2'), tip = $sch('dlTip2');
+    if(!elL || !elB) return;
+    var L = parseFloat(elL.value), B = parseFloat(elB.value);
+    var ok = isFinite(L) && isFinite(B) && L > 0 && B > 0;
+    if(!ok){
+      schSetBox('dlAreaV2','dlAreaRaw2','—','');
+      schSetBox('dlSpV2','dlSpRaw2','—','');
+      schSetBox('dlDqV2','dlDqRaw2','—','');
+      schSetBox('dlNv2','dlNRaw2','—','');
+      if(tip) tip.textContent = '室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。';
+      var fig = $sch('dlGridFig2'); if(fig){ fig.style.display='none'; fig.innerHTML=''; }
+      return;
+    }
+    var S = L * B;
+    var t = dlTier(S);
+    var d = t.lo, dq = t.dq;
+    var gb = dlGridBounds2(L, B, d, dq);
+    schSetBox('dlAreaV2','dlAreaRaw2', roundHalfEven(S,1).toFixed(1), '按 L = ' + trim2(L) + ' m × B = ' + trim2(B) + ' m 计算。');
+    schSetBox('dlSpV2','dlSpRaw2', d.toFixed(d < 1 ? 1 : 0),
+      '其他室内按 GB/T 5699-2025 表 1 面积分级：S = ' + roundHalfEven(S,1).toFixed(1) + ' m² → ' + t.range + '；本图取档内较小间距 d = ' + d.toFixed(d < 1 ? 1 : 0) + ' m（更密、不违规）。');
+    schSetBox('dlDqV2','dlDqRaw2', dq.toFixed(dq < 1 ? 1 : 0),
+      '测点距墙 dq：' + t.range + '。');
+    schSetBox('dlNv2','dlNRaw2', String(gb.n),
+      '网格 ' + gb.nx + ' 列 × ' + gb.ny + ' 行 = ' + gb.n + ' 个（距墙 ' + dq.toFixed(dq < 1 ? 1 : 0) + ' m 起、每隔 ' + d.toFixed(d < 1 ? 1 : 0) + ' m 布点，测点取网格中心）。');
+    dlRenderGrid2(L, B, d, dq, gb.nx, gb.ny, gb.n);
+    if(tip) tip.innerHTML = '室外测点仍为 <b>1 个</b>（置于无遮挡空地或屋顶，全程连续记录），室内外<b>同时测量</b>；上图为按表 1 档位（d = ' + d.toFixed(d < 1 ? 1 : 0) + ' m、距墙 ' + dq.toFixed(dq < 1 ? 1 : 0) + ' m）算得的布点，若因场地形状需调整，按实际布点记录并注明方式。';
+  }
+  ['dlLen2','dlWid2'].forEach(function(id){
+    var e = $sch(id); if(!e) return;
+    e.addEventListener('input', dlCalc2); e.addEventListener('change', dlCalc2);
+  });
+  dlCalc2();
   /* ==DL-JS-END== */
   /* ==REC-JS-END== */
 </script>
