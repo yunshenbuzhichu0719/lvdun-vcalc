@@ -169,6 +169,7 @@
   .res-box.ref .val{color:var(--ref);}
   .res-box .unit{font-size:15px;font-weight:600;color:var(--sub);margin-left:5px;}
   .res-box .raw{font-size:12px;color:var(--sub);margin-top:7px;opacity:.9;}
+  .res-box .raw:empty{display:none;}                 /* 无补充说明时不占位，版面更紧凑 */
   .res-box .val .raw-in{font-size:14px;font-weight:600;color:var(--sub);margin-left:5px;font-variant-numeric:tabular-nums;}
   .res-box .tag .inline-res{font-size:16px;font-weight:800;color:var(--std);margin-left:3px;font-variant-numeric:tabular-nums;}
   .res-box .tag .inline-res .raw-in{font-size:12.5px;font-weight:600;color:var(--sub);margin-left:4px;}
@@ -640,7 +641,7 @@
       <button type="button" class="ghost" id="xfAddDuct" style="width:100%;margin-top:2px;">＋ 增加一根新风管</button>
 
       <div class="res-box std" style="margin-top:16px">
-        <div class="tag">系统总新风量（风量） Σ 3600·S·V·Z</div>
+        <div class="tag">系统总新风量（风量）</div>
         <div class="val"><span id="xfQtotal">—</span><span class="unit">m³/h</span></div>
         <div class="raw" id="xfQtotalRaw"></div>
       </div>
@@ -939,14 +940,9 @@
           </div>
         </div>
         <div class="res-box std">
-          <div class="tag">室内测点数（学校教室按附录 B.1 的 1 m×1 m 网格）</div>
+          <div class="tag">室内测点数</div>
           <div class="val"><span id="dlNv">—</span><span class="unit">个</span></div>
           <div class="raw" id="dlNRaw"></div>
-        </div>
-        <div class="res-box ref">
-          <div class="tag">首条竖线距左墙（图 B.1：≤0.5 m）</div>
-          <div class="val"><span id="dlYV">—</span><span class="unit">m</span></div>
-          <div class="raw" id="dlYRaw"></div>
         </div>
         <div class="dl-grid-fig" id="dlGridFig"></div>
 
@@ -979,7 +975,7 @@
               <div class="raw" id="dlDqRaw2"></div>
             </div>
             <div class="res-box ref">
-              <div class="tag">室内测点数（网格中心）</div>
+              <div class="tag">室内测点数</div>
               <div class="val"><span id="dlNv2">—</span><span class="unit">个</span></div>
               <div class="raw" id="dlNRaw2"></div>
             </div>
@@ -2067,23 +2063,23 @@
     });
 
     document.getElementById('xfQtotal').textContent = Math.round(totalFlow).toLocaleString();
-    document.getElementById('xfQtotalRaw').textContent = 'Σ 各管新风量 Q新 = '+totalFlow.toFixed(2)+' m³/h';
+    document.getElementById('xfQtotalRaw').textContent = '';
 
     if(isFinite(P) && P > 0){
       const Q = totalFlow / P;
       document.getElementById('xfQper').textContent = roundHalfEven(Q, 1).toFixed(1);
-      document.getElementById('xfQperRaw').textContent = totalFlow.toFixed(2)+' / '+P+' = '+Q.toFixed(4);
+      document.getElementById('xfQperRaw').textContent = '';
       if(isFinite(Vroom) && Vroom > 0){
         const A = Q * P / Vroom;
         document.getElementById('xfA').textContent = roundHalfEven(A, 2).toFixed(2);
-        document.getElementById('xfARaw').textContent = '('+Q.toFixed(4)+' × '+P+') / '+Vroom;
+        document.getElementById('xfARaw').textContent = '';
       } else {
         document.getElementById('xfA').textContent = '—';
         document.getElementById('xfARaw').textContent = '未填写室内空气体积 V';
       }
     } else {
       document.getElementById('xfQper').textContent = '—';
-      document.getElementById('xfQperRaw').textContent = '请填写服务区人数 P';
+      document.getElementById('xfQperRaw').textContent = '';
       document.getElementById('xfA').textContent = '—';
       document.getElementById('xfARaw').textContent = '';
     }
@@ -2434,18 +2430,16 @@
     let S2 = NaN;
     if(isFinite(L) && L>0 && isFinite(B) && B>0){
       S2 = L * B;
-      schSetBox('schS2V','schS2Raw', roundHalfEven(S2,2).toFixed(2),
-        'S₂ = L × B = ' + L + ' × ' + B + ' = ' + S2.toFixed(4) + ' m²');
+      schSetBox('schS2V','schS2Raw', roundHalfEven(S2,2).toFixed(2), '');
     } else {
-      schSetBox('schS2V','schS2Raw','—','填写教室长度与宽度后自动计算。');
+      schSetBox('schS2V','schS2Raw','—','');
     }
 
     // 人均面积 S₁ = S₂ / a
     if(isFinite(S2) && S2>0 && isFinite(a) && a>0){
       const v = S2/a, r = roundHalfEven(v, 2);      // 限值 1.36/1.39（2 位小数）
       schVal('schAreaV', r.toFixed(2), trim2(v));
-      $sch('schAreaRaw').textContent =
-        'S₁ = S₂ / a = ' + roundHalfEven(S2,2).toFixed(2) + ' / ' + a + ' = ' + v.toFixed(4) + ' m²/人';
+      $sch('schAreaRaw').textContent = '';
       if(v >= full) schBadge('schAreaBadge', nm + ' 达标 ≥' + full + ' m²/人（GB 50099-2011）', 'sch-ok');
       else          schBadge('schAreaBadge', nm + ' 不达标 <' + full + ' m²/人（GB 50099-2011）', 'sch-bad');
     } else {
@@ -2509,11 +2503,7 @@
       // 限值为 1:5（整数）→ 主结果显示取整值，括号内为未修约值
       const dShow = denom >= 1 ? roundHalfEven(denom, 0).toFixed(0) : trim2(denom);
       schVal('schWDV', '1 : ' + dShow, denom >= 1 ? '1 : ' + trim2(denom) : '');
-      $sch('schWDRaw').textContent =
-        'A_c : A_d = ' + roundHalfEven(sum,2).toFixed(2) + ' : ' + Ad + ' = 1 : ' + denom.toFixed(3) +
-        '（即 ' + roundHalfEven(ratio,4).toFixed(4) + '；' + schQH().name + '限值 ' +
-        schQH().ratio.toFixed(2) + ':5，相当 1 : ' + schQH().denom.toFixed(2) +
-        '，即比值 ≥' + (schQH().ratio/5).toFixed(4) + '）';
+      $sch('schWDRaw').textContent = '';
       var _q = schQH(), _thr = _q.ratio/5;
       if(ratio >= _thr - 1e-9) schBadge('schWDBadge','达标 ≥' + _q.ratio.toFixed(2) + ':5（GB 7793-2025）','sch-ok');
       else                     schBadge('schWDBadge','不达标 <' + _q.ratio.toFixed(2) + ':5（GB 7793-2025）','sch-bad');
@@ -2540,11 +2530,9 @@
     const st = schStats(schNums($sch('schClE').value));
     if(st){
       schVal('schClAvg', roundHalfEven(st.avg, 0).toFixed(0), trim2(st.avg));   // 限值 300 lx（整数）
-      $sch('schClAvgRaw').textContent = 'n=' + st.n + '，算术平均 = ' + st.avg.toFixed(4) + ' lx';
+      $sch('schClAvgRaw').textContent = '';
       schVal('schClUni', roundHalfEven(st.uni, 1).toFixed(1), trim2(st.uni));   // 限值 0.7（1 位）
-      $sch('schClUniRaw').textContent =
-        'E_min / E_av = ' + roundHalfEven(st.min,1).toFixed(1) + ' / ' + roundHalfEven(st.avg,1).toFixed(1) +
-        ' = ' + st.uni.toFixed(4) + '（E_max=' + roundHalfEven(st.max,1).toFixed(1) + ' lx）';
+      $sch('schClUniRaw').textContent = '';
       const avgOk = st.avg >= 300, uniOk = st.uni >= 0.7;   // GB 7793-2025 5.3.2
       const txt = (avgOk ? 'E_av ' + roundHalfEven(st.avg,0).toFixed(0) + ' lx 达标（≥300 lx）'
                          : 'E_av ' + roundHalfEven(st.avg,0).toFixed(0) + ' lx 不达标（<300 lx）')
@@ -2575,11 +2563,9 @@
     const st = schStats(schNums($sch('schBdE').value));
     if(st){
       schVal('schBdAvg', roundHalfEven(st.avg, 0).toFixed(0), trim2(st.avg));   // 限值 500 lx（整数）
-      $sch('schBdAvgRaw').textContent = 'n=' + st.n + '，算术平均 = ' + st.avg.toFixed(4) + ' lx';
+      $sch('schBdAvgRaw').textContent = '';
       schVal('schBdUni', roundHalfEven(st.uni, 1).toFixed(1), trim2(st.uni));   // 限值 0.8（1 位）
-      $sch('schBdUniRaw').textContent =
-        'E_min / E_av = ' + roundHalfEven(st.min,1).toFixed(1) + ' / ' + roundHalfEven(st.avg,1).toFixed(1) +
-        ' = ' + st.uni.toFixed(4) + '（E_max=' + roundHalfEven(st.max,1).toFixed(1) + ' lx）';
+      $sch('schBdUniRaw').textContent = '';
       const avgOk = st.avg >= 500, uniOk = st.uni >= 0.8;   // GB 7793-2025 5.3.3
       const txt = (avgOk ? 'E_av ' + roundHalfEven(st.avg,0).toFixed(0) + ' lx 达标（≥500 lx）'
                          : 'E_av ' + roundHalfEven(st.avg,0).toFixed(0) + ' lx 不达标（<500 lx）')
@@ -2613,13 +2599,11 @@
     var qh = schQH(), std = qh.df;                                 // 采光系数平均值限值（%）
 
     schVal('schCdAvg', roundHalfEven(cav,2).toFixed(2), trim2(cav));
-    $sch('schCdAvgRaw').textContent =
-      'C_av = ΣCᵢ / n = (' + Cs.map(function(c){ return c.toFixed(2); }).join(' + ') +
-      ') / ' + Cs.length + ' = ' + cav.toFixed(4) + ' %（限值 ' + std + ' %）';
+    $sch('schCdAvgRaw').textContent = '';
     schVal('schCdMin', roundHalfEven(cmin,2).toFixed(2), trim2(cmin));
-    $sch('schCdMinRaw').textContent = 'C_min = ' + cmin.toFixed(4) + ' %';
+    $sch('schCdMinRaw').textContent = '';
     schVal('schCdUni', roundHalfEven(u,2).toFixed(2), trim2(u));
-    $sch('schCdUniRaw').textContent = 'C_min / C_av = ' + cmin.toFixed(4) + ' / ' + cav.toFixed(4) + ' = ' + u.toFixed(4);
+    $sch('schCdUniRaw').textContent = '';
 
     var avgOk = cav >= std - 1e-9, uniOk = u >= 0.5 - 1e-9;
     var txt = 'C_av ' + roundHalfEven(cav,2).toFixed(2) + '% ' + (avgOk ? '达标（≥' + std + '%）' : '不达标（<' + std + '%）')
@@ -2627,7 +2611,7 @@
     var cls = (avgOk && uniOk) ? 'sch-ok' : ((avgOk || uniOk) ? 'sch-warn' : 'sch-bad');
     schBadge('schCdBadge', txt, cls);
 
-    var parts = arr.map(function(e,i){ return '测点' + (i+1) + '：' + e + ' / ' + Ew + ' ×100% = ' + Cs[i].toFixed(2) + '%'; });
+    var parts = Cs.map(function(c,i){ return '测点' + (i+1) + '：' + c.toFixed(2) + '%'; });
     $sch('schCdList').innerHTML = '各测点采光系数 Cᵢ（共 ' + arr.length + ' 点）：<br>' + parts.join('；');
   }
 
@@ -3658,7 +3642,7 @@
     var bdW = Math.max(11, Math.min(15, rw*0.085));
     var mark = (L > 2.2 + 1e-9);
     var gb = dlGridBounds(L, B, d, dq, nx, ny);
-    var xbs = gb.xb, ybs = gb.yb, gnx = gb.nx, gny = gb.ny, y0 = gb.y0;
+    var xbs = gb.xb, ybs = gb.yb, gnx = gb.nx, gny = gb.ny;
     var out=[];
     out.push('<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">');
     /* 房间 */
@@ -3873,10 +3857,9 @@
     var L = parseFloat(elL.value), B = parseFloat(elB.value);
     var ok = isFinite(L) && isFinite(B) && L > 0 && B > 0;
     if(!ok){
-      schSetBox('dlAreaV','dlAreaRaw','—','填写房间长度与宽度后自动估算。');
+      schSetBox('dlAreaV','dlAreaRaw','—','');
       schSetBox('dlSpV','dlSpRaw','—','');
       schSetBox('dlNv','dlNRaw','—','');
-      schSetBox('dlYV','dlYRaw','—','');
       if(tip) tip.textContent = '室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。';
       var fig=$sch('dlGridFig'); if(fig){ fig.style.display='none'; fig.innerHTML=''; }
       return;
@@ -3885,16 +3868,11 @@
     var t = dlTier(S);
     var D = 1;                                   /* 学校教室：GB/T 5699-2025 6.3 e) → 附录 B.1.1，固定 1 m×1 m 网格 */
     var gb = dlGridBounds(L, B, D);
-    schSetBox('dlAreaV','dlAreaRaw', roundHalfEven(S,1).toFixed(1), '按 L = ' + trim2(L) + ' m × B = ' + trim2(B) + ' m 计算。');
-    schSetBox('dlSpV','dlSpRaw', D.toFixed(0),
-      '学校教室按 GB/T 5699-2025 6.3 e) 转附录 B.1.1，取 1 m×1 m 正方形网格；一般场地按表 1 面积分级（本房间 S = ' + roundHalfEven(S,1).toFixed(1) + ' m² → ' + t.range + '），测点密于标准间距不违规。');
-    var y0 = dlFirstY(B);
-    schSetBox('dlYV','dlYRaw', '≤0.5',
-      '首条竖线（垂直于书写板）距左墙 ≤0.5 m（GB/T 5699-2025 附录 B.1 图 B.1），本例取 ' + y0.toFixed(2) + ' m；末条竖线距右墙 <1.0 m，末条横线（平行于书写板）距后墙 ≤1.0 m。');
-    schSetBox('dlNv','dlNRaw', String(gb.n),
-      '网格 ' + gb.nx + ' 列 × ' + gb.ny + ' 行 = ' + gb.n + ' 个（进深自书写板 2.2 m 起、横向自首条竖线（距左墙 ≤0.5 m）起，每隔 1 m 划线直到不足 1 m 为止；划出的 1 m×1 m 正方形网格为测量区域，测点取网格中心）。');
+    schSetBox('dlAreaV','dlAreaRaw', roundHalfEven(S,1).toFixed(1), '');
+    schSetBox('dlSpV','dlSpRaw', D.toFixed(0), '');
+    schSetBox('dlNv','dlNRaw', String(gb.n), '');
+    if(tip) tip.innerHTML = '室外测点仍为 <b>1 个</b>（全程连续记录），室内外<b>同时测量</b>。';
     dlRenderGrid(L, B, D, t.dq, gb.nx, gb.ny, gb.n);
-    if(tip) tip.innerHTML = '室外测点仍为 <b>1 个</b>（置于无遮挡空地或屋顶，全程连续记录），室内外<b>同时测量</b>；上方测点数为按 GB/T 5699-2025 附录 B.1.1 的 1 m×1 m 网格算得的布点数，若因场地形状需调整，按实际布点记录并注明布点方式。';
   }
   ['dlLen','dlWid'].forEach(function(id){
     var e = $sch(id); if(!e) return;
@@ -3919,15 +3897,12 @@
     var t = dlTier(S);
     var d = t.lo, dq = t.dq;
     var gb = dlGridBounds2(L, B, d, dq);
-    schSetBox('dlAreaV2','dlAreaRaw2', roundHalfEven(S,1).toFixed(1), '按 L = ' + trim2(L) + ' m × B = ' + trim2(B) + ' m 计算。');
-    schSetBox('dlSpV2','dlSpRaw2', d.toFixed(d < 1 ? 1 : 0),
-      '其他室内按 GB/T 5699-2025 表 1 面积分级：S = ' + roundHalfEven(S,1).toFixed(1) + ' m² → ' + t.range + '；本图取档内较小间距 d = ' + d.toFixed(d < 1 ? 1 : 0) + ' m（更密、不违规）。');
-    schSetBox('dlDqV2','dlDqRaw2', dq.toFixed(dq < 1 ? 1 : 0),
-      '测点距墙 dq：' + t.range + '。');
-    schSetBox('dlNv2','dlNRaw2', String(gb.n),
-      '网格 ' + gb.nx + ' 列 × ' + gb.ny + ' 行 = ' + gb.n + ' 个（距墙 ' + dq.toFixed(dq < 1 ? 1 : 0) + ' m 起、每隔 ' + d.toFixed(d < 1 ? 1 : 0) + ' m 布点，测点取网格中心）。');
+    schSetBox('dlAreaV2','dlAreaRaw2', roundHalfEven(S,1).toFixed(1), '');
+    schSetBox('dlSpV2','dlSpRaw2', d.toFixed(d < 1 ? 1 : 0), '');
+    schSetBox('dlDqV2','dlDqRaw2', dq.toFixed(dq < 1 ? 1 : 0), '');
+    schSetBox('dlNv2','dlNRaw2', String(gb.n), '');
     dlRenderGrid2(L, B, d, dq, gb.nx, gb.ny, gb.n);
-    if(tip) tip.innerHTML = '室外测点仍为 <b>1 个</b>（置于无遮挡空地或屋顶，全程连续记录），室内外<b>同时测量</b>；上图为按表 1 档位（d = ' + d.toFixed(d < 1 ? 1 : 0) + ' m、距墙 ' + dq.toFixed(dq < 1 ? 1 : 0) + ' m）算得的布点，若因场地形状需调整，按实际布点记录并注明方式。';
+    if(tip) tip.innerHTML = '室外测点仍为 <b>1 个</b>（全程连续记录），室内外<b>同时测量</b>。';
   }
   ['dlLen2','dlWid2'].forEach(function(id){
     var e = $sch(id); if(!e) return;
