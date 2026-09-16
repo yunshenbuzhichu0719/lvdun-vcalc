@@ -319,7 +319,9 @@
   .dl-fold-sub > .dl-fold-h > .dl-fold-cue{font-size:11px;padding:1px 9px;}
   .dl-fold-sub > .dl-h:first-of-type{margin-top:12px;}
   .dl-grid-fig{margin-top:10px;text-align:center;display:none;}
+  /* 教室布点图：书写板在上方 → 竖向为进深，图偏「瘦高」，单独给一档限高（340×280 为 viewBox，非等比缩放） */
   .dl-grid-fig svg{max-width:100%;height:auto;background:#f8fbfa;border:1px solid var(--line);border-radius:10px;}
+  .dl-grid-fig.portrait svg{max-height:430px;}
   .dl-grid-fig .grid-cap{font-size:11.5px;color:var(--sub);margin-top:6px;line-height:1.6;}
   /* ==DL-CSS-END== */
   .sch-block{background:rgba(19,184,117,.035);border:1px solid var(--line);border-radius:12px;
@@ -944,7 +946,7 @@
           <div class="val"><span id="dlNv">—</span><span class="unit">个</span></div>
           <div class="raw" id="dlNRaw"></div>
         </div>
-        <div class="dl-grid-fig" id="dlGridFig"></div>
+        <div class="dl-grid-fig portrait" id="dlGridFig"></div>
 
         <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div>
         </div><!-- /⑤-A 学校教室 -->
@@ -3629,17 +3631,20 @@
     if(!isFinite(L) || !isFinite(B) || L<=0 || B<=0 || !isFinite(d) || d<=0 || !isFinite(dq) || dq<0 || nx<=0 || ny<=0){
       fig.style.display='none'; fig.innerHTML=''; return;
     }
-    var W=340, H=280, PL=70, PR=26, PT=58, PB=74;
+    /* 画布方向：书写板在房间上边缘 → 横轴 = 教室宽度 B，纵轴 = 进深 L（0 在书写板侧）。
+       四周留白：上 40（书写板 + 图题）、左右各 62（「左墙/右墙」+ 2.2 m 尺寸线 + 2.2 m 文字）、下 46（尺寸线 + 房间尺寸行） */
+    var W=340, H=280, PL=62, PR=62, PT=40, PB=46;
     var PW=W-PL-PR, PH=H-PT-PB;
-    var s = Math.min(PW/L, PH/B);
-    var rw = L*s, rh = B*s;
-    var ox = PL + (PW-rw)/2, oy = PT + (PH-rh)/2;
+    var s = Math.min(PW/B, PH/L);
+    var rw = B*s, rh = L*s;
+    var ox = PL + (PW-rw)/2, oy = PT + (PH-rh)/2, ob = oy + rh;
+    /* x 轴 = 教室宽度 B（0 = 左墙）；y 轴 = 进深 L（0 = 书写板内侧面所在的上边缘） */
     var X = function(v){ return +(ox + v*s).toFixed(1); };
     var Y = function(v){ return +(oy + v*s).toFixed(1); };
     var C_TXT='#103325', C_SUB='#5b7569', C_LINE='#9fb8ad', C_ACC='#13b875', C_BD='#4a5f57';
     var F = ' font-family="Arial,Microsoft YaHei,sans-serif"';
-    /* 书写板：贴在房间左墙内侧（采光测点自其 2.2 m 起，GB/T 5699-2025 附录 B.1） */
-    var bdW = Math.max(11, Math.min(15, rw*0.085));
+    /* 书写板：贴在房间上边缘内侧（采光测点自其 2.2 m 起，GB/T 5699-2025 附录 B.1） */
+    var bdH = Math.max(11, Math.min(15, rh*0.085));
     var mark = (L > 2.2 + 1e-9);
     var gb = dlGridBounds(L, B, d, dq, nx, ny);
     var xbs = gb.xb, ybs = gb.yb, gnx = gb.nx, gny = gb.ny;
@@ -3647,66 +3652,69 @@
     out.push('<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">');
     /* 房间 */
     out.push('<rect x="'+ox.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="#f5f7fa" stroke="'+C_TXT+'" stroke-width="2" rx="4"/>');
-    /* 书写板（左侧内墙面）：深色竖条 + 条带内竖排白字（字号按条宽自适应，避免压扁重叠） */
-    out.push('<rect x="'+ox.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+bdW.toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="'+C_BD+'" rx="2"/>');
-    var bdFs = Math.max(8.5, Math.min(11, bdW*0.92));
-    out.push('<text transform="rotate(-90 '+(ox+bdW/2).toFixed(1)+' '+(oy+rh/2).toFixed(1)+')" x="'+(ox+bdW/2).toFixed(1)+'" y="'+(oy+rh/2).toFixed(1)+'" text-anchor="middle" dominant-baseline="central" font-size="'+bdFs.toFixed(1)+'" font-weight="700" fill="#ffffff" letter-spacing="0.5"'+F+'>书写板</text>');
-    /* 非测点区（书写板内侧面 ~ 2.2 m 基准线）：浅底 + 45° 斜线纹理（pattern 铺满全高） */
+    /* 书写板（上侧内墙面）：深色横条 + 条带内横排白字（字号按条高自适应，避免压扁） */
+    out.push('<rect x="'+ox.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+bdH.toFixed(1)+'" fill="'+C_BD+'" rx="2"/>');
+    var bdFs = Math.max(8.5, Math.min(10.5, bdH*0.88));
+    out.push('<text x="'+(ox+rw/2).toFixed(1)+'" y="'+(oy+bdH/2).toFixed(1)+'" text-anchor="middle" dominant-baseline="central" font-size="'+bdFs.toFixed(1)+'" font-weight="700" fill="#ffffff" letter-spacing="2"'+F+'>书写板</text>');
+    /* 非测点区（书写板内侧面 ~ 2.2 m 基准线）：浅底 + 45° 斜线纹理（pattern 铺满全宽） */
     if(mark){
-      var x22 = X(2.2);
-      var hx0 = ox + bdW, hx1 = x22, hw = hx1 - hx0;
-      if(hw > 1){
+      var y22 = Y(2.2);
+      var hy0 = oy + bdH, hy1 = y22, hh = hy1 - hy0;
+      if(hh > 1){
         out.push('<defs><pattern id="dlHatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'+
                  '<line x1="0" y1="0" x2="0" y2="6" stroke="'+C_LINE+'" stroke-width="1"/></pattern></defs>');
-        out.push('<rect x="'+hx0.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+hw.toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="#e9f0ec"/>');
-        out.push('<rect x="'+hx0.toFixed(1)+'" y="'+oy.toFixed(1)+'" width="'+hw.toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="url(#dlHatch)"/>');
+        out.push('<rect x="'+ox.toFixed(1)+'" y="'+hy0.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+hh.toFixed(1)+'" fill="#e9f0ec"/>');
+        out.push('<rect x="'+ox.toFixed(1)+'" y="'+hy0.toFixed(1)+'" width="'+rw.toFixed(1)+'" height="'+hh.toFixed(1)+'" fill="url(#dlHatch)"/>');
       }
     }
     /* === 网格：以边界线划分单元格，测点落在单元格中心 ===
-       网格线只画在「测量区域」内（即首条竖线~末条竖线、首条横线~末条横线），
-       书写板~2.2 m 的斜线区、以及两端不足一格（不足 1 m）的余量区不画网格线 */
-    var gy0 = Y(ybs[0]), gy1 = Y(ybs[ybs.length - 1]);
-    var gx0 = X(xbs[0]), gx1 = X(xbs[xbs.length - 1]);
+       网格线只画在「测量区域」内（即首条横线~末条横线、首条竖线~末条竖线），
+       书写板~2.2 m 的斜线区、以及两端不足一格（不足 1 m）的余量区不画网格线。
+       测量区内部网格线用实线（原样式），边界线加重。 */
+    /* 两轴映射（旋转后，X/Y 只做「值→像素」换算）：
+       x 轴 = 教室宽度 B（0 = 左墙）              → 宽度值用 X()
+       y 轴 = 进深 L（0 = 书写板内侧面所在上边缘） → 进深值用 Y()
+       屏幕上「竖向」的网格线（垂直于书写板、距左墙 ≤0.5 m 的那组）：
+         位置 = 宽度值 → x = X(ybs[j])；纵向跨整个进深测量区 Y(xbs[0])..Y(xbs[last])
+       屏幕上「横向」的网格线（平行于书写板的那组，含 2.2 m 基准线）：
+         位置 = 进深值 → y = Y(xbs[i])；横向跨整个宽度测量区 X(ybs[0])..X(ybs[last])
+       注：xbs 为进深刻度（自 2.2 m 起，步长 1 m），ybs 为宽度刻度（自 min(0.5,B/2) 起，步长 1 m）。 */
+    var gxL = X(ybs[0]), gxR = X(ybs[ybs.length - 1]);      /* 宽度测量区左右边界 */
+    var gyT = Y(xbs[0]), gyB = Y(xbs[xbs.length - 1]);      /* 进深测量区上下边界 */
+    /* 竖向网格线（垂直于书写板）：按宽度刻度定位，纵跨进深测量区 */
+    for(var gj = 0; gj < ybs.length; gj++){
+      var gxv = X(ybs[gj]);
+      var isLastX = (gj === ybs.length - 1);
+      out.push('<line x1="'+gxv.toFixed(1)+'" y1="'+gyT.toFixed(1)+'" x2="'+gxv.toFixed(1)+'" y2="'+gyB.toFixed(1)+
+               '" stroke="'+(isLastX ? C_TXT : C_LINE)+'" stroke-width="'+(isLastX ? 1.6 : 1)+'" stroke-dasharray="none"/>');
+    }
+    /* 横向网格线（平行于书写板）：按进深刻度定位，横跨宽度测量区；首条 = 距书写板 2.2 m 基准线 */
     for(var gi = 0; gi < xbs.length; gi++){
-      var gxv = X(xbs[gi]);
-      var isBase = (mark && gi === 0);                       /* 首条线 = 距书写板 2.2 m 基准线 */
-      var isLast = (gi === xbs.length - 1);
-      var gst = isBase ? C_ACC : (isLast ? C_TXT : C_LINE);
-      var gsw = isBase ? 1.5 : (isLast ? 1.6 : 1);
-      var gda = isBase ? '6 3' : (isLast ? 'none' : '5 3');
-      out.push('<line x1="'+gxv.toFixed(1)+'" y1="'+gy0.toFixed(1)+'" x2="'+gxv.toFixed(1)+'" y2="'+gy1.toFixed(1)+
+      var gyv = Y(xbs[gi]);
+      var isBase = (mark && gi === 0);
+      var isLastY = (gi === xbs.length - 1);
+      var gst = isBase ? C_ACC : (isLastY ? C_TXT : C_LINE);
+      var gsw = isBase ? 1.5 : (isLastY ? 1.6 : 1);
+      var gda = isBase ? '6 3' : 'none';
+      out.push('<line x1="'+gxL.toFixed(1)+'" y1="'+gyv.toFixed(1)+'" x2="'+gxR.toFixed(1)+'" y2="'+gyv.toFixed(1)+
                '" stroke="'+gst+'" stroke-width="'+gsw+'" stroke-dasharray="'+gda+'"/>');
     }
-    for(var gj = 0; gj < ybs.length; gj++){
-      var gyv = Y(ybs[gj]);
-      var isLastY = (gj === ybs.length - 1);
-      out.push('<line x1="'+gx0.toFixed(1)+'" y1="'+gyv.toFixed(1)+'" x2="'+gx1.toFixed(1)+'" y2="'+gyv.toFixed(1)+
-               '" stroke="'+(isLastY ? C_TXT : C_LINE)+'" stroke-width="'+(isLastY ? 1.6 : 1)+'" stroke-dasharray="'+(isLastY ? 'none' : '5 3')+'"/>');
-    }
-    /* 0.5 m 参考虚线：按「首条竖线距左墙 ≤0.5 m」的前提，在图上标出 0.5 m 界限的实际位置
-       （GB/T 5699-2025 附录 B.1 图 B.1）。首条竖线取 min(0.5, B/2)，故不越过此线。 */
-    var yRef = 0.5;
-    if(ybs[0] <= yRef + 1e-9 && B > yRef + 1e-9){
-      var yr = Y(yRef);
-      /* 界限虚线：横贯整个房间宽度 */
-      out.push('<line x1="'+ox.toFixed(1)+'" y1="'+yr.toFixed(1)+'" x2="'+(ox+rw).toFixed(1)+'" y2="'+yr.toFixed(1)+
+    /* 0.5 m 参考虚线：按「首条竖向网格线距左墙 ≤0.5 m」的前提（GB/T 5699-2025 附录 B.1 图 B.1）。
+       左墙 = 房间左边缘，0.5 m 是「宽度」值 → 界限线为竖线，x = X(0.5)，纵贯整个进深。
+       数值不再在底边重复标注（底边已被 ≤1.0 m / <1.0 m 两条尺寸线占用，且左侧已有「≤0.5 m」文字）。 */
+    var xRef = 0.5;
+    if(ybs[0] <= xRef + 1e-9 && B > xRef + 1e-9){
+      var xr = X(xRef);
+      out.push('<line x1="'+xr.toFixed(1)+'" y1="'+oy.toFixed(1)+'" x2="'+xr.toFixed(1)+'" y2="'+ob.toFixed(1)+
                '" stroke="'+C_ACC+'" stroke-width="1.4" stroke-dasharray="7 4"/>');
-      /* 左侧外引出短线 + 「0.5 m」标注（左侧留白 PL=70 足够，不会超出左边界） */
-      out.push('<line x1="'+(ox-18).toFixed(1)+'" y1="'+yr.toFixed(1)+'" x2="'+ox.toFixed(1)+'" y2="'+yr.toFixed(1)+
-               '" stroke="'+C_ACC+'" stroke-width="1.1" stroke-dasharray="5 3" opacity="0.85"/>');
-      var rLbl = '0.5 m';
-      var rLblW = rLbl.length * 5.6 + 6;
-      var rCy = yr - 8;
-      out.push('<rect x="'+(ox-20-rLblW).toFixed(1)+'" y="'+(rCy-6.5).toFixed(1)+'" width="'+rLblW.toFixed(1)+'" height="13" rx="3" fill="#ffffff" opacity="0.92"/>');
-      out.push('<text x="'+(ox-23).toFixed(1)+'" y="'+(rCy+3.6).toFixed(1)+'" text-anchor="end" font-size="10" font-weight="700" fill="'+C_ACC+'"'+F+'>'+rLbl+'</text>');
     }
-    /* 测点：单元格中心 */
+    /* 测点：单元格中心。编号自左至右（宽度方向）、自上而下（进深方向，书写板 → 后墙） */
     var pts=[];
-    for(var cj = 0; cj < gny; cj++){
-      for(var ci = 0; ci < gnx; ci++){
-        var pcx = X((xbs[ci] + xbs[ci+1]) / 2);
-        var pcy = Y((ybs[cj] + ybs[cj+1]) / 2);
-        pts.push({x:pcx, y:pcy, i:cj*gnx + ci + 1});
+    for(var ci = 0; ci < gnx; ci++){
+      for(var cj = 0; cj < gny; cj++){
+        var pcx = X((ybs[cj] + ybs[cj+1]) / 2);      /* x 由宽度刻度决定 */
+        var pcy = Y((xbs[ci] + xbs[ci+1]) / 2);      /* y 由进深刻度决定 */
+        pts.push({x:pcx, y:pcy, i:ci*gny + cj + 1});
       }
     }
     var showNum = (pts.length <= 36);
@@ -3716,67 +3724,88 @@
         out.push('<text x="'+(p.x+5.5).toFixed(1)+'" y="'+(p.y-5).toFixed(1)+'" font-size="9.5" fill="'+C_TXT+'"'+F+'>'+p.i+'</text>');
       }
     });
-    /* 距书写板尺寸线（房间上方，图题与房间之间）：书写板内侧面 -> 首列网格线，带数值标注 */
-    var yD0 = Math.max(48, oy - 24);
-    var x0 = ox + bdW, x1 = X(2.2);
-    var dLabelW = 0;
-    if(mark && (x1 - x0) >= 1){
-      out.push('<line x1="'+x0.toFixed(1)+'" y1="'+yD0.toFixed(1)+'" x2="'+x1.toFixed(1)+'" y2="'+yD0.toFixed(1)+'" stroke="'+C_SUB+'" stroke-width="1"/>');
-      out.push('<line x1="'+x0.toFixed(1)+'" y1="'+(yD0-4).toFixed(1)+'" x2="'+x0.toFixed(1)+'" y2="'+(yD0+4).toFixed(1)+'" stroke="'+C_SUB+'" stroke-width="1"/>');
-      out.push('<line x1="'+x1.toFixed(1)+'" y1="'+(yD0-4).toFixed(1)+'" x2="'+x1.toFixed(1)+'" y2="'+(yD0+4).toFixed(1)+'" stroke="'+C_SUB+'" stroke-width="1"/>');
-      /* 数值标注：尺寸线中点上方，白底垫片防止与网格线重叠 */
+    /* 距书写板尺寸线（房间左侧外，竖向）：书写板内侧面 → 2.2 m 基准线。
+       2.2 m 是「进深」值，进深在 y 轴上 → 尺寸线为竖线，两端 y = oy+bdH 与 Y(2.2)。
+       标注文字（「2.2 m」约 34px 宽）放在尺寸线左侧、end 锚定，故尺寸线 x 至少要留出
+       「文字宽 + 间隙」的左边距；窄房间时 ox 小，需按实际余量收窄偏移量。 */
+    var dLabelW = 5 * 5.6 + 6;                       /* 「2.2 m」5 字符 */
+    var xD0 = Math.max(6 + dLabelW + 8, ox - 30);    /* 左侧不越界：文字左端 >= 6 */
+    if(xD0 > ox - 8) xD0 = ox - 8;                   /* 同时不能压进房间 */
+    var yA0 = oy + bdH, yA1 = Y(2.2);
+    if(mark && (yA1 - yA0) >= 1 && xD0 < ox - 2){
+      /* 引出线：自房间左边缘向左引出至尺寸线（x 由大到小，方向正确） */
+      out.push('<line x1="'+(xD0+5).toFixed(1)+'" y1="'+yA0.toFixed(1)+'" x2="'+ox.toFixed(1)+'" y2="'+yA0.toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
+      out.push('<line x1="'+(xD0+5).toFixed(1)+'" y1="'+yA1.toFixed(1)+'" x2="'+ox.toFixed(1)+'" y2="'+yA1.toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
+      out.push('<line x1="'+xD0.toFixed(1)+'" y1="'+yA0.toFixed(1)+'" x2="'+xD0.toFixed(1)+'" y2="'+yA1.toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.3"/>');
+      out.push('<line x1="'+(xD0-3.2).toFixed(1)+'" y1="'+(yA0+3.2).toFixed(1)+'" x2="'+(xD0+3.2).toFixed(1)+'" y2="'+(yA0-3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
+      out.push('<line x1="'+(xD0-3.2).toFixed(1)+'" y1="'+(yA1+3.2).toFixed(1)+'" x2="'+(xD0+3.2).toFixed(1)+'" y2="'+(yA1-3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
+      /* 数值标注：尺寸线中点左侧，白底垫片防止与墙体/网格重叠 */
       var dLbl = '2.2 m';
-      dLabelW = dLbl.length * 5.6 + 6;
-      var dLblCx = (x0 + x1) / 2;
-      out.push('<rect x="'+(dLblCx - dLabelW/2).toFixed(1)+'" y="'+(yD0 - 15).toFixed(1)+'" width="'+dLabelW.toFixed(1)+'" height="12" rx="3" fill="#ffffff" opacity="0.92"/>');
-      out.push('<text x="'+dLblCx.toFixed(1)+'" y="'+(yD0 - 5.5).toFixed(1)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="'+C_ACC+'"'+F+'>'+dLbl+'</text>');
+      var dLblCy = (yA0 + yA1) / 2;
+      out.push('<rect x="'+(xD0 - 7 - dLabelW).toFixed(1)+'" y="'+(dLblCy - 6.5).toFixed(1)+'" width="'+dLabelW.toFixed(1)+'" height="13" rx="3" fill="#ffffff" opacity="0.92"/>');
+      out.push('<text x="'+(xD0 - 10).toFixed(1)+'" y="'+(dLblCy + 3.6).toFixed(1)+'" text-anchor="end" font-size="10.5" font-weight="700" fill="'+C_ACC+'"'+F+'>'+dLbl+'</text>');
     }
-    /* 末条直线（垂直于书写板）距右墙尺寸线（房间下侧外，竖向）：末条线 -> 右墙，按图 B.1 标注为 <1.0 m */
-    var xD2 = ox + rw + 44;
-    var yR0 = Y(ybs[ybs.length - 1]), yR1 = oy + rh;
-    var gapR = B - ybs[ybs.length - 1];
-    if(gapR >= 0 && gapR < 1.0 + 1e-9 && yR1 - yR0 >= 0.2){
-      out.push('<line x1="'+(ox+rw+4).toFixed(1)+'" y1="'+yR0.toFixed(1)+'" x2="'+(xD2-5).toFixed(1)+'" y2="'+yR0.toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
-      out.push('<line x1="'+(ox+rw+4).toFixed(1)+'" y1="'+yR1.toFixed(1)+'" x2="'+(xD2-5).toFixed(1)+'" y2="'+yR1.toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
-      out.push('<line x1="'+xD2.toFixed(1)+'" y1="'+yR0.toFixed(1)+'" x2="'+xD2.toFixed(1)+'" y2="'+yR1.toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.3"/>');
-      out.push('<line x1="'+(xD2-3.2).toFixed(1)+'" y1="'+(yR0+3.2).toFixed(1)+'" x2="'+(xD2+3.2).toFixed(1)+'" y2="'+(yR0-3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
-      out.push('<line x1="'+(xD2-3.2).toFixed(1)+'" y1="'+(yR1+3.2).toFixed(1)+'" x2="'+(xD2+3.2).toFixed(1)+'" y2="'+(yR1-3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
-      var yRLbl = '<1.0 m';
-      var yRLblW = yRLbl.length * 5.6 + 6;
-      var yRLblCy = (yR0 + yR1) / 2;
-      out.push('<rect x="'+(xD2+7).toFixed(1)+'" y="'+(yRLblCy-6.5).toFixed(1)+'" width="'+yRLblW.toFixed(1)+'" height="13" rx="3" fill="#ffffff" opacity="0.92"/>');
-      out.push('<text x="'+(xD2+10).toFixed(1)+'" y="'+(yRLblCy+3.6).toFixed(1)+'" text-anchor="start" font-size="10.5" font-weight="700" fill="'+C_ACC+'"'+F+'>'+yRLbl+'</text>');
-    }
-    /* 末条直线（平行于书写板）距后墙尺寸线（房间下侧外，横向）：末条线 -> 后墙，按图 B.1 标注为 ≤1.0 m */
-    var yD2 = oy + rh + 38;
-    var xB0 = X(xbs[xbs.length - 1]), xB1 = ox + rw;
+    /* 末条横向网格线（平行于书写板，按进深定位）距后墙尺寸线：房间下方外的「竖向」尺寸线，
+       y 自 Y(xbs[last]) 到房间下边缘 ob，按图 B.1 标注为 ≤1.0 m。
+       挂在房间下方【偏左】位置（离左墙 1/4 宽），把中右部让给底部「<1.0 m」横向尺寸线。 */
+    var xD2 = ox + rw * 0.25;
+    var yB0 = Y(xbs[xbs.length - 1]), yB1 = ob;
     var gapB = L - xbs[xbs.length - 1];
-    if(gapB >= 0 && gapB <= 1.0 + 1e-9 && xB1 - xB0 >= 0.2){
-      out.push('<line x1="'+xB0.toFixed(1)+'" y1="'+(oy+rh+4).toFixed(1)+'" x2="'+xB0.toFixed(1)+'" y2="'+(yD2-5).toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
-      out.push('<line x1="'+xB1.toFixed(1)+'" y1="'+(oy+rh+4).toFixed(1)+'" x2="'+xB1.toFixed(1)+'" y2="'+(yD2-5).toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
-      out.push('<line x1="'+xB0.toFixed(1)+'" y1="'+yD2.toFixed(1)+'" x2="'+xB1.toFixed(1)+'" y2="'+yD2.toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.3"/>');
-      out.push('<line x1="'+(xB0+3.2).toFixed(1)+'" y1="'+(yD2-3.2).toFixed(1)+'" x2="'+(xB0-3.2).toFixed(1)+'" y2="'+(yD2+3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
-      out.push('<line x1="'+(xB1+3.2).toFixed(1)+'" y1="'+(yD2-3.2).toFixed(1)+'" x2="'+(xB1-3.2).toFixed(1)+'" y2="'+(yD2+3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
+    if(gapB >= 0 && gapB <= 1.0 + 1e-9 && yB1 - yB0 >= 0.2){
+      out.push('<line x1="'+(xD2).toFixed(1)+'" y1="'+yB0.toFixed(1)+'" x2="'+(xD2).toFixed(1)+'" y2="'+(yB1+6).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.3"/>');
+      out.push('<line x1="'+(xD2-3.2).toFixed(1)+'" y1="'+(yB0+3.2).toFixed(1)+'" x2="'+(xD2+3.2).toFixed(1)+'" y2="'+(yB0-3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
+      out.push('<line x1="'+(xD2-3.2).toFixed(1)+'" y1="'+(yB1-3.2).toFixed(1)+'" x2="'+(xD2+3.2).toFixed(1)+'" y2="'+(yB1+3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
       var xBLbl = '≤1.0 m';
-      var xBLblW = xBLbl.length * 5.6 + 6;
-      var xBLblCx = (xB0 + xB1) / 2;
-      out.push('<rect x="'+(xBLblCx - xBLblW/2).toFixed(1)+'" y="'+(yD2+2).toFixed(1)+'" width="'+xBLblW.toFixed(1)+'" height="13" rx="3" fill="#ffffff" opacity="0.92"/>');
-      out.push('<text x="'+xBLblCx.toFixed(1)+'" y="'+(yD2+12).toFixed(1)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="'+C_ACC+'"'+F+'>'+xBLbl+'</text>');
+      /* 文字贴尺寸线【左侧】、垂直居中，白底垫片防与网格重叠 */
+      var xBLblW = xBLbl.length * 5.6 + 8;
+      var xBLblCy = (yB0 + yB1) / 2;
+      out.push('<rect x="'+(xD2 - 8 - xBLblW).toFixed(1)+'" y="'+(xBLblCy - 6.5).toFixed(1)+'" width="'+xBLblW.toFixed(1)+'" height="13" rx="3" fill="#ffffff" opacity="0.92"/>');
+      out.push('<text x="'+(xD2 - 11).toFixed(1)+'" y="'+(xBLblCy + 3.6).toFixed(1)+'" text-anchor="end" font-size="10.5" font-weight="700" fill="'+C_ACC+'"'+F+'>'+xBLbl+'</text>');
     }
-    /* 侧墙标注：书写板置于左侧，故「左墙」为上边缘、「右墙」为下边缘；
-       首条竖线距左墙 ≤0.5 m 直接标在「左墙」右侧，避免左侧截断 */
-    var wallLabelX = ox + rw/2 - 28;
-    out.push('<text x="'+wallLabelX.toFixed(1)+'" y="'+(oy-7).toFixed(1)+'" text-anchor="start" font-size="10" font-weight="700" fill="'+C_SUB+'"'+F+'>左墙</text>');
-    out.push('<text x="'+(wallLabelX + 28).toFixed(1)+'" y="'+(oy-7).toFixed(1)+'" text-anchor="start" font-size="10" font-weight="700" fill="'+C_ACC+'"'+F+'>≤0.5 m</text>');
-    out.push('<text x="'+(ox+rw/2).toFixed(1)+'" y="'+(oy+rh+13).toFixed(1)+'" text-anchor="middle" font-size="10" font-weight="700" fill="'+C_SUB+'"'+F+'>右墙</text>');
+    /* 末条竖向网格线（垂直于书写板，按宽度定位）距右墙尺寸线：房间右侧外的「横向」尺寸线，
+       x 自 X(ybs[last]) 到房间右边缘 ox+rw，按图 B.1 标注为 <1.0 m。
+       位置与「≤1.0 m」同处底边一行（yD3），文字各自贴在自己的尺寸线旁，避免与底部的
+       「房间尺寸行」(y = H-6 = 274) 打架：ob 最大 234 → yD3 = 248，文字底 260，留 14px。 */
+    var yD3 = ob + 14;
+    var xR0 = X(ybs[ybs.length - 1]), xR1 = ox + rw;
+    var gapR = B - ybs[ybs.length - 1];
+    if(gapR >= 0 && gapR < 1.0 + 1e-9 && xR1 - xR0 >= 0.2){
+      out.push('<line x1="'+(xR0).toFixed(1)+'" y1="'+(ob+3).toFixed(1)+'" x2="'+(xR0).toFixed(1)+'" y2="'+(yD3-4).toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
+      out.push('<line x1="'+(xR1).toFixed(1)+'" y1="'+(ob+3).toFixed(1)+'" x2="'+(xR1).toFixed(1)+'" y2="'+(yD3-4).toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
+      out.push('<line x1="'+xR0.toFixed(1)+'" y1="'+yD3.toFixed(1)+'" x2="'+xR1.toFixed(1)+'" y2="'+yD3.toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.3"/>');
+      out.push('<line x1="'+(xR0+3.2).toFixed(1)+'" y1="'+(yD3-3.2).toFixed(1)+'" x2="'+(xR0-3.2).toFixed(1)+'" y2="'+(yD3+3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
+      out.push('<line x1="'+(xR1+3.2).toFixed(1)+'" y1="'+(yD3-3.2).toFixed(1)+'" x2="'+(xR1-3.2).toFixed(1)+'" y2="'+(yD3+3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
+      /* 「<」在 SVG 文本中必须转义为 &lt;；文字放在尺寸线【右侧】，避免压住左侧箭头与竖线 */
+      var yRLbl = '&lt;1.0 m';
+      out.push('<text x="'+(xR1+10).toFixed(1)+'" y="'+(yD3+3.6).toFixed(1)+'" text-anchor="start" font-size="10.5" font-weight="700" fill="'+C_ACC+'"'+F+'>'+yRLbl+'</text>');
+    }
+    /* 侧墙标注：书写板置于上方 → 「左墙」在左、「右墙」在右。
+       位置放在书写板条带【下方】的斜线区（浅底），避免与深色书写板条带同色不可读；
+       斜线区不足时（L 刚过 2.2 m）退回贴在书写板条带内并用白字保证对比度。 */
+    var wallLblX = ox + 10;
+    var lblInBand = (mark && (Y(2.2) - (oy + bdH)) > 15);   /* 斜线区够高 → 标在斜线区 */
+    var lblY = lblInBand ? (oy + bdH + 11) : (oy + bdH / 2 + 3.4);
+    var lblC = lblInBand ? C_SUB : '#ffffff';
+    out.push('<text x="'+wallLblX.toFixed(1)+'" y="'+lblY.toFixed(1)+'" text-anchor="start" font-size="10" font-weight="700" fill="'+lblC+'"'+F+'>左墙</text>');
+    out.push('<text x="'+(ox+rw-10).toFixed(1)+'" y="'+lblY.toFixed(1)+'" text-anchor="end" font-size="10" font-weight="700" fill="'+lblC+'"'+F+'>右墙</text>');
+    /* 「≤0.5 m」：标在「左墙」正下方一行。窄房间（如 5 m 宽）下 6 字符会越到房间中线压住测点，
+       故按可用宽度自适应缩字号（下限 9pt），确保右端不越过「房间中线 − 8px」。 */
+    var m5Txt = '≤0.5 m', m5Char = 5.6, m5Fs = 10;
+    var m5LineY = lblY + 12;
+    var m5Avail = ox + rw / 2 - 8 - wallLblX;
+    var m5W = m5Txt.length * m5Char * (m5Fs / 10);
+    if(m5W > m5Avail){ m5Fs = Math.max(9, m5Fs * m5Avail / m5W); }
+    if(m5Avail >= 30){      /* 至少能放下约 3 个字才画，否则放弃该标注（caption 已说明） */
+      out.push('<text x="'+wallLblX.toFixed(1)+'" y="'+m5LineY.toFixed(1)+'" text-anchor="start" font-size="'+m5Fs.toFixed(1)+'" font-weight="700" fill="'+C_ACC+'"'+F+'>'+m5Txt+'</text>');
+    }
     /* 图题 */
     out.push('<text x="'+(W/2)+'" y="20" font-size="13" font-weight="700" fill="'+C_ACC+'" text-anchor="middle"'+F+'>建议测点布点图（共 '+pts.length+' 个）</text>');
     /* 底边房间尺寸 */
-    out.push('<text x="'+(W/2)+'" y="'+(H-8)+'" font-size="11.5" fill="'+C_SUB+'" text-anchor="middle"'+F+'>房间 '+L.toFixed(2)+' m × '+B.toFixed(2)+' m</text>');
+    out.push('<text x="'+(W/2)+'" y="'+(H-6)+'" font-size="11.5" fill="'+C_SUB+'" text-anchor="middle"'+F+'>房间 '+B.toFixed(2)+' m（宽）× '+L.toFixed(2)+' m（进深）</text>');
     out.push('</svg>');
-    out.push('<div class="grid-cap">按间距 d = '+d+' m 划分，共 <b>'+gnx+' 列 × '+gny+' 行 = '+pts.length+' 个测点</b>，测点取<b>网格中心</b>；'+
-      '<b>进深自书写板 2.2 m 起</b>' + (mark ? '（GB/T 5699-2025 附录 B.1 图 B.1，图中上方尺寸线，斜线区不布点）' : '') + '；'+
-      '<b>首条竖线（垂直于书写板）距左墙 ≤0.5 m</b>（图中「左墙」右侧标注），末条竖线距右墙 <1.0 m，末条横线（平行于书写板）距后墙 ≤1.0 m（图中右/下侧尺寸线），其后每 ' + d + ' m 一条。'+
+    out.push('<div class="grid-cap">按间距 d = '+d+' m 划分，共 <b>'+gny+' 列（沿宽度）× '+gnx+' 行（沿进深）= '+pts.length+' 个测点</b>，测点取<b>网格中心</b>；'+
+      '<b>进深自书写板 2.2 m 起</b>' + (mark ? '（GB/T 5699-2025 附录 B.1 图 B.1，图中左侧尺寸线，斜线区不布点）' : '') + '；'+
+      '<b>首条竖向网格线（垂直于书写板）距左墙 ≤0.5 m</b>（图中「左墙」下方标注），末条竖向网格线距右墙 <1.0 m，末条横向网格线（平行于书写板）距后墙 ≤1.0 m（图中下方尺寸线），其后每 ' + d + ' m 一条。'+
       '图中<b>绿色虚线为距左墙 0.5 m 的界限位置</b>，首条竖线不越过此线。'+
       '实际布点请结合房间形状并在原始记录中注明布点方式。</div>');
     fig.innerHTML = out.join('');
