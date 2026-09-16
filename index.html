@@ -3730,25 +3730,6 @@
       out.push('<rect x="'+(dLblCx - dLabelW/2).toFixed(1)+'" y="'+(yD0 - 15).toFixed(1)+'" width="'+dLabelW.toFixed(1)+'" height="12" rx="3" fill="#ffffff" opacity="0.92"/>');
       out.push('<text x="'+dLblCx.toFixed(1)+'" y="'+(yD0 - 5.5).toFixed(1)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="'+C_ACC+'"'+F+'>'+dLbl+'</text>');
     }
-    /* 首条竖线距左墙尺寸线（房间左侧外，竖向）：左墙 -> 首条竖线，按图 B.1 标注为 ≤0.5 m
-       标签放在尺寸线右侧（靠房间内），避免超出 SVG 左边界被截断 */
-    var xD1 = ox - 44;                       /* 尺寸线所在 x */
-    var yL0 = oy, yL1 = Y(y0);
-    if(yL1 - yL0 >= 0.2){
-      /* 延长线：自房间左边缘向左引出「左墙」与「首条竖线」两条基准线 */
-      out.push('<line x1="'+(ox-4).toFixed(1)+'" y1="'+yL0.toFixed(1)+'" x2="'+(xD1+5).toFixed(1)+'" y2="'+yL0.toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
-      out.push('<line x1="'+(ox-4).toFixed(1)+'" y1="'+yL1.toFixed(1)+'" x2="'+(xD1+5).toFixed(1)+'" y2="'+yL1.toFixed(1)+'" stroke="'+C_LINE+'" stroke-width="0.8" stroke-dasharray="3 2"/>');
-      /* 尺寸线 + 端部 45° 起止符号 */
-      out.push('<line x1="'+xD1.toFixed(1)+'" y1="'+yL0.toFixed(1)+'" x2="'+xD1.toFixed(1)+'" y2="'+yL1.toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.3"/>');
-      out.push('<line x1="'+(xD1-3.2).toFixed(1)+'" y1="'+(yL0+3.2).toFixed(1)+'" x2="'+(xD1+3.2).toFixed(1)+'" y2="'+(yL0-3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
-      out.push('<line x1="'+(xD1-3.2).toFixed(1)+'" y1="'+(yL1+3.2).toFixed(1)+'" x2="'+(xD1+3.2).toFixed(1)+'" y2="'+(yL1-3.2).toFixed(1)+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
-      /* 数值：置于尺寸线右侧，白底垫片保证可读 */
-      var yLbl = '≤0.5 m';
-      var yLblW = yLbl.length * 5.6 + 6;
-      var yLblCy = (yL0 + yL1) / 2;
-      out.push('<rect x="'+(xD1+7).toFixed(1)+'" y="'+(yLblCy-6.5).toFixed(1)+'" width="'+yLblW.toFixed(1)+'" height="13" rx="3" fill="#ffffff" opacity="0.92"/>');
-      out.push('<text x="'+(xD1+10).toFixed(1)+'" y="'+(yLblCy+3.6).toFixed(1)+'" text-anchor="start" font-size="10.5" font-weight="700" fill="'+C_ACC+'"'+F+'>'+yLbl+'</text>');
-    }
     /* 末条直线（垂直于书写板）距右墙尺寸线（房间下侧外，竖向）：末条线 -> 右墙，按图 B.1 标注为 <1.0 m */
     var xD2 = ox + rw + 44;
     var yR0 = Y(ybs[ybs.length - 1]), yR1 = oy + rh;
@@ -3781,8 +3762,11 @@
       out.push('<rect x="'+(xBLblCx - xBLblW/2).toFixed(1)+'" y="'+(yD2+2).toFixed(1)+'" width="'+xBLblW.toFixed(1)+'" height="13" rx="3" fill="#ffffff" opacity="0.92"/>');
       out.push('<text x="'+xBLblCx.toFixed(1)+'" y="'+(yD2+12).toFixed(1)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="'+C_ACC+'"'+F+'>'+xBLbl+'</text>');
     }
-    /* 侧墙标注：书写板置于左侧，故「左墙」为上边缘、「右墙」为下边缘 */
-    out.push('<text x="'+(ox+rw/2).toFixed(1)+'" y="'+(oy-7).toFixed(1)+'" text-anchor="middle" font-size="10" font-weight="700" fill="'+C_SUB+'"'+F+'>左墙</text>');
+    /* 侧墙标注：书写板置于左侧，故「左墙」为上边缘、「右墙」为下边缘；
+       首条竖线距左墙 ≤0.5 m 直接标在「左墙」右侧，避免左侧截断 */
+    var wallLabelX = ox + rw/2 - 28;
+    out.push('<text x="'+wallLabelX.toFixed(1)+'" y="'+(oy-7).toFixed(1)+'" text-anchor="start" font-size="10" font-weight="700" fill="'+C_SUB+'"'+F+'>左墙</text>');
+    out.push('<text x="'+(wallLabelX + 28).toFixed(1)+'" y="'+(oy-7).toFixed(1)+'" text-anchor="start" font-size="10" font-weight="700" fill="'+C_ACC+'"'+F+'>≤0.5 m</text>');
     out.push('<text x="'+(ox+rw/2).toFixed(1)+'" y="'+(oy+rh+13).toFixed(1)+'" text-anchor="middle" font-size="10" font-weight="700" fill="'+C_SUB+'"'+F+'>右墙</text>');
     /* 图题 */
     out.push('<text x="'+(W/2)+'" y="20" font-size="13" font-weight="700" fill="'+C_ACC+'" text-anchor="middle"'+F+'>建议测点布点图（共 '+pts.length+' 个）</text>');
@@ -3791,7 +3775,7 @@
     out.push('</svg>');
     out.push('<div class="grid-cap">按间距 d = '+d+' m 划分，共 <b>'+gnx+' 列 × '+gny+' 行 = '+pts.length+' 个测点</b>，测点取<b>网格中心</b>；'+
       '<b>进深自书写板 2.2 m 起</b>' + (mark ? '（GB/T 5699-2025 附录 B.1 图 B.1，图中上方尺寸线，斜线区不布点）' : '') + '；'+
-      '<b>首条竖线（垂直于书写板）距左墙 ≤0.5 m</b>，末条竖线距右墙 <1.0 m，末条横线（平行于书写板）距后墙 ≤1.0 m（图中对应左/右/下侧尺寸线），其后每 ' + d + ' m 一条。'+
+      '<b>首条竖线（垂直于书写板）距左墙 ≤0.5 m</b>（图中「左墙」右侧标注），末条竖线距右墙 <1.0 m，末条横线（平行于书写板）距后墙 ≤1.0 m（图中右/下侧尺寸线），其后每 ' + d + ' m 一条。'+
       '实际布点请结合房间形状并在原始记录中注明布点方式。</div>');
     fig.innerHTML = out.join('');
     fig.style.display='block';
