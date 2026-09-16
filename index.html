@@ -3683,6 +3683,23 @@
       out.push('<line x1="'+gx0.toFixed(1)+'" y1="'+gyv.toFixed(1)+'" x2="'+gx1.toFixed(1)+'" y2="'+gyv.toFixed(1)+
                '" stroke="'+(isLastY ? C_TXT : C_LINE)+'" stroke-width="'+(isLastY ? 1.6 : 1)+'" stroke-dasharray="'+(isLastY ? 'none' : '5 3')+'"/>');
     }
+    /* 0.5 m 参考虚线：按「首条竖线距左墙 ≤0.5 m」的前提，在图上标出 0.5 m 界限的实际位置
+       （GB/T 5699-2025 附录 B.1 图 B.1）。首条竖线取 min(0.5, B/2)，故不越过此线。 */
+    var yRef = 0.5;
+    if(ybs[0] <= yRef + 1e-9 && B > yRef + 1e-9){
+      var yr = Y(yRef);
+      /* 界限虚线：横贯整个房间宽度 */
+      out.push('<line x1="'+ox.toFixed(1)+'" y1="'+yr.toFixed(1)+'" x2="'+(ox+rw).toFixed(1)+'" y2="'+yr.toFixed(1)+
+               '" stroke="'+C_ACC+'" stroke-width="1.4" stroke-dasharray="7 4"/>');
+      /* 左侧外引出短线 + 「0.5 m」标注（左侧留白 PL=70 足够，不会超出左边界） */
+      out.push('<line x1="'+(ox-18).toFixed(1)+'" y1="'+yr.toFixed(1)+'" x2="'+ox.toFixed(1)+'" y2="'+yr.toFixed(1)+
+               '" stroke="'+C_ACC+'" stroke-width="1.1" stroke-dasharray="5 3" opacity="0.85"/>');
+      var rLbl = '0.5 m';
+      var rLblW = rLbl.length * 5.6 + 6;
+      var rCy = yr - 8;
+      out.push('<rect x="'+(ox-20-rLblW).toFixed(1)+'" y="'+(rCy-6.5).toFixed(1)+'" width="'+rLblW.toFixed(1)+'" height="13" rx="3" fill="#ffffff" opacity="0.92"/>');
+      out.push('<text x="'+(ox-23).toFixed(1)+'" y="'+(rCy+3.6).toFixed(1)+'" text-anchor="end" font-size="10" font-weight="700" fill="'+C_ACC+'"'+F+'>'+rLbl+'</text>');
+    }
     /* 测点：单元格中心 */
     var pts=[];
     for(var cj = 0; cj < gny; cj++){
@@ -3760,6 +3777,7 @@
     out.push('<div class="grid-cap">按间距 d = '+d+' m 划分，共 <b>'+gnx+' 列 × '+gny+' 行 = '+pts.length+' 个测点</b>，测点取<b>网格中心</b>；'+
       '<b>进深自书写板 2.2 m 起</b>' + (mark ? '（GB/T 5699-2025 附录 B.1 图 B.1，图中上方尺寸线，斜线区不布点）' : '') + '；'+
       '<b>首条竖线（垂直于书写板）距左墙 ≤0.5 m</b>（图中「左墙」右侧标注），末条竖线距右墙 <1.0 m，末条横线（平行于书写板）距后墙 ≤1.0 m（图中右/下侧尺寸线），其后每 ' + d + ' m 一条。'+
+      '图中<b>绿色虚线为距左墙 0.5 m 的界限位置</b>，首条竖线不越过此线。'+
       '实际布点请结合房间形状并在原始记录中注明布点方式。</div>');
     fig.innerHTML = out.join('');
     fig.style.display='block';
