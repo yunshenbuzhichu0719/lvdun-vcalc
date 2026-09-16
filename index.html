@@ -313,6 +313,9 @@
   .note-fold > .dl-fold-h:hover .dl-fold-t{color:var(--accent);}
   .note-fold .dl-body > .std{margin-bottom:0;}
   .note-fold .dl-body > ul{margin:0;}
+  /* 折叠体内若包着 .sch-grid-info（整块提示条），去掉其自身顶距，避免与折叠头叠加空行 */
+  .note-fold .dl-body > .sch-grid-info{margin-top:0;}
+  .note-fold .dl-body > .sch-grid-info:only-child{margin-bottom:0;}
   .dl-fold-sub{margin:12px 0 0;padding:9px 0 2px 12px;border-left:3px solid rgba(19,184,117,.28);}
   .dl-fold-sub > .dl-fold-h{font-size:12.5px;font-weight:800;color:var(--sub);gap:6px;}
   .dl-fold-sub > .dl-fold-h:hover .dl-fold-t{color:var(--accent);}
@@ -924,7 +927,10 @@
 
         <div class="dl-sub" style="border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:rgba(255,255,255,.5)">
           <div class="dl-h" style="margin-top:2px">室内布点 · 学校教室（GB/T 5699-2025 附录 B.1）</div>
-          <p class="sub-note" style="margin:0 0 10px">学校教室固定按 <b>1 m×1 m</b> 正方形网格（GB/T 5699-2025 6.3 e) 转附录 B.1.1 / 图 B.1）：<b>进深自书写板内侧面 2.2 m</b> 起画首条基准线、此后每隔 1 m 一条，直到不足 1 m 为止；<b>首条竖线距左墙面 = 教室宽度值去整数后的 1/2</b>、此后每隔 1 m 一条，直到不足 1 m 为止；划出的正方形网格中心即为测点。</p>
+          <details class="dl-fold note-fold" style="margin:2px 0 10px">
+            <summary class="dl-fold-h"><span class="dl-fold-t">布点规则说明（GB/T 5699-2025 附录 B.1.1 图 B.1）</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
+            <div class="dl-body"><p class="sub-note" style="margin:0">学校教室固定按 <b>1 m×1 m</b> 正方形网格（GB/T 5699-2025 6.3 e) 转附录 B.1.1 / 图 B.1）：<b>进深自书写板内侧面 2.2 m</b> 起画首条基准线、此后每隔 1 m 一条，直到不足 1 m 为止；<b>首条竖线距左墙面 = 教室宽度值去整数后的 1/2</b>、此后每隔 1 m 一条，直到不足 1 m 为止；划出的正方形网格中心即为测点。</p></div>
+          </details>
         <div class="sch-2col">
           <div class="field"><label>教室长度 L（m）</label><input type="number" id="dlLen" step="any" placeholder="如 9"></div>
           <div class="field"><label>教室宽度 B（m）</label><input type="number" id="dlWid" step="any" placeholder="如 6"></div>
@@ -948,12 +954,17 @@
         </div>
         <div class="dl-grid-fig portrait" id="dlGridFig"></div>
 
-        <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div>
+        <details class="dl-fold note-fold" style="margin-top:10px">
+          <summary class="dl-fold-h"><span class="dl-fold-t">室外测点说明</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
+          <div class="dl-body"><div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div></div>
+        </details>
         </div><!-- /⑤-A 学校教室 -->
-
         <div class="dl-sub" style="border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:rgba(255,255,255,.5)">
           <div class="dl-h" style="margin-top:2px">室内布点 · 其他室内（GB/T 5699-2025 表 1 面积分级）</div>
-          <p class="sub-note" style="margin:0 0 10px">非教室的一般室内场所按房间面积分档确定网格间距 d 与测点距墙距离 d<sub>q</sub>，矩形等间距布点、测点取网格中心。</p>
+          <details class="dl-fold note-fold" style="margin:2px 0 10px">
+            <summary class="dl-fold-h"><span class="dl-fold-t">布点规则说明（GB/T 5699-2025 表 1 面积分级）</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
+            <div class="dl-body"><p class="sub-note" style="margin:0">非教室的一般室内场所按房间面积分档确定网格间距 d 与测点距墙距离 d<sub>q</sub>，矩形等间距布点、测点取网格中心。</p></div>
+          </details>
           <div class="sch-2col">
             <div class="field"><label>房间长度 L（m）</label><input type="number" id="dlLen2" step="any" placeholder="如 12"></div>
             <div class="field"><label>房间宽度 B（m）</label><input type="number" id="dlWid2" step="any" placeholder="如 8"></div>
@@ -983,7 +994,10 @@
             </div>
           </div>
           <div class="dl-grid-fig" id="dlGridFig2"></div>
-          <div class="sch-grid-info" id="dlTip2"></div>
+          <details class="dl-fold note-fold" style="margin-top:10px">
+            <summary class="dl-fold-h"><span class="dl-fold-t">室外测点说明</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
+            <div class="dl-body"><div class="sch-grid-info" id="dlTip2"></div></div>
+          </details>
         </div><!-- /⑤-B 其他室内 -->
 
         <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量）</label>
