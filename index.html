@@ -448,6 +448,23 @@
 .radio-row input[type=radio]{margin:0}
 .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px}
 @media(max-width:480px){.grid2{grid-template-columns:1fr}}
+
+  /* ===== 分析速查 / 安全 模块 ===== */
+  .verdict{display:inline-block;margin-top:8px;font-size:13px;font-weight:700;padding:4px 12px;border-radius:20px;}
+  .verdict.ok{color:#0b8f5c;background:rgba(19,184,117,.13);border:1px solid rgba(19,184,117,.35);}
+  .verdict.bad{color:#b8302a;background:rgba(192,57,43,.10);border:1px solid rgba(192,57,43,.33);}
+  .verdict.warn{color:#9a6b00;background:rgba(230,170,20,.14);border:1px solid rgba(230,170,20,.4);}
+  .an-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px;margin-bottom:12px;}
+  .an-cell .lbl{font-size:12px;color:var(--sub);margin-bottom:5px;}
+  .an-unit{color:var(--sub);font-size:13px;margin-left:7px;white-space:nowrap;}
+  .an-h{font-size:13.5px;font-weight:800;color:#0f3a28;margin:18px 2px 10px;display:flex;align-items:center;gap:8px;}
+  .an-h::before{content:"";width:4px;height:15px;border-radius:3px;background:linear-gradient(var(--accent),var(--accent2));}
+  .an-sep{height:1px;background:var(--line);margin:16px 0;}
+  .safety-block{background:rgba(19,184,117,.035);border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px;}
+  .safety-block h3{font-size:14px;color:#0f3a28;margin:0 0 8px;font-weight:800;display:flex;align-items:center;gap:7px;}
+  .safety-block h3::before{content:"";width:4px;height:14px;border-radius:3px;background:linear-gradient(var(--accent),var(--accent2));}
+  .safety-block ul{margin:0;padding-left:18px;}
+  .safety-block li{font-size:12.5px;color:var(--sub);line-height:1.9;}
 </style>
 </head>
 <body>
@@ -475,6 +492,8 @@
   <!-- ========== 顶部一级目录：采样速查 ========== -->
   <div class="top-tabs" id="topTabs">
     <button class="top-tab active" data-top="sampling">采样速查</button>
+    <button class="top-tab" data-top="analysis">分析速查</button>
+    <button class="top-tab" data-top="safety">安全</button>
   </div>
 
   <section id="sampling" class="tab-pane active">
@@ -1619,6 +1638,320 @@
     </div><!-- /m-monit -->
   </section>
 
+  <section id="analysis" class="tab-pane">
+    <div class="cx-title">分析速查</div>
+    <p class="sub-note">依据 <b>GB 37488-2019</b>（空气、空调评价）、<b>GB/T 5750 系列</b>（水质，5749）、<b>GB/T 18204.3 / 4 / 5-2025</b>（微生物）整理。填写原始数据即自动计算结果，并给出合格判定。微生物检测分 <b>空气 / 空调 / 水质</b> 三类；理化检测为方法速查与通用计算。</p>
+    <div class="sub-tabs" data-group="analysis">
+      <button class="sub-tab active" data-sub="m-micro">微生物检测</button>
+      <button class="sub-tab" data-sub="m-chemcalc">理化检测</button>
+    </div>
+    <div class="sub-sub-tabs" data-parent="m-micro">
+      <button class="sub-sub-tab active" data-sub="m-air">空气</button>
+      <button class="sub-sub-tab" data-sub="m-acmicro">空调</button>
+      <button class="sub-sub-tab" data-sub="m-watermicro">水质</button>
+    </div>
+<div id="m-air" class="sub-pane">
+        <div class="card">
+          <h2><span class="dot"></span>空气微生物 — 细菌总数（自然沉降法）</h2>
+          <p class="sub-note">依据 <b>GB/T 18204.3—2025</b> 自然沉降法（平皿暴露法），评价按 <b>GB 37488-2019 表3</b>。室内面积 ≤30 m² 设内、中、外对角线 3 点；&gt;30 m² 设 4 角及中央 5 点；内、外点距墙 1 m；采样高度 0.8~1.5 m。Ⅱ类暴露 15 min，Ⅲ/Ⅳ类 5 min。36 ℃±1 ℃ 培养 48 h。</p>
+
+          <div class="field">
+            <label>暴露时间（方法条件，min，不参与计算）</label>
+            <input type="number" id="anAirT" value="5" step="any">
+          </div>
+          <div class="field">
+            <label>标准限值（CFU/皿，选填；按 GB 37488-2019 表3 相应场所）</label>
+            <div class="row"><input type="number" id="anAirLim" step="any" placeholder="—"><span class="an-unit">CFU/皿</span></div>
+          </div>
+          <div class="field">
+            <label>各平皿菌落数（CFU，可填 1~5 个）</label>
+            <div class="an-grid">
+              <div class="an-cell"><div class="lbl">平皿 1</div><input type="number" id="anAirC1" step="any" placeholder="0"></div>
+              <div class="an-cell"><div class="lbl">平皿 2</div><input type="number" id="anAirC2" step="any" placeholder="0"></div>
+              <div class="an-cell"><div class="lbl">平皿 3</div><input type="number" id="anAirC3" step="any" placeholder="0"></div>
+              <div class="an-cell"><div class="lbl">平皿 4</div><input type="number" id="anAirC4" step="any" placeholder="0"></div>
+              <div class="an-cell"><div class="lbl">平皿 5</div><input type="number" id="anAirC5" step="any" placeholder="0"></div>
+            </div>
+          </div>
+          <div class="actions"><button id="anAirBtn">计算</button><button id="anAirClr" class="ghost">清空</button></div>
+
+          <div class="res-box std" style="margin-top:14px">
+            <div class="tag">细菌总数（平均） = ΣN / n（CFU/皿）</div>
+            <div class="val"><span id="anAirRes">—</span><span class="unit">CFU/皿</span></div>
+            <div class="raw" id="anAirRaw"></div>
+            <div class="verdict" id="anAirVerdict"></div>
+          </div>
+
+          <div class="toggle" id="anAirTog"><span class="arrow">▶</span><span>查看方法 / 计算规则 / 质控 / 注意事项</span></div>
+          <div class="collapse" id="anAirDet">
+            <div class="legend"><b>计算规则</b><div>N = 各平皿菌落数算术平均值；细菌总数（平均）= N，单位 CFU/皿（平皿暴露法直接计数，不需平皿面积换算）。各平皿分别记录 CFU/皿。</div></div>
+            <div class="legend"><b>评价标准（GB 37488-2019 表3）</b><div>细菌总数按相应场所沉降法限值（CFU/皿）判定；真菌总数 ≤ 100 CFU/m³；β-溶血性链球菌 不得检出。</div></div>
+            <div class="qc-box"><h3>质控要求</h3><ul><li>平皿直径 9 cm，营养琼脂；采样前编号、标记点位。</li><li>设空白平皿随批培养作阴性对照。</li><li>培养箱 36 ℃±1 ℃、48 h±2 h，温度每日记录。</li><li>菌落以肉眼可见、不重叠为准；蔓延菌落单独记录。</li></ul></div>
+            <div class="qc-box"><h3>注意事项</h3><ul><li>平皿距地面 0.8~1.5 m，避开空调出风口与阳光直射。</li><li>暴露时间到立即盖盖，平皿倒置培养。</li><li>采样后 ≤4 h 送检；4 ℃ 保存可延至 24 h。</li><li>Ⅱ类暴露 15 min、Ⅲ/Ⅳ类 5 min，超时需折算说明。</li></ul></div>
+          </div>
+        </div>
+      </div>
+<div id="m-acmicro" class="sub-pane">
+        <div class="card">
+          <h2><span class="dot"></span>集中空调通风系统 — 微生物（撞击法 / 军团菌）</h2>
+          <p class="sub-note">依据 <b>GB/T 18204.5—2025</b> 集中空调通风系统，评价按 <b>GB 37488-2019 表3</b>。送风与积尘微生物用 <b>撞击法</b>（采样器捕获菌落数 / 采样空气量 ×1000）；冷却水、冷凝水检 <b>嗜肺军团菌</b>；溶血性链球菌为定性指标。</p>
+
+          <div class="an-h">送风中细菌总数（撞击法）</div>
+          <div class="an-grid">
+            <div class="an-cell"><div class="lbl">捕获菌落数（个）</div><input type="number" id="anBacN" step="any"></div>
+            <div class="an-cell"><div class="lbl">采样流量（L/min）</div><input type="number" id="anBacQ" step="any"></div>
+            <div class="an-cell"><div class="lbl">采样时间（min）</div><input type="number" id="anBacT" step="any"></div>
+          </div>
+          <div class="res-box std"><div class="tag">C = 菌落数 / (流量×时间) × 1000</div>
+            <div class="val"><span id="anBacRes">—</span><span class="unit">CFU/m³</span></div>
+            <div class="verdict" id="anBacVerdict"></div></div>
+
+          <div class="an-h">送风中真菌总数（撞击法）</div>
+          <div class="an-grid">
+            <div class="an-cell"><div class="lbl">捕获菌落数（个）</div><input type="number" id="anFunN" step="any"></div>
+            <div class="an-cell"><div class="lbl">采样流量（L/min）</div><input type="number" id="anFunQ" step="any"></div>
+            <div class="an-cell"><div class="lbl">采样时间（min）</div><input type="number" id="anFunT" step="any"></div>
+          </div>
+          <div class="res-box std"><div class="tag">C = 菌落数 / (流量×时间) × 1000</div>
+            <div class="val"><span id="anFunRes">—</span><span class="unit">CFU/m³</span></div>
+            <div class="verdict" id="anFunVerdict"></div></div>
+
+          <div class="an-h">送风中 β-溶血性链球菌（定性）</div>
+          <div class="an-grid">
+            <div class="an-cell"><div class="lbl">检测结果</div>
+              <select id="anStr"><option value="neg">未检出</option><option value="pos">检出</option></select></div>
+          </div>
+          <div class="res-box ref"><div class="tag">GB 37488-2019：不得检出</div>
+            <div class="verdict" id="anStrVerdict">—</div></div>
+          <div class="qc-box" style="margin-top:10px"><h3>检测步骤（β-溶血性链球菌）</h3>
+            <ol class="steps" style="margin:6px 0 0;padding-left:22px"><li>采样：撞击法采集送风空气于血琼脂平板（36 ℃±1 ℃ 预温），按方法确定采样量。</li>
+            <li>培养：血琼脂平板 36 ℃±1 ℃ 培养 24~48 h，观察菌落形态。</li>
+            <li>判定：菌落周围出现完全透明溶血环（β-溶血）为阳性；无溶血环为阴性。</li>
+            <li>确认（必要时）：革兰染色为革兰阳性链球菌、触酶阴性、杆菌肽敏感试验阳性。</li></ol></div>
+
+          <div class="an-sep"></div>
+          <div class="an-h">风管内表面积尘量</div>
+          <div class="an-grid">
+            <div class="an-cell"><div class="lbl">积尘质量（g）</div><input type="number" id="anDustM" step="any"></div>
+            <div class="an-cell"><div class="lbl">采样面积（m²）</div><input type="number" id="anDustArea" step="any"></div>
+          </div>
+          <div class="res-box std"><div class="tag">积尘量 = 质量 / 面积</div>
+            <div class="val"><span id="anDustRes">—</span><span class="unit">g/m²</span></div>
+            <div class="verdict" id="anDustVerdict"></div></div>
+
+          <div class="an-h">积尘中细菌 / 真菌总数</div>
+          <div class="an-grid">
+            <div class="an-cell"><div class="lbl">积尘质量（g）</div><input type="number" id="anDustCntM" step="any"></div>
+            <div class="an-cell"><div class="lbl">细菌菌落数（CFU）</div><input type="number" id="anDustBac" step="any"></div>
+            <div class="an-cell"><div class="lbl">真菌菌落数（CFU）</div><input type="number" id="anDustFun" step="any"></div>
+          </div>
+          <div class="res-box std"><div class="tag">CFU/g = 菌落数 / 积尘质量</div>
+            <div class="val"><span id="anDustCntRes">—</span><span class="unit">CFU/g</span></div>
+            <div class="raw" id="anDustCntRaw"></div></div>
+
+          <div class="an-h">冷却水 / 冷凝水中嗜肺军团菌（定性）</div>
+          <div class="an-grid">
+            <div class="an-cell"><div class="lbl">冷却水</div>
+              <select id="anLegC"><option value="neg">未检出</option><option value="pos">检出</option></select></div>
+            <div class="an-cell"><div class="lbl">冷凝水</div>
+              <select id="anLegN"><option value="neg">未检出</option><option value="pos">检出</option></select></div>
+          </div>
+          <div class="res-box ref"><div class="tag">GB 37488-2019：不得检出</div>
+            <div class="verdict" id="anLegVerdict">—</div></div>
+          <div class="qc-box" style="margin-top:10px"><h3>检测步骤（嗜肺军团菌）</h3>
+            <ol class="steps" style="margin:6px 0 0;padding-left:22px"><li>采样：采集冷却水/冷凝水 ≥1000 mL，无菌容器，2~4 ℃ 避光保存、≤24 h 送检；禁止冻结。</li>
+            <li>浓缩：水样经 0.22 μm 过滤或 2000~3000 r/min 离心 15 min，取滤膜/沉渣用约 1 mL 缓冲液重悬。</li>
+            <li>接种：涂布/划线接种 GVPC 选择性琼脂（BCYEα，含 L-半胱氨酸与抗生素）；同时接种 BCYE 与 BCYE-CYA（缺 L-半胱氨酸）对照平板。</li>
+            <li>培养：35~37 ℃、2.5%~5% CO₂ 培养 7~10 d，每日观察。</li>
+            <li>确认：典型菌落蓝绿色、有特殊气味；BCYE 生长而 BCYE-CYA 不生长（依赖 L-半胱氨酸）；挑取可疑菌落做乳胶凝集或生化试验确认嗜肺军团菌。</li>
+            <li>报告：检出（经确认）/ 未检出。</li></ol></div>
+
+          <div class="toggle" id="anAcTog"><span class="arrow">▶</span><span>查看方法 / 计算规则 / 质控 / 注意事项</span></div>
+          <div class="collapse" id="anAcDet">
+            <div class="legend"><b>计算规则</b><div>撞击法：C(CFU/m³) = 捕获菌落数 / (采样流量 L/min × 采样时间 min) × 1000。采样空气量 = 流量 × 时间（L）。积尘量(g/m²) = 积尘质量(g) / 采样面积(m²)。积尘中菌数(CFU/g) = 菌落数 / 积尘质量(g)。</div></div>
+            <div class="legend"><b>评价标准（GB 37488-2019 表3）</b><div>送风细菌总数 ≤ 500 CFU/m³；送风真菌总数 ≤ 500 CFU/m³；β-溶血性链球菌 不得检出；风管内表面积尘量 ≤ 20 g/m²；积尘中细菌/真菌总数 ≤ 100 CFU/cm²；冷却水、冷凝水 嗜肺军团菌 不得检出。</div></div>
+            <div class="qc-box"><h3>质控要求</h3><ul><li>撞击法采样器流量校准；每点平行样；空白对照。</li><li>军团菌：GVPC 选择性培养基，36 ℃±1 ℃ 培养 7~10 d，疑似菌落 BCYE 生长、BCYE-CYA 不生长确认。</li><li>积尘采样用无纺布或玻砂过滤器，称量至 0.1 mg。</li></ul></div>
+            <div class="qc-box"><h3>注意事项</h3><ul><li>送风口采样避开涡流，采样头迎风。</li><li>军团菌样品 2~4 ℃ 避光保存、≤24 h 送检；禁止冻结。</li><li>溶血性链球菌用血平板，菌落周围透明溶血环判定。</li></ul></div>
+          </div>
+        </div>
+      </div>
+<div id="m-watermicro" class="sub-pane">
+        <div class="card">
+          <h2><span class="dot"></span>水质微生物（生活饮用水 / 二次供水 / 直饮水）</h2>
+          <p class="sub-note">依据 <b>GB/T 5750.12—2023</b>，评价按 <b>GB 5749-2022</b>。菌落总数用 <b>平板计数法</b>；总大肠菌群、大肠埃希氏菌用 <b>多管发酵法 / 酶底物法</b>。限值随水样类型不同（见判定）。</p>
+
+          <div class="field">
+            <label>水样类型（决定限值）</label>
+            <select id="anWType">
+              <option value="drink">生活饮用水（GB 5749）</option>
+              <option value="sec">二次供水（GB 5749）</option>
+              <option value="pure">直饮水（CJ 94-2005 饮用净水）</option>
+            </select>
+          </div>
+
+          <div class="an-h">菌落总数（平板计数法）</div>
+          <div class="an-grid">
+            <div class="an-cell"><div class="lbl">平皿菌落数（CFU）</div><input type="number" id="anWColony" step="any"></div>
+            <div class="an-cell"><div class="lbl">取样体积（mL）</div><input type="number" id="anWVol" step="any" value="1"></div>
+            <div class="an-cell"><div class="lbl">稀释倍数</div><input type="number" id="anWDil" step="any" value="1"></div>
+          </div>
+          <div class="res-box std"><div class="tag">CFU/mL = 菌落数 × 稀释倍数 / 取样体积</div>
+            <div class="val"><span id="anWColonyRes">—</span><span class="unit">CFU/mL</span></div>
+            <div class="verdict" id="anWColonyVerdict"></div></div>
+
+          <div class="an-h">总大肠菌群 / 大肠埃希氏菌（多管发酵法，MPN）</div>
+          <div class="an-grid">
+            <div class="an-cell"><div class="lbl">每稀释度管数</div>
+              <select id="anWTubes"><option value="3">3 管</option><option value="5" selected>5 管</option></select></div>
+            <div class="an-cell"><div class="lbl">10 mL 阳性管</div><input type="number" id="anWP1" step="1" min="0"></div>
+            <div class="an-cell"><div class="lbl">1 mL 阳性管</div><input type="number" id="anWP2" step="1" min="0"></div>
+            <div class="an-cell"><div class="lbl">0.1 mL 阳性管</div><input type="number" id="anWP3" step="1" min="0"></div>
+          </div>
+          <div class="res-box std"><div class="tag">MPN/100mL（最大似然估计，与标准查表一致）</div>
+            <div class="val"><span id="anWMpnRes">—</span><span class="unit">MPN/100mL</span></div>
+            <div class="verdict" id="anWMpnVerdict"></div></div>
+
+          <div class="toggle" id="anWoTog"><span class="arrow">▶</span><span>查看方法 / 计算规则 / 质控 / 注意事项</span></div>
+          <div class="collapse" id="anWoDet">
+            <div class="legend"><b>计算规则</b><div>菌落总数：CFU/mL = 平皿菌落数 × 稀释倍数 / 取样体积(mL)。总大肠/大肠埃希氏菌：多管发酵法记录各接种量阳性管数，按 MPN 表（或最大似然估计）得 MPN/100mL；酶底物法直接读 MPN/100mL。</div></div>
+            <div class="legend"><b>评价标准（GB 5749-2022）</b><div>生活饮用水 / 二次供水：菌落总数 ≤ 100 CFU/mL；总大肠菌群、大肠埃希氏菌 <b>不得检出</b>。直饮水（CJ 94-2005）：菌落总数 ≤ 50 CFU/mL；总大肠菌群、大肠埃希氏菌 <b>不得检出</b>。</div></div>
+            <div class="qc-box"><h3>质控要求</h3><ul><li>菌落总数：营养琼脂 36 ℃±1 ℃ 培养 48 h±2 h；计数 30~300 CFU 为宜。</li><li>多管发酵：乳糖蛋白胨培养液，36 ℃±1 ℃ 培养 24 h±2 h 初发酵，复发酵/证实试验确认。</li><li>每批做空白、阳性、阴性对照。</li></ul></div>
+            <div class="qc-box"><h3>注意事项</h3><ul><li>水样 4 ℃ 保存、≤4 h 送检（最大 24 h）。</li><li>采样瓶无菌、不装满（留排气空间），避免手触瓶口。</li><li>二次供水需采水箱出水与末梢水；直饮水采终端出水。</li></ul></div>
+          </div>
+        </div>
+      </div>
+<div id="m-chemcalc" class="sub-pane">
+      <div class="card">
+        <h2><span class="dot" style="background:var(--accent2);box-shadow:0 0 10px rgba(15,184,160,.5)"></span>理化检测 — 方法速查与通用计算</h2>
+        <p class="sub-note">公共场所理化项目依据 <b>GB/T 18204.1~2-2025</b>、<b>GB/T 18883-2022</b> 等。下表列出常用参数与标准方法；下方提供 <b>分光光度法浓度</b>、<b>气体浓度单位换算</b>、<b>平行样统计</b> 三类通用计算，填写数据即出结果。</p>
+
+        <div class="an-h">常用参数与方法一览</div>
+        <table class="sch-table">
+          <thead><tr><th>参数</th><th>标准方法</th><th>结果表示</th></tr></thead>
+          <tbody>
+            <tr><td>甲醛</td><td>GB/T 18204.2 AHMT 分光光度法</td><td>mg/m³</td></tr>
+            <tr><td>氨</td><td>GB/T 18204.2 靛酚蓝分光光度法</td><td>mg/m³</td></tr>
+            <tr><td>苯、甲苯、二甲苯</td><td>GB/T 18883 气相色谱法</td><td>mg/m³</td></tr>
+            <tr><td>TVOC</td><td>GB/T 18883 气相色谱-质谱法</td><td>mg/m³</td></tr>
+            <tr><td>CO、CO₂</td><td>不分光红外线气体分析法</td><td>mg/m³、%</td></tr>
+            <tr><td>PM₁₀、PM₂.₅</td><td>光散射法 / 重量法</td><td>mg/m³</td></tr>
+            <tr><td>臭氧</td><td>紫外光度法 / 靛蓝二磺酸钠法</td><td>mg/m³</td></tr>
+            <tr><td>氡</td><td>闪烁瓶法 / 连续测氡仪</td><td>Bq/m³</td></tr>
+            <tr><td>照度</td><td>照度计法（GB/T 5700）</td><td>lx</td></tr>
+            <tr><td>噪声</td><td>声级计法</td><td>dB(A)</td></tr>
+            <tr><td>温度、相对湿度</td><td>通风干湿球 / 温湿度计</td><td>℃、%</td></tr>
+          </tbody>
+        </table>
+
+        <div class="an-sep"></div>
+        <div class="an-h">分光光度法 浓度计算（甲醛 / 氨 / 等）</div>
+        <div class="an-grid">
+          <div class="an-cell"><div class="lbl">样品吸光度 A<sub>s</sub></div><input type="number" id="anSpAs" step="any"></div>
+          <div class="an-cell"><div class="lbl">空白吸光度 A<sub>b</sub></div><input type="number" id="anSpAb" step="any"></div>
+          <div class="an-cell"><div class="lbl">校正系数 k</div><input type="number" id="anSpK" step="any"></div>
+          <div class="an-cell"><div class="lbl">标准采样体积 V₀（L）</div><input type="number" id="anSpV" step="any"></div>
+        </div>
+        <div class="res-box std"><div class="tag">C(mg/m³) = (A<sub>s</sub> − A<sub>b</sub>) × k / V₀</div>
+          <div class="val"><span id="anSpRes">—</span><span class="unit">mg/m³</span></div></div>
+
+        <div class="an-h">气体浓度单位换算（mg/m³ ↔ ppm）</div>
+        <div class="an-grid">
+          <div class="an-cell"><div class="lbl">质量浓度（mg/m³）</div><input type="number" id="anUcM" step="any"></div>
+          <div class="an-cell"><div class="lbl">分子量 M</div><input type="number" id="anUcMol" step="any" placeholder="如 30.03"></div>
+        </div>
+        <div class="res-box ref"><div class="tag">ppm = mg/m³ × 24.45 / M（25 ℃,101.325 kPa）</div>
+          <div class="val"><span id="anUcRes">—</span><span class="unit">ppm</span></div></div>
+
+        <div class="an-h">平行样统计（均值 / 标准差）</div>
+        <div class="field">
+          <label>测定值（逗号或空格分隔）</label>
+          <textarea id="anStatIn" placeholder="如 0.082, 0.079, 0.085, 0.081"></textarea>
+        </div>
+        <div class="res-box std"><div class="tag">n、均值、标准差（s）</div>
+          <div class="val" style="font-size:20px"><span id="anStatRes">—</span></div></div>
+
+        <div class="toggle" id="anChemTog"><span class="arrow">▶</span><span>查看质控与注意事项</span></div>
+        <div class="collapse" id="anChemDet">
+          <div class="qc-box"><h3>质控要求（通用）</h3><ul><li>每批样品带空白、平行样与质控样；校准曲线 R²≥0.999（分光光度/色谱）。</li><li>采样流量与时间为标准体积换算依据，现场记录温压。</li><li>仪器使用前校准；声级计、照度计、温湿度计按期检定。</li><li>平行样相对偏差超限需重测。</li></ul></div>
+          <div class="qc-box"><h3>注意事项</h3><ul><li>甲醛采集用酚试剂/气泡吸收管，避光、2~4 ℃ 保存、当日分析。</li><li>氨采集用硫酸吸收液，防止碱性气体干扰。</li><li>气相色谱进样口、柱温稳定；TVOC 按保留时间定性、内标/外标定量。</li><li>照度测前预热 30 min，测头人眼高度、避开直射光源。</li><li>噪声测 A 计权、慢响应，避开背景突发声。</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="safety" class="tab-pane">
+    <div class="cx-title">安全</div>
+    <p class="sub-note">实验室与现场安全要点，依据 <b>GB 19489</b>（实验室 生物安全通用要求）、<b>WS 233</b>（微生物和生物医学实验室 生物安全通用准则）、<b>GB 37488-2019</b> 及公司安全管理体系整理。分 <b>采样安全 / 检测安全 / 生物安全</b> 三类。</p>
+    <div class="sub-tabs" data-group="safety">
+      <button class="sub-tab active" data-sub="m-samp-safety">采样安全</button>
+      <button class="sub-tab" data-sub="m-test-safety">检测安全</button>
+      <button class="sub-tab" data-sub="m-bio-safety">生物安全</button>
+    </div>
+<div id="m-samp-safety" class="sub-pane">
+      <div class="card">
+        <h2><span class="dot"></span>采样安全</h2>
+        <div class="safety-block"><h3>现场个人防护</h3><ul>
+          <li>进入现场穿戴工作服、防滑鞋；涉化学/微生物采样加戴口罩、手套、护目镜。</li>
+          <li>高处、屋顶、有限空间采样须系安全带/绳，设监护人，办理作业许可。</li>
+          <li>公共场所采样避开客流高峰，设置警示标识，防止滑倒、碰撞。</li>
+        </ul></div>
+        <div class="safety-block"><h3>用电与设备</h3><ul>
+          <li>采样器、泵、照明使用完好线缆与漏电保护；潮湿环境用安全电压。</li>
+          <li>便携式电源、蓄电池妥善保管，防止短路、跌落。</li>
+          <li>登高梯凳稳固，专人扶守。</li>
+        </ul></div>
+        <div class="safety-block"><h3>化学品与样品</h3><ul>
+          <li>吸收液、固定剂按腐蚀性/毒性分类存放，贴标签，避光低温。</li>
+          <li>样品瓶无菌操作、不混用；危险样品（致病菌、强酸强碱）单独封存、明确标识。</li>
+          <li>样品及时冷藏运输，填写采样记录与流转单，防丢防漏。</li>
+        </ul></div>
+      </div>
+    </div>
+<div id="m-test-safety" class="sub-pane">
+      <div class="card">
+        <h2><span class="dot"></span>检测安全</h2>
+        <div class="safety-block"><h3>实验室通用</h3><ul>
+          <li>进入实验室穿工作服、戴防护装备；禁止饮食、吸烟、存放食物。</li>
+          <li>熟悉紧急出口、洗眼器、喷淋、灭火器、急救箱位置。</li>
+          <li>保持通道畅通，地面无积水、无杂物。</li>
+        </ul></div>
+        <div class="safety-block"><h3>高温高压与特种设备</h3><ul>
+          <li>高压灭菌器、干燥箱专人操作，定期检定；开盖前确认压力回零、温度降至安全。</li>
+          <li>马弗炉、水浴锅周边无易燃物；加热样品有人值守。</li>
+          <li>气瓶固定、减压阀专用，可燃/助燃气体分开放置、远离热源。</li>
+        </ul></div>
+        <div class="safety-block"><h3>化学试剂与废液</h3><ul>
+          <li>强酸强碱稀释"酸入水"，戴耐酸碱手套与护目；有机溶剂在通风橱操作。</li>
+          <li>试剂配制、称量按 SOP，量取后及时盖紧、归位。</li>
+          <li>废液分类收集（有机、无机、含菌），委托有资质单位处置，严禁倒入下水道。</li>
+          <li>玻璃仪器轻拿轻放，破损立即清理；防止割伤。</li>
+        </ul></div>
+      </div>
+    </div>
+<div id="m-bio-safety" class="sub-pane">
+      <div class="card">
+        <h2><span class="dot"></span>生物安全</h2>
+        <p class="sub-note">依据 <b>GB 19489-2008</b>、<b>WS 233-2017</b>；本实验室为 <b>BSL-2</b>（二级生物安全），开展公共场所微生物（细菌、真菌、军团菌等）检测。</p>
+        <div class="safety-block"><h3>实验室与分区</h3><ul>
+          <li>BSL-2 实验室设缓冲间、操作间；人流、物流分流，清洁区与污染区分隔。</li>
+          <li>在生物安全柜（BSC）内操作产气溶胶步骤（移液、涂布、开盖、匀浆）。</li>
+          <li>每日紫外/消毒；定期物表、空气、人员手监测。</li>
+        </ul></div>
+        <div class="safety-block"><h3>操作与防护</h3><ul>
+          <li>穿戴白大衣、手套、护目；禁止佩戴饰物、化妆；操作后、离室前洗手消毒。</li>
+          <li>锐器（针、刀、玻片）入专用锐器盒，禁止回套针帽、手折玻管。</li>
+          <li>菌（毒）种与阳性标本双人双锁管理，使用、传代、销毁全程记录。</li>
+        </ul></div>
+        <div class="safety-block"><h3>废弃物与应急处置</h3><ul>
+          <li>所有生物废弃物（培养物、耗材、手套）经 121 ℃、30 min 高压灭菌后按医疗废物处置。</li>
+          <li>疑似高致病性微生物（如嗜肺军团菌大批阳性）立即上报、封存、复核，按预案处置。</li>
+          <li>针刺/溢洒：挤血冲洗→消毒→医学随访；溢洒用 2000~5000 mg/L 含氯消毒剂覆盖作用后清理。</li>
+          <li>职业暴露建立健康档案与追踪。</li>
+        </ul></div>
+      </div>
+    </div>
+  </section>
+
   <div class="brand-foot">湖南绿盾卫士检测技术有限公司</div>
 </div>
 
@@ -1656,6 +1989,7 @@
   // ============ 顶部一级目录切换（采样速查） ============
   function showTop(top){
     document.querySelectorAll('.top-tab').forEach(b=>b.classList.toggle('active', b.dataset.top===top));
+    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('active', p.id===top));
     document.querySelectorAll('.sub-tabs[data-group]').forEach(r=>{ r.style.display = (r.dataset.group===top?'flex':'none'); });
     document.querySelectorAll('.sub-sub-tabs[data-parent]').forEach(r=>{ r.style.display='none'; });
     const t=document.getElementById('cxTitle'); if(t) t.textContent = '采样速查';
@@ -1678,6 +2012,8 @@
       const row=document.querySelector('.sub-sub-tabs[data-parent="'+pub+'"]');
       if(row){ row.style.display='flex'; const c=row.querySelector('.sub-sub-tab'); if(c) c.click(); }
     } else {
+      const subRow=document.querySelector('.sub-sub-tabs[data-parent="'+key+'"]');
+      if(subRow){ subRow.style.display='flex'; const c=subRow.querySelector('.sub-sub-tab'); if(c) c.click(); }
       const pane=document.getElementById(key);
       if(pane) pane.classList.add('active');
       if(key==='m-volconv'){ loadInputs(); calc(); }
@@ -4782,5 +5118,193 @@ function cgInit(){
 })();
 </script>
 
+
+<script>
+/* 分析速查 / 安全 模块 计算器 */
+// ============ 分析速查 / 安全 模块 计算器（新增） ============
+  function anNum(v){ var x = parseFloat(v); return (typeof x === 'number' && !isNaN(x)) ? x : null; }
+  function anRound(x, d){ if(x==null || isNaN(x)) return '—'; var p = Math.pow(10, d); return (Math.round(x*p)/p).toFixed(d); }
+
+  // 折叠通用
+  function anBindToggle(btnId, boxId){
+    var b = document.getElementById(btnId), x = document.getElementById(boxId);
+    if(b && x){ b.addEventListener('click', function(){ b.classList.toggle('open'); x.style.display = b.classList.contains('open') ? 'block' : 'none'; }); }
+  }
+  anBindToggle('anAirTog','anAirDet');
+  anBindToggle('anAcTog','anAcDet');
+  anBindToggle('anWoTog','anWoDet');
+  anBindToggle('anChemTog','anChemDet');
+
+  // 数值格式化：撞击法等结果 ≥1000 用科学计数法
+  function sup(n){ var map={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'}; return (''+n).split('').map(function(c){return map[c]||c;}).join(''); }
+  function anSci(v){
+    if(v==null || isNaN(v)) return '—';
+    if(v>=1000){ var s=v.toExponential(2), p=s.split('e'); return p[0]+'×10'+sup(parseInt(p[1],10)); }
+    return anRound(v,0);
+  }
+
+  // --- 空气：自然沉降法（CFU/皿，不需平皿面积） ---
+  function anAirCalc(){
+    var vals = []; ['anAirC1','anAirC2','anAirC3','anAirC4','anAirC5'].forEach(function(id){
+      var v = anNum(document.getElementById(id).value); if(v!=null) vals.push(v); });
+    var out = document.getElementById('anAirRes'), vd = document.getElementById('anAirVerdict'), raw = document.getElementById('anAirRaw');
+    if(!vals.length){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; raw.textContent=''; return; }
+    var N = vals.reduce(function(a,b){return a+b;},0)/vals.length;
+    out.textContent = anRound(N,1);
+    raw.textContent = '各平皿：' + vals.join('、') + ' CFU/皿';
+    var lim = anNum(document.getElementById('anAirLim').value);
+    if(lim!=null && lim>0){
+      var ok = N<=lim; vd.textContent = ok ? ('合格（≤'+anRound(lim,1)+' CFU/皿）') : ('超标（>'+anRound(lim,1)+' CFU/皿）');
+      vd.className = 'verdict ' + (ok?'ok':'bad');
+    } else { vd.textContent='—（未填标准限值）'; vd.className='verdict'; }
+  }
+  ['anAirT','anAirLim','anAirC1','anAirC2','anAirC3','anAirC4','anAirC5'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', anAirCalc); });
+  document.getElementById('anAirBtn').addEventListener('click', anAirCalc);
+  document.getElementById('anAirClr').addEventListener('click', function(){
+    ['anAirC1','anAirC2','anAirC3','anAirC4','anAirC5'].forEach(function(id){ document.getElementById(id).value=''; });
+    anAirCalc(); });
+
+  // --- 空调：撞击法送风菌/真菌 ---
+  function anImpCalc(pre, lim){
+    var n = anNum(document.getElementById(pre+'N').value);
+    var q = anNum(document.getElementById(pre+'Q').value);
+    var ti = anNum(document.getElementById(pre+'T').value);
+    var out = document.getElementById(pre+'Res'), vd = document.getElementById(pre+'Verdict');
+    if(n==null || q==null || ti==null || q<=0 || ti<=0){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; return; }
+    var c = n/(q*ti)*1000; out.textContent = anSci(c);
+    var ok = c<=lim; vd.textContent = ok ? ('合格（≤'+lim+' CFU/m³）') : ('超标（>'+lim+' CFU/m³）'); vd.className = 'verdict ' + (ok?'ok':'bad');
+  }
+  ['anBacN','anBacQ','anBacT'].forEach(function(id){ document.getElementById(id).addEventListener('input', function(){ anImpCalc('anBac',500); }); });
+  ['anFunN','anFunQ','anFunT'].forEach(function(id){ document.getElementById(id).addEventListener('input', function(){ anImpCalc('anFun',500); }); });
+  anImpCalc('anBac',500); anImpCalc('anFun',500);
+
+  // 溶血性链球菌（定性）
+  function anStrCalc(){
+    var v = document.getElementById('anStr').value;
+    var vd = document.getElementById('anStrVerdict');
+    var ok = (v==='neg'); vd.textContent = ok ? '合格（未检出）' : '不合格（检出）'; vd.className = 'verdict ' + (ok?'ok':'bad');
+  }
+  document.getElementById('anStr').addEventListener('change', anStrCalc); anStrCalc();
+
+  // 积尘量 + 积尘菌/真菌
+  function anDustCalc(){
+    var m = anNum(document.getElementById('anDustM').value);
+    var area = anNum(document.getElementById('anDustArea').value);
+    var out = document.getElementById('anDustRes'), vd = document.getElementById('anDustVerdict');
+    if(m==null || area==null || area<=0){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; }
+    else { var g = m/area; out.textContent = anRound(g,2);
+      var ok = g<=20; vd.textContent = ok ? '合格（≤20 g/m²）' : '超标（>20 g/m²）'; vd.className = 'verdict ' + (ok?'ok':'bad'); }
+
+    var cm = anNum(document.getElementById('anDustCntM').value);
+    var bac = anNum(document.getElementById('anDustBac').value);
+    var fun = anNum(document.getElementById('anDustFun').value);
+    var out2 = document.getElementById('anDustCntRes'), raw = document.getElementById('anDustCntRaw');
+    if(cm==null || cm<=0){ out2.textContent='—'; raw.textContent=''; return; }
+    var parts = [];
+    if(bac!=null) parts.push('细菌 ' + anRound(bac/cm,1) + ' CFU/g');
+    if(fun!=null) parts.push('真菌 ' + anRound(fun/cm,1) + ' CFU/g');
+    out2.textContent = parts.length ? parts.join('；') : '—';
+    raw.textContent = '注：GB 37488 限值以 CFU/cm² 表示（≤100），CFU/g 需结合采样面积折算。';
+  }
+  ['anDustM','anDustArea','anDustCntM','anDustBac','anDustFun'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', anDustCalc); });
+  anDustCalc();
+
+  // 军团菌（定性）
+  function anLegCalc(){
+    var c = document.getElementById('anLegC').value, n = document.getElementById('anLegN').value;
+    var vd = document.getElementById('anLegVerdict');
+    var ok = (c==='neg' && n==='neg');
+    vd.textContent = ok ? '合格（冷却水和冷凝水均未检出）' : '不合格（检出嗜肺军团菌）';
+    vd.className = 'verdict ' + (ok?'ok':'bad');
+  }
+  document.getElementById('anLegC').addEventListener('change', anLegCalc);
+  document.getElementById('anLegN').addEventListener('change', anLegCalc); anLegCalc();
+
+  // --- 水质 ---
+  function anWLimit(){
+    var t = document.getElementById('anWType').value;
+    if(t==='pure') return { colony: 50, label:'直饮水 ≤50 CFU/mL' };
+    return { colony: 100, label:'生活饮用水/二次供水 ≤100 CFU/mL' };
+  }
+  function anWColonyCalc(){
+    var cfu = anNum(document.getElementById('anWColony').value);
+    var vol = anNum(document.getElementById('anWVol').value);
+    var dil = anNum(document.getElementById('anWDil').value);
+    var out = document.getElementById('anWColonyRes'), vd = document.getElementById('anWColonyVerdict');
+    if(cfu==null || vol==null || vol<=0){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; return; }
+    var d = (dil==null || dil<=0) ? 1 : dil;
+    var c = cfu*d/vol; out.textContent = anRound(c,0);
+    var lim = anWLimit().colony; var ok = c<=lim;
+    vd.textContent = ok ? ('合格（' + anWLimit().label + '）') : ('超标（>' + lim + ' CFU/mL）');
+    vd.className = 'verdict ' + (ok?'ok':'bad');
+  }
+  ['anWType','anWColony','anWVol','anWDil'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', anWColonyCalc);
+    document.getElementById(id).addEventListener('change', anWColonyCalc); });
+  anWColonyCalc();
+
+  // 总大肠/大肠埃希氏菌 MPN（最大似然估计）
+  function anMpnCalc(){
+    var tubes = anNum(document.getElementById('anWTubes').value) || 5;
+    var pos = [ anNum(document.getElementById('anWP1').value), anNum(document.getElementById('anWP2').value), anNum(document.getElementById('anWP3').value) ];
+    var out = document.getElementById('anWMpnRes'), vd = document.getElementById('anWMpnVerdict');
+    if(pos[0]==null || pos[1]==null || pos[2]==null){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; return; }
+    var ntot = tubes*3, ptot = pos[0]+pos[1]+pos[2];
+    if(ptot===0){ out.textContent='< 2'; vd.textContent='合格（未检出）'; vd.className='verdict ok'; return; }
+    if(ptot===ntot){ out.textContent='> 上限'; vd.textContent='不合格（全部阳性）'; vd.className='verdict bad'; return; }
+    var vol = [10,1,0.1];
+    function score(l){ var s=0; for(var k=0;k<3;k++){ var ev=Math.exp(l*vol[k]); s += vol[k]*pos[k]/(ev-1); s -= vol[k]*(tubes-pos[k]); } return s; }
+    var lo=1e-6, hi=200;
+    for(var i=0;i<90;i++){ var mid=(lo+hi)/2; if(score(mid)>0){ lo=mid; } else { hi=mid; } }
+    var mpn = (lo+hi)/2*100;
+    out.textContent = anRound(mpn,1);
+    var ok = mpn<=0 || ptot===0;
+    vd.textContent = (mpn<2 && ptot>0) ? '可疑（接近检出限，建议复查）' : (ok ? '合格（未检出）' : '不合格（检出）');
+    vd.className = 'verdict ' + (ok?'ok':(mpn<2?'warn':'bad'));
+  }
+  ['anWTubes','anWP1','anWP2','anWP3'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', anMpnCalc);
+    document.getElementById(id).addEventListener('change', anMpnCalc); });
+  anMpnCalc();
+
+  // --- 理化：分光光度浓度 ---
+  function anSpCalc(){
+    var as = anNum(document.getElementById('anSpAs').value);
+    var ab = anNum(document.getElementById('anSpAb').value);
+    var k = anNum(document.getElementById('anSpK').value);
+    var v = anNum(document.getElementById('anSpV').value);
+    var out = document.getElementById('anSpRes');
+    if(as==null || ab==null || k==null || v==null || v<=0){ out.textContent='—'; return; }
+    var c = (as-ab)*k/v; out.textContent = anRound(c,4);
+  }
+  ['anSpAs','anSpAb','anSpK','anSpV'].forEach(function(id){ document.getElementById(id).addEventListener('input', anSpCalc); });
+
+  // 单位换算 mg/m3 <-> ppm
+  function anUcCalc(){
+    var m = anNum(document.getElementById('anUcM').value);
+    var mol = anNum(document.getElementById('anUcMol').value);
+    var out = document.getElementById('anUcRes');
+    if(m==null || mol==null || mol<=0){ out.textContent='—'; return; }
+    out.textContent = anRound(m*24.45/mol, 4);
+  }
+  ['anUcM','anUcMol'].forEach(function(id){ document.getElementById(id).addEventListener('input', anUcCalc); });
+
+  // 平行样统计
+  function anStatCalc(){
+    var raw = document.getElementById('anStatIn').value;
+    var out = document.getElementById('anStatRes');
+    var arr = (raw||'').split(/[\s,;，；]+/).map(function(s){ return parseFloat(s); }).filter(function(x){ return !isNaN(x); });
+    if(!arr.length){ out.textContent='—'; return; }
+    var n = arr.length, mean = arr.reduce(function(a,b){return a+b;},0)/n;
+    var s = n>1 ? Math.sqrt(arr.reduce(function(a,b){return a+(b-mean)*(b-mean);},0)/(n-1)) : 0;
+    var rsd = mean!==0 ? s/Math.abs(mean)*100 : 0;
+    out.textContent = 'n=' + n + '，均值=' + anRound(mean,4) + '，s=' + anRound(s,4) + '，RSD=' + anRound(rsd,2) + '%';
+  }
+  document.getElementById('anStatIn').addEventListener('input', anStatCalc);
+
+
+</script>
 </body>
 </html>
