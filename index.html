@@ -5135,11 +5135,17 @@ function cgInit(){
   anBindToggle('anWoTog','anWoDet');
   anBindToggle('anChemTog','anChemDet');
 
-  // 数值格式化：撞击法等结果 ≥1000 用科学计数法
+  // 数值格式化：撞击法等结果 ≥1000 用科学计数法（保留 2 位小数）
   function sup(n){ var map={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'}; return (''+n).split('').map(function(c){return map[c]||c;}).join(''); }
   function anSci(v){
     if(v==null || isNaN(v)) return '—';
     if(v>=1000){ var s=v.toExponential(2), p=s.split('e'); return p[0]+'×10'+sup(parseInt(p[1],10)); }
+    return anRound(v,0);
+  }
+  // 空调送风微生物：结果达三位数（≥100）即用科学计数法，保留 1 位小数（如 177 → 1.8×10²）
+  function anSci1(v){
+    if(v==null || isNaN(v)) return '—';
+    if(v>=100){ var s=v.toExponential(1), p=s.split('e'); return p[0]+'×10'+sup(parseInt(p[1],10)); }
     return anRound(v,0);
   }
 
@@ -5172,7 +5178,7 @@ function cgInit(){
     var ti = anNum(document.getElementById(pre+'T').value);
     var out = document.getElementById(pre+'Res'), vd = document.getElementById(pre+'Verdict');
     if(n==null || q==null || ti==null || q<=0 || ti<=0){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; return; }
-    var c = n/(q*ti)*1000; out.textContent = anSci(c);
+    var c = n/(q*ti)*1000; out.textContent = anSci1(c);
     var ok = c<=lim; vd.textContent = ok ? ('合格（≤'+lim+' CFU/m³）') : ('超标（>'+lim+' CFU/m³）'); vd.className = 'verdict ' + (ok?'ok':'bad');
   }
   ['anBacN','anBacQ','anBacT'].forEach(function(id){ document.getElementById(id).addEventListener('input', function(){ anImpCalc('anBac',500); }); });
