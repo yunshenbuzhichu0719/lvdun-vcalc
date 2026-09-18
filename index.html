@@ -1792,7 +1792,7 @@
 <div id="m-watermicro" class="sub-pane">
         <div class="card">
           <h2><span class="dot"></span>水质微生物（生活饮用水 / 二次供水 / 直饮水）</h2>
-          <p class="sub-note">依据 <b>GB/T 5750.12—2023</b>，评价按 <b>GB 5749-2022</b>。菌落总数用 <b>平板计数法</b>；总大肠菌群、大肠埃希氏菌用 <b>多管发酵法 / 酶底物法</b>。限值随水样类型不同（见判定）。</p>
+          <p class="sub-note">依据 <b>GB/T 5750.12—2023</b>，评价按 <b>GB 5749-2022</b>。菌落总数用 <b>平皿计数法</b>（生活饮用水做 1 个平行接种＝<b>2 个平行平皿</b>，另加 1 个空白对照平皿；水源水取 2~3 个适宜稀释度）；总大肠菌群、大肠埃希氏菌用 <b>多管发酵法 / 酶底物法</b>。限值随水样类型不同（见判定）。</p>
 
           <div class="field">
             <label>水样类型（决定限值）</label>
@@ -1803,13 +1803,15 @@
             </select>
           </div>
 
-          <div class="an-h">菌落总数（平板计数法）</div>
+          <div class="an-h">菌落总数（平皿计数法：2 个平行平皿 + 可选第 3 皿）</div>
           <div class="an-grid">
-            <div class="an-cell"><div class="lbl">平皿菌落数（CFU）</div><input type="number" id="anWColony" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 1 菌落数（CFU）</div><input type="number" id="anWColony" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 2 菌落数（CFU）</div><input type="number" id="anWColony2" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 3 菌落数（CFU，选填）</div><input type="number" id="anWColony3" step="any"></div>
             <div class="an-cell"><div class="lbl">取样体积（mL）</div><input type="number" id="anWVol" step="any" value="1"></div>
             <div class="an-cell"><div class="lbl">稀释倍数</div><input type="number" id="anWDil" step="any" value="1"></div>
           </div>
-          <div class="res-box std"><div class="tag">CFU/mL = 菌落数 × 稀释倍数 / 取样体积</div>
+          <div class="res-box std"><div class="tag">CFU/mL = 各平皿平均菌落数 × 稀释倍数 / 取样体积</div>
             <div class="val"><span id="anWColonyRes">—</span><span class="unit">CFU/mL</span></div>
             <div class="verdict" id="anWColonyVerdict"></div></div>
 
@@ -1827,9 +1829,9 @@
 
           <div class="toggle" id="anWoTog"><span class="arrow">▶</span><span>查看方法 / 计算规则 / 质控 / 注意事项</span></div>
           <div class="collapse" id="anWoDet">
-            <div class="legend"><b>计算规则</b><div>菌落总数：CFU/mL = 平皿菌落数 × 稀释倍数 / 取样体积(mL)。总大肠/大肠埃希氏菌：多管发酵法记录各接种量阳性管数，按 MPN 表（或最大似然估计）得 MPN/100mL；酶底物法直接读 MPN/100mL。</div></div>
+            <div class="legend"><b>计算规则</b><div>菌落总数（GB/T 5750.12—2023 4.1 平皿计数法）：生活饮用水每次检验做 <b>1 个平行接种（即 2 个平行平皿）</b>，另用 <b>1 个只倾注营养琼脂培养基的平皿作空白对照</b>（不计入结果）；水源水取 <b>2~3 个适宜稀释度</b>。平均菌落数 = 同稀释度各平皿菌落数之和 ÷ 平皿数（某平皿有较大片状菌落生长时该皿不采用，以无片状生长的平皿计；片状菌落不足半皿且其余分布均匀，可取半皿计数 ×2）。CFU/mL = 平均菌落数 × 稀释倍数 / 取样体积(mL)。<b>报告方式</b>：菌落数 ≤100 按实有数报告；>100 取两位有效数字，可用 10 的指数表示（如 16 400 → 1.6×10⁴）。总大肠/大肠埃希氏菌：多管发酵法记录各接种量阳性管数，按 MPN 表（或最大似然估计）得 MPN/100mL；酶底物法直接读 MPN/100mL。</div></div>
             <div class="legend"><b>评价标准（GB 5749-2022）</b><div>生活饮用水 / 二次供水：菌落总数 ≤ 100 CFU/mL；总大肠菌群、大肠埃希氏菌 <b>不得检出</b>。直饮水（CJ 94-2005）：菌落总数 ≤ 50 CFU/mL；总大肠菌群、大肠埃希氏菌 <b>不得检出</b>。</div></div>
-            <div class="qc-box"><h3>质控要求</h3><ul><li>菌落总数：营养琼脂 36 ℃±1 ℃ 培养 48 h±2 h；计数 30~300 CFU 为宜。</li><li>多管发酵：乳糖蛋白胨培养液，36 ℃±1 ℃ 培养 24 h±2 h 初发酵，复发酵/证实试验确认。</li><li>每批做空白、阳性、阴性对照。</li></ul></div>
+            <div class="qc-box"><h3>质控要求</h3><ul><li>菌落总数：营养琼脂 36 ℃±1 ℃ 培养 48 h±2 h；取菌落数 30~300 CFU 的平皿计数；每次检验做 1 个平行接种（2 个平皿），另做 1 个只倾注培养基的空白对照平皿。</li><li>多管发酵：乳糖蛋白胨培养液，36 ℃±1 ℃ 培养 24 h±2 h 初发酵，复发酵/证实试验确认。</li><li>每批做空白、阳性、阴性对照。</li></ul></div>
             <div class="qc-box"><h3>注意事项</h3><ul><li>水样 4 ℃ 保存、≤4 h 送检（最大 24 h）。</li><li>采样瓶无菌、不装满（留排气空间），避免手触瓶口。</li><li>二次供水需采水箱出水与末梢水；直饮水采终端出水。</li></ul></div>
           </div>
         </div>
@@ -5162,6 +5164,12 @@ function cgInit(){
     if(v>=100){ var s=v.toExponential(1), p=s.split('e'); return p[0]+'×10'+sup(parseInt(p[1],10)); }
     return anRound(v,0);
   }
+  // 水质菌落总数报告格式（GB/T 5750.12—2023 4.1.5.2.8）：≤100 按实有数报告；>100 取两位有效数字，可用 10 的指数表示（如 16 400 → 1.6×10⁴）
+  function anReport2(v){
+    if(v==null || isNaN(v)) return '—';
+    if(v<100) return '' + Math.round(v);
+    var s=v.toExponential(1), p=s.split('e'); return p[0]+'×10'+sup(parseInt(p[1],10));
+  }
 
   // --- 空气：自然沉降法（CFU/皿，不需平皿面积） ---
   function anAirCalc(){
@@ -5253,19 +5261,25 @@ function cgInit(){
     if(t==='pure') return { colony: 50, label:'直饮水 ≤50 CFU/mL' };
     return { colony: 100, label:'生活饮用水/二次供水 ≤100 CFU/mL' };
   }
+  // 平皿计数法：每份水样做 1 个平行接种（2 个平行平皿），第 3 皿为可选（第三皿 / 备用皿）；空白对照皿不计入
   function anWColonyCalc(){
-    var cfu = anNum(document.getElementById('anWColony').value);
+    var plates = [];
+    ['anWColony','anWColony2','anWColony3'].forEach(function(id){
+      var v = anNum(document.getElementById(id).value); if(v!=null) plates.push(v); });
     var vol = anNum(document.getElementById('anWVol').value);
     var dil = anNum(document.getElementById('anWDil').value);
     var out = document.getElementById('anWColonyRes'), vd = document.getElementById('anWColonyVerdict');
-    if(cfu==null || vol==null || vol<=0){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; return; }
+    if(plates.length===0 || vol==null || vol<=0){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; return; }
+    var sum=0; for(var i=0;i<plates.length;i++){ sum += plates[i]; }
+    var avg = sum/plates.length;
     var d = (dil==null || dil<=0) ? 1 : dil;
-    var c = cfu*d/vol; out.textContent = anRound(c,0);
+    var c = avg*d/vol; out.textContent = anReport2(c);
     var lim = anWLimit().colony; var ok = c<=lim;
-    vd.textContent = ok ? ('合格（' + anWLimit().label + '）') : ('超标（>' + lim + ' CFU/mL）');
+    var head = ok ? ('合格（' + anWLimit().label + '）') : ('超标（>' + lim + ' CFU/mL）');
+    vd.textContent = head + '｜' + plates.length + ' 皿平均 ' + anRound(avg,0) + ' CFU';
     vd.className = 'verdict ' + (ok?'ok':'bad');
   }
-  ['anWType','anWColony','anWVol','anWDil'].forEach(function(id){
+  ['anWType','anWColony','anWColony2','anWColony3','anWVol','anWDil'].forEach(function(id){
     document.getElementById(id).addEventListener('input', anWColonyCalc);
     document.getElementById(id).addEventListener('change', anWColonyCalc); });
   anWColonyCalc();
