@@ -1698,21 +1698,35 @@
 
           <div class="an-h">送风中细菌总数（撞击法）</div>
           <div class="an-grid">
-            <div class="an-cell"><div class="lbl">捕获菌落数（个）</div><input type="number" id="anBacN" step="any"></div>
-            <div class="an-cell"><div class="lbl">采样流量（L/min）</div><input type="number" id="anBacQ" step="any"></div>
-            <div class="an-cell"><div class="lbl">采样时间（min）</div><input type="number" id="anBacT" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 1（CFU）</div><input type="number" id="anBacC1" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 2（CFU）</div><input type="number" id="anBacC2" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 3（CFU）</div><input type="number" id="anBacC3" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 4（CFU）</div><input type="number" id="anBacC4" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 5（CFU）</div><input type="number" id="anBacC5" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 6（CFU）</div><input type="number" id="anBacC6" step="any"></div>
           </div>
-          <div class="res-box std"><div class="tag">C = 菌落数 / (流量×时间) × 1000</div>
+          <div class="an-grid">
+            <div class="an-cell"><div class="lbl">采样流量（L/min）</div><input type="number" id="anBacQ" step="any" value="28.3"></div>
+            <div class="an-cell"><div class="lbl">采样时间（min）</div><input type="number" id="anBacT" step="any" value="5"></div>
+          </div>
+          <div class="res-box std"><div class="tag">C = Σ菌落数（6 皿之和） / (流量×时间) × 1000</div>
             <div class="val"><span id="anBacRes">—</span><span class="unit">CFU/m³</span></div>
             <div class="verdict" id="anBacVerdict"></div></div>
 
           <div class="an-h">送风中真菌总数（撞击法）</div>
           <div class="an-grid">
-            <div class="an-cell"><div class="lbl">捕获菌落数（个）</div><input type="number" id="anFunN" step="any"></div>
-            <div class="an-cell"><div class="lbl">采样流量（L/min）</div><input type="number" id="anFunQ" step="any"></div>
-            <div class="an-cell"><div class="lbl">采样时间（min）</div><input type="number" id="anFunT" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 1（CFU）</div><input type="number" id="anFunC1" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 2（CFU）</div><input type="number" id="anFunC2" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 3（CFU）</div><input type="number" id="anFunC3" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 4（CFU）</div><input type="number" id="anFunC4" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 5（CFU）</div><input type="number" id="anFunC5" step="any"></div>
+            <div class="an-cell"><div class="lbl">平皿 6（CFU）</div><input type="number" id="anFunC6" step="any"></div>
           </div>
-          <div class="res-box std"><div class="tag">C = 菌落数 / (流量×时间) × 1000</div>
+          <div class="an-grid">
+            <div class="an-cell"><div class="lbl">采样流量（L/min）</div><input type="number" id="anFunQ" step="any" value="28.3"></div>
+            <div class="an-cell"><div class="lbl">采样时间（min）</div><input type="number" id="anFunT" step="any" value="5"></div>
+          </div>
+          <div class="res-box std"><div class="tag">C = Σ菌落数（6 皿之和） / (流量×时间) × 1000</div>
             <div class="val"><span id="anFunRes">—</span><span class="unit">CFU/m³</span></div>
             <div class="verdict" id="anFunVerdict"></div></div>
 
@@ -1768,7 +1782,7 @@
 
           <div class="toggle" id="anAcTog"><span class="arrow">▶</span><span>查看方法 / 计算规则 / 质控 / 注意事项</span></div>
           <div class="collapse" id="anAcDet">
-            <div class="legend"><b>计算规则</b><div>撞击法：C(CFU/m³) = 捕获菌落数 / (采样流量 L/min × 采样时间 min) × 1000。采样空气量 = 流量 × 时间（L）。积尘量(g/m²) = 积尘质量(g) / 采样面积(m²)。积尘中菌数(CFU/g) = 菌落数 / 积尘质量(g)。</div></div>
+            <div class="legend"><b>计算规则</b><div>撞击法：C(CFU/m³) = Σ菌落数 / (采样流量 L/min × 采样时间 min) × 1000。六级筛孔撞击式采样器 6 个平皿分别计数，Σ菌落数 = 6 皿菌落数之和（未填的皿按 0 计）；采样空气量 = 流量 × 时间（L）。积尘量(g/m²) = 积尘质量(g) / 采样面积(m²)。积尘中菌数(CFU/g) = 菌落数 / 积尘质量(g)。</div></div>
             <div class="legend"><b>评价标准（GB 37488-2019 表3）</b><div>送风细菌总数 ≤ 500 CFU/m³；送风真菌总数 ≤ 500 CFU/m³；β-溶血性链球菌 不得检出；风管内表面积尘量 ≤ 20 g/m²；积尘中细菌/真菌总数 ≤ 100 CFU/cm²；冷却水、冷凝水 嗜肺军团菌 不得检出。</div></div>
             <div class="qc-box"><h3>质控要求</h3><ul><li>撞击法采样器流量校准；每点平行样；空白对照。</li><li>军团菌：GVPC 选择性培养基，36 ℃±1 ℃ 培养 7~10 d，疑似菌落 BCYE 生长、BCYE-CYA 不生长确认。</li><li>积尘采样用无纺布或玻砂过滤器，称量至 0.1 mg。</li></ul></div>
             <div class="qc-box"><h3>注意事项</h3><ul><li>送风口采样避开涡流，采样头迎风。</li><li>军团菌样品 2~4 ℃ 避光保存、≤24 h 送检；禁止冻结。</li><li>溶血性链球菌用血平板，菌落周围透明溶血环判定。</li></ul></div>
@@ -5171,18 +5185,23 @@ function cgInit(){
     ['anAirC1','anAirC2','anAirC3','anAirC4','anAirC5'].forEach(function(id){ document.getElementById(id).value=''; });
     anAirCalc(); });
 
-  // --- 空调：撞击法送风菌/真菌 ---
+  // --- 空调：撞击法送风菌/真菌（六级筛孔撞击式，6 个平皿计数求和） ---
   function anImpCalc(pre, lim){
-    var n = anNum(document.getElementById(pre+'N').value);
+    var vals=[], any=false;
+    ['C1','C2','C3','C4','C5','C6'].forEach(function(s){
+      var el=document.getElementById(pre+s); var v=anNum(el?el.value:null);
+      if(v!=null){ vals.push(v); any=true; } });
     var q = anNum(document.getElementById(pre+'Q').value);
     var ti = anNum(document.getElementById(pre+'T').value);
     var out = document.getElementById(pre+'Res'), vd = document.getElementById(pre+'Verdict');
-    if(n==null || q==null || ti==null || q<=0 || ti<=0){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; return; }
+    if(!any || q==null || ti==null || q<=0 || ti<=0){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; return; }
+    var n = vals.reduce(function(a,b){return a+b;},0);
     var c = n/(q*ti)*1000; out.textContent = anSci1(c);
     var ok = c<=lim; vd.textContent = ok ? ('合格（≤'+lim+' CFU/m³）') : ('超标（>'+lim+' CFU/m³）'); vd.className = 'verdict ' + (ok?'ok':'bad');
   }
-  ['anBacN','anBacQ','anBacT'].forEach(function(id){ document.getElementById(id).addEventListener('input', function(){ anImpCalc('anBac',500); }); });
-  ['anFunN','anFunQ','anFunT'].forEach(function(id){ document.getElementById(id).addEventListener('input', function(){ anImpCalc('anFun',500); }); });
+  ['C1','C2','C3','C4','C5','C6','Q','T'].forEach(function(s){
+    document.getElementById('anBac'+s).addEventListener('input', function(){ anImpCalc('anBac',500); });
+    document.getElementById('anFun'+s).addEventListener('input', function(){ anImpCalc('anFun',500); }); });
   anImpCalc('anBac',500); anImpCalc('anFun',500);
 
   // 溶血性链球菌（定性）
