@@ -326,6 +326,13 @@
   .dl-grid-fig svg{max-width:100%;height:auto;background:#f8fbfa;border:1px solid var(--line);border-radius:10px;}
   .dl-grid-fig.portrait svg{max-height:430px;}
   .dl-grid-fig .grid-cap{font-size:11.5px;color:var(--sub);margin-top:6px;line-height:1.6;}
+  /* 遮光球位置与晴天使用示例图（室外测点说明内，点按展开） */
+  .shade-btn{font:inherit;font-size:12px;font-weight:700;color:#fff;background:var(--c-navy,#14456F);
+    border:0;border-radius:8px;padding:6px 14px;cursor:pointer;line-height:1.4;}
+  .shade-btn:hover{filter:brightness(1.12);}
+  .sch-shade-fig{display:none;margin-top:10px;text-align:center;}
+  .sch-shade-fig.shown{display:block;}
+  .sch-shade-fig svg{max-width:100%;height:auto;background:#ffffff;border:1px solid var(--line);border-radius:10px;}
   /* ==DL-CSS-END== */
   .sch-block{background:rgba(19,184,117,.035);border:1px solid var(--line);border-radius:12px;
     padding:14px;margin-top:14px;}
@@ -975,7 +982,14 @@
 
         <details class="dl-fold note-fold" style="margin-top:10px">
           <summary class="dl-fold-h"><span class="dl-fold-t">室外测点说明</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
-          <div class="dl-body"><div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div></div>
+          <div class="dl-body">
+            <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div>
+            <div class="sch-grid-info" style="margin-top:8px">
+              <b>遮光球位置与晴天使用要点（GB/T 5699—2025 附录 A）</b>：室外需分别测<b>总照度</b>与<b>天空光照度</b>（二者之差即太阳直射光照度，A.1.3.1）。测天空光照度时须用<b>遮光球</b>把太阳直射光挡住（A.1.3.3）——球置于光接收器<b>正上方同一竖直线上</b>，大小以接收器<b>刚好完全处于阴影之中</b>为准，球表面<b>涂黑</b>，球与接收器<b>距离应大于 0.5 m</b>，<b>支承杆宜尽可能细</b>（A.1.3.4）；接收器水平放置并避免地面反射光影响（6.2.2）；全程位置与高度不变。
+              <div style="margin-top:8px"><button type="button" class="shade-btn" id="dlShadeBtn">显示示例图</button></div>
+            </div>
+            <div class="sch-shade-fig" id="dlShadeFig"></div>
+          </div>
         </details>
         </div><!-- /⑤-A 学校教室 -->
         <div class="dl-sub" style="border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:rgba(255,255,255,.5)">
@@ -4420,6 +4434,142 @@
     out.push('<div class="grid-cap">按间距 d = '+d.toFixed(d<1?1:0)+' m、距墙 dq = '+dq.toFixed(dq<1?1:0)+' m 划分，共 <b>'+gnx+' 列 × '+gny+' 行 = '+pts.length+' 个测点</b>，测点取<b>网格中心</b>；图中实线即距墙 dq 处的网格边界。实际布点请结合房间形状并在原始记录中注明方式。</div>');
     fig.innerHTML = out.join('');
     fig.style.display='block';
+  }
+  /* ============ 遮光球位置与晴天使用示例图（GB/T 5699-2025 A.1.3.3 / A.1.3.4） ============
+     用途：室外测点说明里的示意插图。左图——遮光球把太阳直射光挡住，使光接收器
+     只接收天空漫射光（天空光照度）；右图——晴天「先总照度、再天空光照度」两步操作示意。
+     均为纯 SVG 自绘（无外部资源），与页面既有布点图同一配色与线型语言。 */
+  function shadeBallSvg(){
+    var W = 680, H = 340;
+    var C_TXT='#103325', C_SUB='#5b7569', C_LINE='#9fb8ad', C_ACC='#13b875', C_BD='#4a5f57';
+    var C_NAVY='#14456F', C_SUN='#e6a112', C_FAINT='#f2f6f4';
+    var F = ' font-family="Arial,Microsoft YaHei,sans-serif"';
+    var o = [];
+    o.push('<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img">');
+    o.push('<rect x="0" y="0" width="'+W+'" height="'+H+'" fill="#ffffff"/>');
+    /* 浅色分隔：左右两幅（虚线中缝） */
+    o.push('<line x1="340" y1="14" x2="340" y2="'+(H-16)+'" stroke="'+C_LINE+'" stroke-width="1" stroke-dasharray="5 5"/>');
+
+    /* ================= 左图：遮光球挡住直射阳光 ================= */
+    var lw = 318, lx0 = 12;
+    var gt = 42;                 /* 图题基线 */
+    var gy = 214;                /* 地面 */
+    o.push('<text x="'+(lx0+2)+'" y="'+gt+'" font-size="12.5" font-weight="700" fill="'+C_NAVY+'"'+F+'>① 遮光球挡直射光（测天空光照度）</text>');
+    /* 地面 */
+    o.push('<line x1="'+lx0+'" y1="'+gy+'" x2="'+(lx0+lw)+'" y2="'+gy+'" stroke="'+C_BD+'" stroke-width="1.6"/>');
+    for(var gx = lx0+8; gx < lx0+lw-4; gx += 12)
+      o.push('<line x1="'+gx+'" y1="'+gy+'" x2="'+(gx-5)+'" y2="'+(gy+6)+'" stroke="'+C_LINE+'" stroke-width="1"/>');
+    /* 太阳（左上角，不压图题） */
+    var sx = lx0+30, sy = 84, sr = 15;
+    o.push('<circle cx="'+sx+'" cy="'+sy+'" r="'+sr+'" fill="'+C_SUN+'"/>');
+    /* 光芒只画下半圈（上半圈会顶到图题） */
+    for(var a = 15; a <= 165; a += 30){
+      var rad = a*Math.PI/180;
+      o.push('<line x1="'+(sx+Math.cos(rad)*(sr+3.5)).toFixed(1)+'" y1="'+(sy+Math.sin(rad)*(sr+3.5)).toFixed(1)+
+             '" x2="'+(sx+Math.cos(rad)*(sr+9)).toFixed(1)+'" y2="'+(sy+Math.sin(rad)*(sr+9)).toFixed(1)+
+             '" stroke="'+C_SUN+'" stroke-width="2"/>');
+    }
+    o.push('<text x="'+(sx+sr+6)+'" y="'+(sy-3)+'" font-size="9" font-weight="700" fill="'+C_SUN+'"'+F+'>太阳</text>');
+    /* 接收器（照度计探头，水平放置）：靠地面 */
+    var rx = lx0+168, ry = gy - 9;
+    /* 测杆 */
+    o.push('<line x1="'+(rx-15)+'" y1="'+(ry+5)+'" x2="'+(rx-15)+'" y2="'+gy+'" stroke="'+C_TXT+'" stroke-width="1"/>');
+    o.push('<line x1="'+(rx+15)+'" y1="'+(ry+5)+'" x2="'+(rx+15)+'" y2="'+gy+'" stroke="'+C_TXT+'" stroke-width="1"/>');
+    /* 遮光球（涂黑）+ 细支承杆，位于接收器正上方同一竖直线 */
+    var bx = rx, by = 138, br = 23;
+    o.push('<line x1="'+bx+'" y1="'+(by+br)+'" x2="'+bx+'" y2="'+(ry-5)+'" stroke="#1b1b1b" stroke-width="1.4"/>');
+    o.push('<circle cx="'+bx+'" cy="'+by+'" r="'+br+9+'" fill="#ffffff" opacity="0.9"/>');
+    o.push('<circle cx="'+bx+'" cy="'+by+'" r="'+br+4+'" fill="#4a4a4a" opacity="0.35"/>');
+    o.push('<circle cx="'+bx+'" cy="'+by+'" r="'+br+'" fill="#1b1b1b" stroke="#000" stroke-width="1.2"/>');
+    o.push('<circle cx="'+(bx-br*0.33).toFixed(1)+'" cy="'+(by-br*0.35).toFixed(1)+'" r="'+(br*0.2).toFixed(1)+'" fill="#ffffff" opacity="0.3"/>');
+    /* 被挡住的直射光：太阳 → 球（斜向下），虚线；文字放在线下方、不压线 */
+    o.push('<line x1="'+(sx+sr+2)+'" y1="'+(sy+5)+'" x2="'+(bx-br-6)+'" y2="'+(by-9)+'" stroke="'+C_SUN+'" stroke-width="1.6" stroke-dasharray="6 4"/>');
+    o.push('<text x="'+(sx+30)+'" y="'+(sy+48)+'" font-size="9" fill="'+C_SUN+'"'+F+'>太阳直射光</text>');
+    /* 球把直射光挡住：球后方用一小段深色弧表示被截断 */
+    o.push('<path d="M '+(bx-br-4)+' '+(by-14)+' A '+(br+4)+' '+(br+4)+' 0 0 1 '+(bx-br-2)+' '+(by+14)+
+           '" fill="none" stroke="'+C_SUN+'" stroke-width="2.4" opacity="0.6"/>');
+    /* 阴影提示：球正下方的斜线区（接收器在其中） */
+    var shW = br + 7;
+    o.push('<path d="M '+(bx-shW)+' '+ry+' L '+(bx+shW)+' '+ry+' L '+(bx+shW+3)+' '+(gy+7)+' L '+(bx-shW-3)+' '+(gy+7)+' Z" fill="#dfe7e3" opacity="0.85"/>');
+    /* 天空漫射光：自上方竖直向下射到接收器（不受球影响）——“散射来自各方向” */
+    for(var k = 0; k < 4; k++){
+      var ax = bx - 84 + k*26;
+      if(ax > bx-40 && ax < bx+40) continue;   /* 避开球体 */
+      o.push('<line x1="'+ax+'" y1="'+(gt+14)+'" x2="'+ax+'" y2="'+(ry-24)+'" stroke="'+C_NAVY+'" stroke-width="1.1" opacity="0.5"/>');
+      o.push('<path d="M '+ax+' '+(ry-26)+' l 4.5 8 l -9 0 z" fill="'+C_NAVY+'" opacity="0.5"/>');
+    }
+    o.push('<text x="'+(lx0+66)+'" y="'+(gt+15)+'" font-size="9.5" font-weight="700" fill="'+C_NAVY+'"'+F+'>天空漫射光（各方向）</text>');
+    /* 接收器本体 */
+    o.push('<rect x="'+(rx-21)+'" y="'+(ry-5)+'" width="42" height="10" rx="2.5" fill="'+C_ACC+'" stroke="'+C_TXT+'" stroke-width="1"/>');
+    o.push('<text x="'+(rx+26)+'" y="'+(ry+4)+'" font-size="9.5" font-weight="700" fill="'+C_SUB+'"'+F+'>光接收器</text>');
+    o.push('<text x="'+(bx+br+10)+'" y="'+(by-9)+'" font-size="9.5" font-weight="700" fill="'+C_TXT+'"'+F+'>遮光球</text>');
+    o.push('<text x="'+(bx+br+10)+'" y="'+(by+3)+'" font-size="8.4" fill="'+C_SUB+'"'+F+'>（表面涂黑）</text>');
+    /* ＞0.5 m 距离标注（球心 → 接收器，右侧竖尺寸线） */
+    var dxl = lx0+252;
+    o.push('<line x1="'+dxl+'" y1="'+by+'" x2="'+dxl+'" y2="'+ry+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
+    o.push('<line x1="'+(dxl-4)+'" y1="'+by+'" x2="'+(dxl+4)+'" y2="'+by+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
+    o.push('<line x1="'+(dxl-4)+'" y1="'+ry+'" x2="'+(dxl+4)+'" y2="'+ry+'" stroke="'+C_ACC+'" stroke-width="1.2"/>');
+    o.push('<line x1="'+(bx+br)+'" y1="'+by+'" x2="'+(dxl+4)+'" y2="'+by+'" stroke="'+C_ACC+'" stroke-width="0.7" stroke-dasharray="3 2"/>');
+    o.push('<line x1="'+(rx+21)+'" y1="'+ry+'" x2="'+(dxl+4)+'" y2="'+ry+'" stroke="'+C_ACC+'" stroke-width="0.7" stroke-dasharray="3 2"/>');
+    o.push('<text x="'+(dxl+5)+'" y="'+(((by+ry)/2)+3.6).toFixed(1)+'" font-size="10" font-weight="700" fill="'+C_ACC+'"'+F+'>&#65276;0.5 m</text>');
+    /* 接收器水平放置 + 处于球阴影中 */
+    o.push('<text x="'+(lx0+2)+'" y="'+(ry+26)+'" font-size="8.8" fill="'+C_SUB+'"'+F+'>接收器水平放置并处于球的阴影之中</text>');
+    /* 说明文字（图下方三行） */
+    o.push('<text x="'+(lx0+2)+'" y="'+(H-40)+'" font-size="9.6" fill="'+C_SUB+'"'+F+'>球大小以接收器「刚好完全处于阴影之中」为准，</text>');
+    o.push('<text x="'+(lx0+2)+'" y="'+(H-27)+'" font-size="9.6" fill="'+C_SUB+'"'+F+'>球与接收器距离 &gt; 0.5 m，支承杆宜尽可能细。</text>');
+    o.push('<text x="'+(lx0+2)+'" y="'+(H-13)+'" font-size="9.3" fill="'+C_ACC+'"'+F+'>依据 GB/T 5699—2025 A.1.3.3、A.1.3.4</text>');
+
+    /* ================= 右图：晴天两步操作流程 ================= */
+    var rx0 = 358;
+    o.push('<text x="'+(rx0+2)+'" y="'+gt+'" font-size="12.5" font-weight="700" fill="'+C_NAVY+'"'+F+'>② 晴天使用步骤（A.1.3.1）</text>');
+    var steps = [
+      ['1', '测【总照度】', '接收器水平放置，不加任何遮挡，\n读数为「总照度」。（6.2.2）'],
+      ['2', '测【天空光照度】', '同一位置加上遮光球挡住直射阳光，\n读数为「天空光照度」。（A.1.3.3）'],
+      ['3', '求【太阳直射光照度】', '总照度 − 天空光照度 = 太阳直射光照度。（A.1.3.1）']
+    ];
+    var byi = gt + 10, bh = 52, bgap = 11;
+    steps.forEach(function(s, i){
+      var y = byi + i*(bh+bgap);
+      o.push('<rect x="'+rx0+'" y="'+y+'" width="'+(W-rx0-14)+'" height="'+bh+'" rx="8" fill="'+C_FAINT+'" stroke="'+C_LINE+'" stroke-width="1"/>');
+      o.push('<circle cx="'+(rx0+20)+'" cy="'+(y+bh/2)+'" r="11" fill="'+C_NAVY+'"/>');
+      o.push('<text x="'+(rx0+20)+'" y="'+(y+bh/2+4)+'" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff"'+F+'>'+s[0]+'</text>');
+      o.push('<text x="'+(rx0+40)+'" y="'+(y+21)+'" font-size="11.2" font-weight="700" fill="'+C_TXT+'"'+F+'>'+s[1]+'</text>');
+      var ls = s[2].split('\n');
+      ls.forEach(function(ln, k){
+        o.push('<text x="'+(rx0+40)+'" y="'+(y+37+k*14)+'" font-size="9.6" fill="'+C_SUB+'"'+F+'>'+ln+'</text>');
+      });
+      if(i < steps.length-1)
+        o.push('<path d="M '+(rx0+20)+' '+(y+bh+1)+' l 5 6 l -10 0 z" fill="'+C_ACC+'"/>');
+    });
+    /* 注意事项 */
+    var wy = byi + steps.length*(bh+bgap) + 2;
+    o.push('<rect x="'+rx0+'" y="'+wy+'" width="'+(W-rx0-14)+'" height="'+(H-wy-26)+'" rx="8" fill="#fff8e8" stroke="'+C_SUN+'" stroke-width="1"/>');
+    o.push('<text x="'+(rx0+10)+'" y="'+(wy+16)+'" font-size="10.2" font-weight="700" fill="'+C_SUN+'"'+F+'>晴天法适用与修正</text>');
+    o.push('<text x="'+(rx0+10)+'" y="'+(wy+31)+'" font-size="9.4" fill="'+C_SUB+'"'+F+'>· 仅当无法在全阴天测量、且室外遮挡影响小时采用（6.1.1）；须无云、CIE 标准全晴天；</text>');
+    o.push('<text x="'+(rx0+10)+'" y="'+(wy+44)+'" font-size="9.4" fill="'+C_SUB+'"'+F+'>· 单侧采光时结果须按表 A.1 修正系数「除以」相应数值，折算到全阴天标准值；</text>');
+    o.push('<text x="'+(rx0+10)+'" y="'+(wy+57)+'" font-size="9.4" fill="'+C_SUB+'"'+F+'>· 测量须选择无直射阳光进入室内时进行（A.1.2.4）。</text>');
+    o.push('</svg>');
+    return o.join('');
+  }
+  function dlRenderShade(){
+    var box = $sch('dlShadeFig');
+    if(!box) return;
+    if(!box.innerHTML) box.innerHTML = shadeBallSvg();
+  }
+  var __shadeBtn = $sch('dlShadeBtn');
+  if(__shadeBtn){
+    __shadeBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      var box = $sch('dlShadeFig');
+      if(!box) return;
+      if(box.classList.contains('shown')){
+        box.classList.remove('shown'); box.innerHTML = '';
+        __shadeBtn.textContent = '显示示例图';
+      } else {
+        box.innerHTML = shadeBallSvg(); box.classList.add('shown');
+        __shadeBtn.textContent = '收起示例图';
+      }
+    });
   }
   function dlCalc(){
     var elL = $sch('dlLen'), elB = $sch('dlWid'), tip = $sch('dlTip');
