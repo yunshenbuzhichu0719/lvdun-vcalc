@@ -979,18 +979,6 @@
           <div class="raw" id="dlNRaw"></div>
         </div>
         <div class="dl-grid-fig portrait" id="dlGridFig"></div>
-
-        <details class="dl-fold note-fold" style="margin-top:10px">
-          <summary class="dl-fold-h"><span class="dl-fold-t">室外测点说明</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
-          <div class="dl-body">
-            <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。</div>
-            <div class="sch-grid-info" style="margin-top:8px">
-              <b>遮光球位置与晴天使用要点（GB/T 5699—2025 附录 A）</b>：室外需分别测<b>总照度</b>与<b>天空光照度</b>（二者之差即太阳直射光照度，A.1.3.1）。测天空光照度时须用<b>遮光球</b>把太阳直射光挡住（A.1.3.3）——球置于光接收器<b>正上方同一竖直线上</b>，大小以接收器<b>刚好完全处于阴影之中</b>为准，球表面<b>涂黑</b>，球与接收器<b>距离应大于 0.5 m</b>，<b>支承杆宜尽可能细</b>（A.1.3.4）；接收器水平放置并避免地面反射光影响（6.2.2）；全程位置与高度不变。
-              <div style="margin-top:8px"><button type="button" class="shade-btn" id="dlShadeBtn">显示示例图</button></div>
-            </div>
-            <div class="sch-shade-fig" id="dlShadeFig"></div>
-          </div>
-        </details>
         </div><!-- /⑤-A 学校教室 -->
         <div class="dl-sub" style="border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:rgba(255,255,255,.5)">
           <div class="dl-h" style="margin-top:2px">室内布点 · 其他室内（GB/T 5699-2025 表 1 面积分级）</div>
@@ -1027,10 +1015,6 @@
             </div>
           </div>
           <div class="dl-grid-fig" id="dlGridFig2"></div>
-          <details class="dl-fold note-fold" style="margin-top:10px">
-            <summary class="dl-fold-h"><span class="dl-fold-t">室外测点说明</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
-            <div class="dl-body"><div class="sch-grid-info" id="dlTip2"></div></div>
-          </details>
         </div><!-- /⑤-B 其他室内 -->
 
         <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量）</label>
@@ -1087,6 +1071,19 @@
         <div class="sch-grid-info">室外测点（1 个）<b>全程连续记录</b>，第 5 列按<b>同一时刻</b>对应填入；采光系数平均值 C<sub>av</sub> = ΣC<sub>i</sub> / n，采光均匀度 U = C<sub>min</sub> / C<sub>av</sub>。序号行数按实际测点数增减。</div>
         </details>
 
+        <!-- 室外测点说明（统一一条，室内布点方式 ⑤-A/⑤-B 通用） -->
+        <details class="dl-fold note-fold" style="margin-top:10px">
+          <summary class="dl-fold-h"><span class="dl-fold-t">室外测点说明</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
+          <div class="dl-body">
+            <div class="sch-grid-info" id="dlTip">室外测点始终只需 1 个（全程连续记录），不与室内测点数对应——室内布点无论按<b>学校教室</b>（1 m×1 m 网格）还是<b>其他室内</b>（面积分级）布置，室外均为同一点。</div>
+            <div class="sch-grid-info" style="margin-top:8px"><b>常规（全阴天）</b>：室外测点选周围无遮挡的空地或建筑物屋顶，接收器与遮挡物形成的<b>遮挡角 α &lt; 10°</b>（或距离与高度之比 &gt; 6 倍）；接收器<b>水平放置</b>并避免地面反射光影响；<b>全程位置、高度不变</b>，与室内<b>同时测量</b>。</div>
+            <div class="sch-grid-info" style="margin-top:8px">
+              <b>遮光球位置与晴天使用要点（GB/T 5699—2025 附录 A）</b>：晴天需分别测<b>总照度</b>与<b>天空光照度</b>（二者之差即太阳直射光照度，A.1.3.1）。测天空光照度时须用<b>遮光球</b>把太阳直射光挡住（A.1.3.3）——球置于光接收器<b>正上方同一竖直线上</b>，大小以接收器<b>刚好完全处于阴影之中</b>为准，球表面<b>涂黑</b>，球与接收器<b>距离应大于 0.5 m</b>，<b>支承杆宜尽可能细</b>（A.1.3.4）；接收器水平放置并避免地面反射光影响（6.2.2）；全程位置与高度不变。
+              <div style="margin-top:8px"><button type="button" class="shade-btn" id="dlShadeBtn">显示示例图</button></div>
+            </div>
+            <div class="sch-shade-fig" id="dlShadeFig"></div>
+          </div>
+        </details>
 
       </div>
 
@@ -4572,7 +4569,7 @@
     });
   }
   function dlCalc(){
-    var elL = $sch('dlLen'), elB = $sch('dlWid'), tip = $sch('dlTip');
+    var elL = $sch('dlLen'), elB = $sch('dlWid');
     if(!elL || !elB) return;
     var L = parseFloat(elL.value), B = parseFloat(elB.value);
     var ok = isFinite(L) && isFinite(B) && L > 0 && B > 0;
@@ -4580,7 +4577,6 @@
       schSetBox('dlAreaV','dlAreaRaw','—','');
       schSetBox('dlSpV','dlSpRaw','—','');
       schSetBox('dlNv','dlNRaw','—','');
-      if(tip) tip.textContent = '室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。';
       var fig=$sch('dlGridFig'); if(fig){ fig.style.display='none'; fig.innerHTML=''; }
       return;
     }
@@ -4591,7 +4587,6 @@
     schSetBox('dlAreaV','dlAreaRaw', roundHalfEven(S,1).toFixed(1), '');
     schSetBox('dlSpV','dlSpRaw', D.toFixed(0), '');
     schSetBox('dlNv','dlNRaw', String(gb.n), '');
-    if(tip) tip.innerHTML = '室外测点仍为 <b>1 个</b>（全程连续记录），室内外<b>同时测量</b>。';
     dlRenderGrid(L, B, D, t.dq, gb.nx, gb.ny, gb.n);
   }
   ['dlLen','dlWid'].forEach(function(id){
@@ -4600,7 +4595,7 @@
   });
   dlCalc();
   function dlCalc2(){
-    var elL = $sch('dlLen2'), elB = $sch('dlWid2'), tip = $sch('dlTip2');
+    var elL = $sch('dlLen2'), elB = $sch('dlWid2');
     if(!elL || !elB) return;
     var L = parseFloat(elL.value), B = parseFloat(elB.value);
     var ok = isFinite(L) && isFinite(B) && L > 0 && B > 0;
@@ -4609,7 +4604,6 @@
       schSetBox('dlSpV2','dlSpRaw2','—','');
       schSetBox('dlDqV2','dlDqRaw2','—','');
       schSetBox('dlNv2','dlNRaw2','—','');
-      if(tip) tip.textContent = '室外测点始终只需 1 个（全程连续记录），不与室内测点数对应。';
       var fig = $sch('dlGridFig2'); if(fig){ fig.style.display='none'; fig.innerHTML=''; }
       return;
     }
@@ -4622,7 +4616,6 @@
     schSetBox('dlDqV2','dlDqRaw2', dq.toFixed(dq < 1 ? 1 : 0), '');
     schSetBox('dlNv2','dlNRaw2', String(gb.n), '');
     dlRenderGrid2(L, B, d, dq, gb.nx, gb.ny, gb.n);
-    if(tip) tip.innerHTML = '室外测点仍为 <b>1 个</b>（全程连续记录），室内外<b>同时测量</b>。';
   }
   ['dlLen2','dlWid2'].forEach(function(id){
     var e = $sch(id); if(!e) return;
