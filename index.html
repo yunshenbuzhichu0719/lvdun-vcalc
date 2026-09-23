@@ -1117,7 +1117,6 @@
     <label>室外照度计编号</label><input id="cgInstrOut">
   </div>
   <div class="sch-row">
-    <label>室外天空光照度 E外（lx）</label><input id="cgEOut" type="number" step="any">
     <label>室外总照度（lx，选填）</label><input id="cgTotal" type="number" step="any">
     <label>太阳直射光照度（lx，选填）</label><input id="cgDirect" type="number" step="any">
     <label>晴天修正系数 b（晴天时填）</label><input id="cgB" type="number" step="any">
@@ -1128,11 +1127,8 @@
     <label>陪同人</label><input id="cgCompany">
     <label>检测日期</label><input id="cgDate">
   </div>
-  <p class="sch-desc">室内照度实测值（lx，按布点顺序 1–20 填写）：</p>
-  <div id="cgCells" class="cg-cells"></div>
+  <p class="sch-desc" id="cgAuto"></p>
   <div class="sch-row">
-    <button id="cgGenCells" class="sub-btn">生成 20 个测点格</button>
-    <button id="cgClearCells" class="sub-btn">清空</button>
     <button id="cgExport" class="primary-btn">导出采光系数记录表（Word）</button>
   </div>
   <p id="cgMsg" class="sch-msg"></p>
@@ -4934,23 +4930,30 @@ function cgCollect(){
   D.place = g('cgPlace'); D.time = g('cgTime'); D.sky = g('cgSky');
   D.instr = g('cgInstr'); D.inNo = g('cgInstrIn'); D.outNo = g('cgInstrOut');
   D.oper = g('cgOper'); D.checker = g('cgChecker'); D.company = g('cgCompany'); D.date = g('cgDate');
-  D.eOut = parseFloat(g('cgEOut'));
   D.total = g('cgTotal'); D.direct = g('cgDirect'); D.b = g('cgB');
-  var eIn = [], i;
+  /* 室内 / 室外照度不再手工录入，自动取自 ⑤ 采光系数计算格：
+     室内 = schCdE（各测点照度值 Eₙ），室外 = schEw（按序与室内测点一一对应）。 */
+  var V = cgAutoVals();
+  var sIn = V.inArr, sOut = V.outArr, nIn = Math.min(sIn.length, 20), nOut = sOut.length;
+  var eIn = [], eOut = [], i;
   for(i = 1; i <= 20; i++){
-    var v = parseFloat(g('cgIn' + i));
-    eIn.push(isFinite(v) ? v : '');
+    eIn.push(i <= nIn ? sIn[i - 1] : '');
+    eOut.push((i <= nIn && nOut > 0) ? sOut[(i - 1) % nOut] : '');
   }
-  D.eIn = eIn;
+  D.eIn = eIn; D.eOutArr = eOut;
+  D.eOut = nOut > 1 ? sOut.join('、') : (nOut === 1 ? sOut[0] : '');
   if(!D.place) D.warn.push('未填检测地点（场所名称）');
-  if(!isFinite(D.eOut)) D.warn.push('未填室外天空光照度 E外，采光系数将为空');
+  if(!sIn.length) D.warn.push('⑤ 采光系数中未填「室内各测点照度值 Eₙ」，记录表室内照度为空');
+  if(!nOut) D.warn.push('⑤ 采光系数中未填室外照度 E_w，采光系数将为空');
+  if(sIn.length > 20) D.warn.push('室内测点 ' + sIn.length + ' 点，记录表仅 20 格，已取前 20 点');
+  if(nOut > 1 && nOut !== sIn.length) D.warn.push('室内 ' + sIn.length + ' 点与室外 ' + nOut + ' 个值数量不一致，室外值循环对应');
   if(D.sky === '晴天' && !(isFinite(parseFloat(D.b)) && parseFloat(D.b) > 0))
     D.warn.push('天空条件为晴天，建议填写晴天修正系数 b（GB/T 5699-2025 表 A.1 按朝向查）');
   var C = [], bi = parseFloat(D.b), divide = (D.sky === '晴天' && isFinite(bi) && bi > 0);
   var Cs = [];
   for(i = 0; i < 20; i++){
-    var a = eIn[i], o = D.eOut;
-    if(isFinite(a) && isFinite(o) && o > 0){
+    var a = eIn[i], o = eOut[i];
+    if(a !== '' && isFinite(a) && isFinite(o) && o > 0){
       var c = a / o * 100;
       if(divide) c = c / bi;
       C.push(c); Cs.push(c);
@@ -5136,12 +5139,12 @@ function cgMap(D){
   m.F_TIME = D.time || '';
   m.F_SKY = D.sky || '';
   m.F_TOTAL = D.total || '';
-  m.F_SKYLUX = isFinite(D.eOut) ? D.eOut : '';
+  m.F_SKYLUX = (D.eOut === '' || D.eOut === null || D.eOut === undefined) ? '' : D.eOut;
   m.F_DIRECT = D.direct || '';
   var i;
   for(i = 0; i < 20; i++){
     m['EIN_' + (i + 1)] = (D.eIn[i] === '' ? '' : D.eIn[i]);
-    m['EOUT_' + (i + 1)] = (isFinite(D.eOut) ? D.eOut : '');
+    m['EOUT_' + (i + 1)] = (D.eOutArr && D.eOutArr[i] !== '' ? D.eOutArr[i] : '');
     m['C_' + (i + 1)] = (D.C[i] === '' ? '' : (Math.round(D.C[i] * 100) / 100));
   }
   m.F_CAV = (D.cav === '' ? '' : (Math.round(D.cav * 100) / 100));
@@ -5210,26 +5213,34 @@ function cgShowLink(){
 }
 
 /* ---- 交互 ---- */
-function cgGenCells(){
-  var box = document.getElementById('cgCells');
-  if(!box) return;
-  var h = '';
-  for(var i = 1; i <= 20; i++){
-    h += '<span class="cg-cell"><b>' + i + '</b><input id="cgIn' + i + '" type="number" step="any"></span>';
-  }
-  box.innerHTML = h;
+/* ---- 室内 / 室外照度：统一取自 ⑤ 采光系数计算格 ---- */
+function cgAutoVals(){
+  var g = function(id){ var e = document.getElementById(id); return e ? e.value : ''; };
+  return { inArr: schNums(g('schCdE')),
+           outArr: schNums(g('schEw')).filter(function(x){ return x > 0; }) };
 }
-function cgClearCells(){
-  var box = document.getElementById('cgCells');
-  if(box) box.innerHTML = '';
+function cgAutoInfo(){
+  var el = document.getElementById('cgAuto');
+  if(!el) return;
+  var V = cgAutoVals();
+  if(!V.inArr.length && !V.outArr.length){
+    el.innerHTML = '室内 / 室外照度自动取自 <b>⑤ 采光系数</b>：尚未填写。';
+    return;
+  }
+  el.innerHTML = '室内 / 室外照度自动取自 <b>⑤ 采光系数</b>：室内 <b>' + V.inArr.length + '</b> 点、室外 <b>'
+    + V.outArr.length + '</b> 个值'
+    + (V.outArr.length > 1 && V.outArr.length !== V.inArr.length ? '（数量不一致，室外值循环对应）' : '')
+    + '。修改 ⑤ 后自动同步，无需在此重复录入。';
 }
 function cgInit(){
   var b = document.getElementById('cgExport');
   if(b) b.addEventListener('click', cgExport);
-  var g1 = document.getElementById('cgGenCells');
-  if(g1) g1.addEventListener('click', cgGenCells);
-  var g2 = document.getElementById('cgClearCells');
-  if(g2) g2.addEventListener('click', cgClearCells);
+  ['schCdE', 'schEw'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('input', cgAutoInfo);
+    el.addEventListener('change', cgAutoInfo);
+  });
   var sel = document.getElementById('cgSky');
   if(sel) sel.addEventListener('change', function(){
     var bb = document.getElementById('cgB');
@@ -5240,7 +5251,7 @@ function cgInit(){
   var w = document.getElementById('cgWarn');
   var t = recEnvTips();
   if(w && t.length) w.textContent = '注意：' + t.join('；');
-  cgGenCells();
+  cgAutoInfo();
   var sel2 = document.getElementById('cgSky');
   if(sel2) sel2.dispatchEvent(new Event('change'));
 }
