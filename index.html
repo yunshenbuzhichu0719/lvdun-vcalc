@@ -1864,10 +1864,11 @@
         </div>
 
         <div class="an-h">① 细菌总数 &nbsp;·&nbsp; 营养琼脂 &nbsp;36 ℃±1 ℃ &nbsp;48 h±2 h &nbsp;·&nbsp; 计数 30~300 CFU</div>
+        <div class="hint" id="anGSite" style="margin:-6px 0 10px"></div>
         <div class="field">
           <label>计算方式（对应 GB/T 18204.4—2025 4.6）</label>
           <select id="anGMode">
-            <option value="one">单一稀释度 — 两皿平均（4.6.1）</option>
+            <option value="one">单一稀释度（4.6.1）</option>
             <option value="two">两个连续稀释度 — 加权计算式(1)（4.6.2）</option>
           </select>
         </div>
@@ -1888,12 +1889,12 @@
         <div class="an-h">② 真菌总数 &nbsp;·&nbsp; 沙氏琼脂 &nbsp;28 ℃±1 ℃ &nbsp;3~5 d &nbsp;·&nbsp; 计数 10~150 CFU</div>
         <div class="an-grid">
           <div class="an-cell"><div class="lbl">稀释倍数 b</div><input type="number" id="anGFB1" step="any" value="10"></div>
-          <div class="an-cell"><div class="lbl">平板 1 菌落数（CFU）</div><input type="number" id="anGFC1" step="any" placeholder="0"></div>
-          <div class="an-cell"><div class="lbl">平板 2 菌落数（CFU）</div><input type="number" id="anGFC2" step="any" placeholder="0"></div>
-          <div class="an-cell"><div class="lbl">采样面积（cm²，每处 25）</div><input type="number" id="anGFArea" step="any" value="25"></div>
+          <div class="an-cell"><div class="lbl" id="anGFLblC1">样品 1 平板菌落数（CFU）</div><input type="number" id="anGFC1" step="any" placeholder="0"></div>
+          <div class="an-cell"><div class="lbl" id="anGFLblC2">样品 2 平板菌落数（CFU）</div><input type="number" id="anGFC2" step="any" placeholder="0"></div>
+          <div class="an-cell"><div class="lbl">采样面积（cm²，按附录 A 自动带出）</div><input type="number" id="anGFArea" step="any" value="25" readonly></div>
         </div>
         <div class="res-box std">
-          <div class="tag">A = T × b / k，k = 采样面积 / 50 → 结果以 CFU/50cm² 报告</div>
+          <div class="tag" id="anGFResTag">A = T × b / k，k = 采样面积 / 50 → 结果以 CFU/50cm² 报告</div>
           <div class="val"><span id="anGFRes">—</span><span class="unit">CFU/50cm²</span></div>
           <div class="raw" id="anGFResRaw"></div>
           <div class="verdict" id="anGFVerdict"></div>
@@ -1920,10 +1921,10 @@
         <table class="sch-table ana-table">
           <thead><tr><th>指标</th><th>原理与培养基</th><th>培养条件</th><th>计数与结果报告</th></tr></thead>
           <tbody>
-            <tr><td>细菌总数<br>（第 4 章）</td><td>涂抹法采样后涡旋混匀为 1:10 样品匀液，10 倍系列稀释；<b>营养琼脂</b>（蛋白胨 10.0 g、牛肉膏 3.0 g、氯化钠 5.0 g、琼脂 20.0 g／1000 mL，pH 7.4±0.2）倾注平皿，每皿 15~20 mL（冷却至 45~50 ℃）</td><td>36 ℃±1 ℃，48 h±2 h</td><td>取菌落数 30~300 CFU、无蔓延生长的平板计数，每稀释度用两皿平均得 T；<b>A = T×b/k</b>。杯具 k=50（<b>CFU/cm²</b>），其他用品用具 k=1（<b>CFU/25cm²</b>）</td></tr>
+            <tr><td>细菌总数<br>（第 4 章）</td><td>涂抹法采样后涡旋混匀为 1:10 样品匀液，10 倍系列稀释；<b>营养琼脂</b>（蛋白胨 10.0 g、牛肉膏 3.0 g、氯化钠 5.0 g、琼脂 20.0 g／1000 mL，pH 7.4±0.2）倾注平皿，每皿 15~20 mL（冷却至 45~50 ℃）</td><td>36 ℃±1 ℃，48 h±2 h</td><td>取菌落数 30~300 CFU、无蔓延生长的平板计数。<b>杯具</b>为 1 份样品（内外圈合计 50 cm²），同稀释度两皿取<b>平均</b>（4.5.2）；<b>棉织品 / 洁具 / 鞋类 / 购物车把手 / 其他</b>每件采 <b>2 份样品</b>，两份结果不一致时取<b>高值</b>（4.7.6）。<br><b>A = T×b/k</b>：杯具 k=50（<b>CFU/cm²</b>），其他用品用具 k=1（<b>CFU/25cm²</b>）</td></tr>
             <tr><td>大肠菌群<br>（第 5 章）</td><td>乳糖胆盐发酵培养液初发酵 → 伊红美蓝琼脂分离 → 革兰染色镜检 → 乳糖发酵管证实（初发酵用<b>双料</b>乳糖胆盐发酵培养液）</td><td>初发酵 36 ℃±1 ℃、24 h±2 h；分离 36 ℃±1 ℃、18~24 h；证实 36 ℃±1 ℃、24 h±2 h</td><td>定性：乳糖发酵管最终产酸、产气，且革兰染色为<b>阴性无芽孢杆菌</b> → 报告检出</td></tr>
             <tr><td>金黄色葡萄球菌<br>（第 6 章）</td><td><b>7.5% 氯化钠肉汤</b>增菌 → <b>Baird-Parker 平板</b>（或血平板）划线分离 → 革兰染色镜检 → <b>血浆凝固酶试验</b>（兔血浆 0.5 mL＋脑心浸出液肉汤培养物 0.2~0.3 mL）</td><td>增菌 36 ℃±1 ℃、18~24 h；Baird-Parker 36 ℃±1 ℃、24~48 h；血平板 36 ℃±1 ℃、18~24 h；凝固酶试验 36 ℃±1 ℃、每 30 min 观察、6 h 内判读</td><td>定性：典型菌落＋革兰阳性球菌呈葡萄球状＋<b>血浆凝固酶阳性</b> → 报告检出。同步用已知阳性、阴性标准菌株作对照</td></tr>
-            <tr><td>真菌总数<br>（第 7 章）</td><td>涂抹法采样，稀释参照 4.4 b)；<b>沙氏琼脂</b>（蛋白胨 10.0 g、葡萄糖 40.0 g、琼脂 20.0 g／1000 mL，pH 5.6±0.2）倾注平皿，每皿 20~25 mL（冷却至 45 ℃左右）</td><td>28 ℃±1 ℃、3~5 d；第 5 天记录结果，真菌过多可第 3 天计数并记录培养时间</td><td>取菌落数 10~150 CFU 的平皿计数，两皿平均得 T；<b>A = T×b/k</b>，k = 采样面积/50（采样 50 cm²→k=1；25 cm²→k=1/2），结果以 <b>CFU/50cm²</b> 报告</td></tr>
+            <tr><td>真菌总数<br>（第 7 章）</td><td>涂抹法采样，稀释参照 4.4 b)；<b>沙氏琼脂</b>（蛋白胨 10.0 g、葡萄糖 40.0 g、琼脂 20.0 g／1000 mL，pH 5.6±0.2）倾注平皿，每皿 20~25 mL（冷却至 45 ℃左右）</td><td>28 ℃±1 ℃、3~5 d；第 5 天记录结果，真菌过多可第 3 天计数并记录培养时间</td><td>取菌落数 10~150 CFU 的平皿计数，口径同细菌总数（两皿平均 7.6.1／两份样品取高值 7.7.6）；<b>A = T×b/k</b>，k = <b>采样面积/50</b>（采样 50 cm²→k=1；25 cm²→k=1/2），结果以 <b>CFU/50cm²</b> 报告</td></tr>
             <tr><td>β-溶血性链球菌<br>（第 8 章）</td><td><b>改良胰蛋白胨大豆肉汤（mTSB）</b>（TSB＋多黏菌素 B、萘啶酮酸钠）增菌 → <b>哥伦比亚 CNA 血琼脂</b>划线分离 → 血琼脂平板分纯 → 革兰染色镜检 → <b>触酶试验</b>（3% 过氧化氢） → 生化鉴定</td><td>增菌 36 ℃±1 ℃、18~24 h；CNA 平板 36 ℃±1 ℃ <b>厌氧</b> 18~24 h；血平板分纯 36 ℃±1 ℃、18~24 h</td><td>定性：菌落周围形成完全透明溶血环＋革兰阳性、球形或卵圆形呈短链状＋<b>触酶阴性</b> → 报告检出</td></tr>
           </tbody>
         </table>
@@ -1963,11 +1964,12 @@
 
         <div class="toggle" id="anGdTog"><span class="arrow">▶</span><span>查看方法 / 计算规则 / 结果报告 / 质控 / 注意事项</span></div>
         <div class="collapse" id="anGdDet">
-          <div class="legend"><b>计算规则（4.6、7.6）</b><div><b>① 单稀释度（4.6.1）</b>：只有一个稀释度平板的菌落数在适宜计数范围内时，计算两皿平均菌落数 T，A = T×b/k。<br><b>② 两个连续稀释度（4.6.2）</b>：N = ΣC / [(n₁+0.1n₂)·d]。ΣC 为两稀释度全部平板菌落数之和；n₁、n₂ 为第一（低）、第二（高）稀释度平板个数；d 为第一稀释度的稀释因子（1:100 → d = 10⁻²）。此时 A = N/k。示例：1:100 两皿 232、244，1:1000 两皿 33、35 → N = (232+244+33+35)/[(2+0.1×2)×10⁻²] = 544/0.022 = 24 727 → 25 000（或 2.5×10⁴）。<br><b>③ 超范围处理</b>：均 &gt;300 CFU（4.6.3）对最高稀释度平板计数、其余记“多不可计”，按平均菌落数×最高稀释倍数；均 &lt;30 CFU（4.6.4）按最低稀释度平均菌落数×稀释倍数；均无菌生长（4.6.5）以 &lt;1×最低稀释倍数计；均不在 30~300 之间（4.6.6）取最接近 30 或 300 的平均菌落数×稀释倍数。<br><b>④ 真菌总数（7.6）</b>：适宜计数范围为 10~150 CFU，其余规则参照 4.6。<br><b>⑤ 系数 k</b>：细菌总数（4.7.1）杯具 k=50、结果以 CFU/cm² 报告，其他用品用具 k=1、以 CFU/25cm² 报告；真菌总数（7.7.1）k = 采样面积/50，结果以 CFU/50cm² 报告。</div></div>
+          <div class="legend"><b>计数口径（4.5.2 / 4.6.1 / 4.7.6）</b><div><b>· 同一份样品的 2 个平行平皿 → 取平均</b>：4.5.2 规定每个稀释度的菌落数应采用两个平板的平均数。杯具（内、外缘各 25 cm²、合计 50 cm²）为 <b>1 份样品</b>；理发推子 / 刀剪 / 美容美甲用品、修脚工具（累计 25 cm² 为 1 份）亦为 <b>1 份样品</b>，均按此口径。<br><b>· 同一件用品的 2 份样品 → 取高值</b>：附录 A 规定棉织品、洁具（浴盆 / 脸脚盆 / 坐便器 / 按摩床椅）、鞋类（每双鞋 2 份，左右脚各 25 cm²）、购物车（筐）把手、其他用品用具<b>每件共采 2 份样品</b>；4.7.6 / 7.7.6 规定两份样品检测结果不一致时，采用<b>检测值高</b>的结果报告。本模块按所选用品类型自动套用对应口径（“样品 1 / 样品 2” 即两份样品的平板菌落数，“平皿 1 / 平皿 2” 即同一份样品的平行平皿）。</div></div>
+          <div class="legend"><b>计算规则（4.6、7.6）</b><div><b>① 单稀释度（4.6.1）</b>：只有一个稀释度平板的菌落数在适宜计数范围内时，取该稀释度的 T（两皿平均或两份样品取高值），A = T×b/k。<br><b>② 两个连续稀释度（4.6.2）</b>：N = ΣC / [(n₁+0.1n₂)·d]。ΣC 为两稀释度全部平板菌落数之和；n₁、n₂ 为第一（低）、第二（高）稀释度平板个数；d 为第一稀释度的稀释因子（1:100 → d = 10⁻²）。此时 A = N/k。示例：1:100 两皿 232、244，1:1000 两皿 33、35 → N = (232+244+33+35)/[(2+0.1×2)×10⁻²] = 544/0.022 = 24 727 → 25 000（或 2.5×10⁴）。<br><b>③ 超范围处理</b>：均 &gt;300 CFU（4.6.3）对最高稀释度平板计数、其余记“多不可计”，按平均菌落数×最高稀释倍数；均 &lt;30 CFU（4.6.4）按最低稀释度平均菌落数×稀释倍数；均无菌生长（4.6.5）以 &lt;1×最低稀释倍数计；均不在 30~300 之间（4.6.6）取最接近 30 或 300 的平均菌落数×稀释倍数。<br><b>④ 真菌总数（7.6）</b>：适宜计数范围为 10~150 CFU，其余规则参照 4.6。<br><b>⑤ 系数 k</b>：细菌总数（4.7.1）杯具 k=50、结果以 CFU/cm² 报告，其他用品用具 k=1、以 CFU/25cm² 报告；真菌总数（7.7.1）k = 采样面积/50，结果以 CFU/50cm² 报告。</div></div>
           <div class="legend"><b>结果报告与修约（4.7.2~4.7.6、7.7.2~7.7.6）</b><div>菌落数小于 100 CFU 时按“四舍五入”取整数报告；大于或等于 100 CFU 时，第 3 位数字四舍五入后取前 2 位、后面用 0 代替（如 24 727 → 25 000），也可用 10 的指数形式表示并保留两位有效数字（2.5×10⁴）。所有平板为蔓延菌落无法计数 → 报告“菌落蔓延”；真菌蔓延覆盖整个平板 → 记“菌落蔓延”。空白对照上有菌落生长 → 本次检测结果无效。同一件用品采两份样品时，定量结果不一致采用<b>检测值高</b>的结果报告，定性结果不一致采用<b>阳性</b>结果报告。</div></div>
           <div class="legend"><b>评价标准（GB 37488-2019 表6）</b><div><b>杯具</b>：细菌总数 ≤5 CFU/cm²；大肠菌群 不得检出。<b>棉织品</b>：细菌总数 ≤200 CFU/25cm²；大肠菌群、金黄色葡萄球菌 不得检出；棉织品 pH 6.5~8.5。<b>洁具</b>：细菌总数 ≤300 CFU/25cm²；大肠菌群 不得检出。<b>鞋类</b>：细菌总数 ≤300 CFU/25cm²；真菌总数 ≤50 CFU/50cm²。<b>美容美发工具</b>：细菌总数 ≤200 CFU/25cm²；大肠菌群、金黄色葡萄球菌 不得检出。<b>修脚工具</b>：细菌总数 ≤200 CFU/25cm²；大肠菌群、金黄色葡萄球菌 不得检出；真菌总数 ≤50 CFU/50cm²。<b>其他用品用具</b>：细菌总数 ≤300 CFU/25cm²；大肠菌群 不得检出。<br>注：大肠菌群、金黄色葡萄球菌应在与检验方法相对应的采样面积内不得检出（表6 脚注 a）。GB 37488-2019 表6 <b>未对用品用具设置 β-溶血性链球菌限值</b>（该指标在 GB/T 18204.4—2025 中给出检验方法）。</div></div>
           <div class="qc-box"><h3>质控要求（附录 B）</h3><ul><li>培养基和试剂须符合 GB 4789.28；购买国内生产的成品培养基需有中国食品药品监督管理局批准的生产文号，在有效期内使用，并严格按其要求的贮存条件保存。</li><li>确保所用试剂和材料为无菌状态，操作过程中避免人为污染。</li><li>实验用水 25 ℃ 时电导率不应超过 25 μS/cm（相当于电阻率 ≥0.4 MΩ·cm），水的微生物污染不应超过 10³ CFU/mL。</li><li>实验室生物安全应符合 GB 19489；处理或检测可疑致病菌时采取必要的防护措施，减少职业暴露。</li></ul></div>
-          <div class="qc-box"><h3>注意事项</h3><ul><li>随机抽取<b>清洗消毒后待使用</b>的公共用品用具，采样过程中应无菌操作。</li><li>棉拭子在 10 mL 灭菌生理盐水中浸润（吸取约 1 mL，勿过多或过少）；涂抹后放入剩余 9 mL 生理盐水，用灭菌剪刀剪去棉签手接触的部分。</li><li>涂抹须覆盖规定的 5 cm×5 cm（25 cm²）面积，来回均匀、次数不少于 5 次；理发推子、刀剪、美容美甲用品、修脚工具等单件采样面积不足 25 cm² 的，可加采同类器具凑足 1 份样品。</li><li>样品须在 4 h 内送检，超时可能改变微生物数量。</li><li>定量指标每个稀释度接种 2 个无菌平皿，同时取 1 mL 生理盐水稀释液加入 2 个无菌平皿作空白对照；空白有菌则本次结果无效。</li></ul></div>
+          <div class="qc-box"><h3>注意事项</h3><ul><li>随机抽取<b>清洗消毒后待使用</b>的公共用品用具，采样过程中应无菌操作。</li><li>棉拭子在 10 mL 灭菌生理盐水中浸润（吸取约 1 mL，勿过多或过少）；涂抹后放入剩余 9 mL 生理盐水，用灭菌剪刀剪去棉签手接触的部分。</li><li>涂抹须覆盖规定的 5 cm×5 cm（25 cm²）面积，来回均匀、次数不少于 5 次。<b>杯具</b>取内、外缘与口唇接触处（即 1 cm~2 cm 高处）各 25 cm²，内、外圈合为 1 份样品（总面积 <b>50 cm²</b>）；<b>鞋类</b>每只鞋 25 cm² 为 1 份样品、每双鞋共 2 份；棉织品 / 洁具 / 购物车（筐）把手 / 其他用品用具每件共 2 份。理发推子、刀剪、美容美甲用品、修脚工具等单件采样面积不足 25 cm² 的，可加采同类器具凑足 1 份样品。</li><li>样品须在 4 h 内送检，超时可能改变微生物数量。</li><li>定量指标每个稀释度接种 2 个无菌平皿，同时取 1 mL 生理盐水稀释液加入 2 个无菌平皿作空白对照；空白有菌则本次结果无效。</li></ul></div>
         </div>
       </div>
     </div>
@@ -5591,14 +5593,24 @@ function cgInit(){
   anMpnCalc();
 
   // --- 公共用品用具（GB/T 18204.4—2025 五项指标；限值按 GB 37488-2019 表6） ---
+  // parts：每件用品按附录 A 应采集的样品份数
+  // comb ：'max' = 两份样品各自检验、结果不一致取高值（4.7.6 / 7.7.6）；
+  //        'avg' = 单份样品同一稀释度的 2 个平行平皿取平均（4.5.2 / 4.6.1）
   var anGKindMap = {
-    cup:      { short:'杯具',         unit:'CFU/cm²',   k:50, bacLim:5,   bacTxt:'≤5 CFU/cm²',     coli:'不得检出', staph:'—',       fungi:null },
-    textile:  { short:'棉织品',       unit:'CFU/25cm²', k:1,  bacLim:200, bacTxt:'≤200 CFU/25cm²', coli:'不得检出', staph:'不得检出', fungi:null },
-    fixture:  { short:'洁具',         unit:'CFU/25cm²', k:1,  bacLim:300, bacTxt:'≤300 CFU/25cm²', coli:'不得检出', staph:'—',       fungi:null },
-    shoe:     { short:'鞋类',         unit:'CFU/25cm²', k:1,  bacLim:300, bacTxt:'≤300 CFU/25cm²', coli:'—',        staph:'—',       fungi:50 },
-    beauty:   { short:'美容美发工具', unit:'CFU/25cm²', k:1,  bacLim:200, bacTxt:'≤200 CFU/25cm²', coli:'不得检出', staph:'不得检出', fungi:null },
-    pedicure: { short:'修脚工具',     unit:'CFU/25cm²', k:1,  bacLim:200, bacTxt:'≤200 CFU/25cm²', coli:'不得检出', staph:'不得检出', fungi:50 },
-    other:    { short:'其他用品用具', unit:'CFU/25cm²', k:1,  bacLim:300, bacTxt:'≤300 CFU/25cm²', coli:'不得检出', staph:'—',       fungi:null }
+    cup:      { short:'杯具',         unit:'CFU/cm²',   k:50, area:50, parts:1, comb:'avg', bacLim:5,   bacTxt:'≤5 CFU/cm²',     coli:'不得检出', staph:'—',       fungi:null,
+                site:'杯具内、外缘与口唇接触处（即 1 cm~2 cm 高处）各涂抹 25 cm²，内、外圈合为 <b>1 份样品</b>，采样总面积 <b>50 cm²</b>；2 个平皿为同一份样品的平行皿，按 4.5.2 取<b>平均</b>。' },
+    textile:  { short:'棉织品',       unit:'CFU/25cm²', k:1,  area:25, parts:2, comb:'max', bacLim:200, bacTxt:'≤200 CFU/25cm²', coli:'不得检出', staph:'不得检出', fungi:null,
+                site:'毛巾 / 枕巾（枕套）/ 浴巾先对折后展开，在对折线两侧中央对称位置各取 25 cm²（现场 5 cm×5 cm、来回涂抹 5 次）；床单 / 被单（被套）取与颈部、脚部接触部位；睡衣、睡裤随机选 2 处与皮肤接触部位。每 25 cm² 为 1 份样品，<b>每件共采集 2 份样品</b>，结果不一致时取<b>高值</b>（4.7.6）。' },
+    fixture:  { short:'洁具',         unit:'CFU/25cm²', k:1,  area:25, parts:2, comb:'max', bacLim:300, bacTxt:'≤300 CFU/25cm²', coli:'不得检出', staph:'—',       fungi:null,
+                site:'浴盆：内侧壁二分之一高度及盆底中央；脸（脚）盆：内壁二分之一高度相对称的两侧壁；坐便器：坐便圈前端弯曲处相对称 2 处；按摩床（椅）：表面中部 2 处与人体接触部位。均为 5 cm×5 cm（25 cm²）、涂抹 5 次，每 25 cm² 为 1 份样品，<b>每件共采集 2 份样品</b>，结果不一致时取<b>高值</b>（4.7.6）。' },
+    shoe:     { short:'鞋类',         unit:'CFU/25cm²', k:1,  area:25, parts:2, comb:'max', bacLim:300, bacTxt:'≤300 CFU/25cm²', coli:'—',        staph:'—',       fungi:50,
+                site:'在<b>每只鞋</b>的鞋内与脚趾接触处 5 cm×5 cm（<b>25 cm²</b>）范围内均匀涂抹 5 次，为 1 份样品，<b>每双鞋共采集 2 份样品</b>（左右脚各 1 份），结果不一致时取<b>高值</b>（4.7.6）。' },
+    beauty:   { short:'美容美发工具', unit:'CFU/25cm²', k:1,  area:25, parts:1, comb:'avg', bacLim:200, bacTxt:'≤200 CFU/25cm²', coli:'不得检出', staph:'不得检出', fungi:null,
+                site:'理发推子：前部（与皮肤接触处）涂抹 5 次；理发刀、剪：两个面各涂抹 5 次；美容美甲用品：表面（与皮肤接触处）涂抹 5 次。<b>累计采样面积达到 25 cm² 为 1 份样品</b>，单件不足 25 cm² 时可加采同类器具。' },
+    pedicure: { short:'修脚工具',     unit:'CFU/25cm²', k:1,  area:25, parts:1, comb:'avg', bacLim:200, bacTxt:'≤200 CFU/25cm²', coli:'不得检出', staph:'不得检出', fungi:50,
+                site:'修脚工具表面（与皮肤接触处）均匀涂抹 5 次，<b>累计采样面积达到 25 cm² 为 1 份样品</b>，一套工具不足 25 cm² 时可加采其他修脚工具。' },
+    other:    { short:'其他用品用具', unit:'CFU/25cm²', k:1,  area:25, parts:2, comb:'max', bacLim:300, bacTxt:'≤300 CFU/25cm²', coli:'不得检出', staph:'—',       fungi:null,
+                site:'购物车（筐）把手：在把手 1/3 与 2/3 手易接触处；其他用品：表面与人体接触的 2 处。均为 5 cm×5 cm（25 cm²）、涂抹 5 次，每 25 cm² 为 1 份样品，<b>每件共采集 2 份样品</b>，结果不一致时取<b>高值</b>（4.7.6）。' }
   };
   function anGK(){ var el = document.getElementById('anGKind'); return anGKindMap[(el && el.value) || 'other'] || anGKindMap.other; }
   function anGTwoMode(){ var el = document.getElementById('anGMode'); return !!(el && el.value === 'two'); }
@@ -5615,31 +5627,63 @@ function cgInit(){
   }
 
   // ① 细菌总数：A = T×b/k（4.6.1 单稀释度）或 A = N/k（4.6.2 两个连续稀释度）
+  // 口径随用品类型自动切换：parts=2（每件采 2 份样品）→ 两份结果取高值（4.7.6）；
+  //                            parts=1（单份样品做平行皿）→ 两皿取平均（4.5.2 / 4.6.1）
   function anGCalc(){
     var K = anGK(), two = anGTwoMode();
+    var isMax = (K.comb === 'max');
     var b1 = anNum(document.getElementById('anGB1').value);
     var c1 = anNum(document.getElementById('anGC1').value), c2 = anNum(document.getElementById('anGC2').value);
     var c3 = anNum(document.getElementById('anGC3').value), c4 = anNum(document.getElementById('anGC4').value);
     var out = document.getElementById('anGRes'), vd = document.getElementById('anGResVerdict'), raw = document.getElementById('anGResRaw');
-    document.getElementById('anGResTag').textContent = two ? 'N = ΣC / [(n₁ + 0.1n₂)·d]　→　A = N / k' : 'A = T × b / k（T 为两皿平均菌落数）';
+    document.getElementById('anGResTag').textContent = two
+      ? 'N = ΣC / [(n₁ + 0.1n₂)·d]　→　A = N / k'
+      : (isMax ? 'A = T × b / k（T 取两份样品 / 2 个平板中的高值，4.7.6）'
+               : 'A = T × b / k（T 为同一份样品两皿平均值，4.5.2）');
     document.getElementById('anGResUnit').textContent = K.unit;
     var A = null, note = '';
     if(two){
-      var a1 = [], a2 = [];
-      if(c1!=null) a1.push(c1); if(c2!=null) a1.push(c2);
-      if(c3!=null) a2.push(c3); if(c4!=null) a2.push(c4);
-      if(b1!=null && b1>0 && a1.length && a2.length){
-        var n1 = a1.length, n2 = a2.length, sc = a1.concat(a2).reduce(function(x,y){ return x+y; }, 0);
-        var N = sc / ((n1 + 0.1*n2) * (1/b1));
-        A = N / K.k;
-        note = 'ΣC = ' + sc + ' CFU；n₁ = ' + n1 + '，n₂ = ' + n2 + '；d = 1/' + b1 + '；未修约 N = ' + anRound(N,0) + ' CFU';
+      var N = null, sc = 0, n1 = 0, n2 = 0, detail = '';
+      if(isMax){
+        // 每件采 2 份样品：样品 1 = 平板1(低) + 平板3(高)；样品 2 = 平板2(低) + 平板4(高)
+        var Ns = [];
+        [[c1,c3],[c2,c4]].forEach(function(p, idx){
+          var a = (p[0]!=null)?1:0, b = (p[1]!=null)?1:0;
+          if(!a && !b) return;
+          var s = (p[0]||0) + (p[1]||0);
+          Ns.push({ i:idx+1, N:s/((a + 0.1*b)*(1/b1)), s:s, a:a, b:b });
+        });
+        if(b1!=null && b1>0 && Ns.length){
+          var best = Ns.reduce(function(x,y){ return y.N > x.N ? y : x; });
+          N = best.N; sc = best.s; n1 = best.a; n2 = best.b;
+          detail = Ns.map(function(o){ return '样品' + o.i + '：ΣC=' + o.s + '，N=' + anRound(o.N,0); }).join('；')
+                 + '（取高值 → 样品' + best.i + '）';
+        }
+      } else {
+        // 单份样品、两个稀释度各 2 个平行皿：ΣC 为全部平板之和（4.6.2 表 1 原式）
+        var lo = [c1,c2].filter(function(x){ return x!=null; });
+        var hi = [c3,c4].filter(function(x){ return x!=null; });
+        n1 = lo.length; n2 = hi.length;
+        if(b1!=null && b1>0 && n1 && n2){
+          sc = lo.concat(hi).reduce(function(x,y){ return x+y; }, 0);
+          N = sc / ((n1 + 0.1*n2) * (1/b1));
+          detail = 'ΣC = ' + sc + ' CFU；n₁ = ' + n1 + '，n₂ = ' + n2;
+        }
       }
+      if(N != null){ A = N / K.k; note = detail + '；d = 1/' + b1 + '；未修约 N = ' + anRound(N,0) + ' CFU'; }
     } else {
       var arr = []; if(c1!=null) arr.push(c1); if(c2!=null) arr.push(c2);
       if(b1!=null && b1>0 && arr.length){
-        var T = arr.reduce(function(x,y){ return x+y; }, 0) / arr.length;
+        var T;
+        if(isMax){
+          T = Math.max.apply(null, arr);
+          note = 'T = ' + T + ' CFU（两份样品的 ' + arr.join(' / ') + ' 取高值，4.7.6）';
+        } else {
+          T = arr.reduce(function(x,y){ return x+y; }, 0) / arr.length;
+          note = 'T = ' + anRound(T,1) + ' CFU（' + arr.length + ' 皿平均，4.5.2）';
+        }
         A = T * b1 / K.k;
-        note = 'T = ' + anRound(T,1) + ' CFU（' + arr.length + ' 皿平均）；b = ' + b1 + '；k = ' + K.k;
+        note += '；b = ' + b1 + '；k = ' + K.k;
       }
     }
     if(A==null){ out.textContent='—'; vd.textContent=''; vd.className='verdict'; raw.textContent=''; return; }
@@ -5649,12 +5693,14 @@ function cgInit(){
     vd.className = 'verdict ' + (ok ? 'ok' : 'bad');
     var pl = [c1, c2]; if(two) pl = pl.concat([c3, c4]);
     var bad = pl.filter(function(x){ return x!=null && (x<30 || x>300); });
-    raw.innerHTML = note + '；未修约 A = ' + anRound(A,1) + ' ' + K.unit + '（修约后见图示结果）'
+    raw.innerHTML = note + '；未修约 A = ' + (Math.round(A*100)/100) + ' ' + K.unit + '（修约后见图示结果）'
       + (bad.length ? '<br>⚠ 有 ' + bad.length + ' 个平板菌落数超出 30~300 CFU 适宜计数范围，应按 4.6.3~4.6.6 规则处理（&gt;300 记“多不可计”，取最高稀释度平板计数）。' : '');
   }
 
   // ② 真菌总数：A = T×b/k，k = 采样面积/50 → CFU/50cm²（7.6、7.7）
+  // 口径同样随类型切换：2 份样品取高值（7.7.6）／单份样品两皿取平均（7.6.1）
   function anGFCalc(){
+    var K = anGK(), isMax = (K.comb === 'max');
     var b = anNum(document.getElementById('anGFB1').value);
     var c1 = anNum(document.getElementById('anGFC1').value), c2 = anNum(document.getElementById('anGFC2').value);
     var area = anNum(document.getElementById('anGFArea').value);
@@ -5662,10 +5708,10 @@ function cgInit(){
     var arr = []; if(c1!=null) arr.push(c1); if(c2!=null) arr.push(c2);
     if(!arr.length || b==null || b<=0 || area==null || area<=0){
       out.textContent='—'; vd.textContent=''; vd.className='verdict'; raw.textContent=''; return; }
-    var T = arr.reduce(function(x,y){ return x+y; }, 0) / arr.length;
+    var T = isMax ? Math.max.apply(null, arr) : (arr.reduce(function(x,y){ return x+y; }, 0) / arr.length);
     var k = area/50, A = T*b/k;
     out.textContent = anGSig(A);
-    var K = anGK(), lim = K.fungi;
+    var lim = K.fungi;
     if(lim!=null){
       var ok = A <= lim;
       vd.textContent = ok ? ('合格（≤' + lim + ' CFU/50cm²）') : ('超标（>' + lim + ' CFU/50cm²）');
@@ -5675,8 +5721,10 @@ function cgInit(){
       vd.className = 'verdict';
     }
     var bad = arr.filter(function(x){ return x<10 || x>150; });
-    raw.innerHTML = 'T = ' + anRound(T,1) + ' CFU（' + arr.length + ' 皿平均）；b = ' + b + '；k = ' + area + '/50 = ' + anRound(k,2)
-      + '；未修约 A = ' + anRound(A,1) + ' CFU/50cm²。适宜计数范围 10~150 CFU；第 5 天记录结果，真菌过多可第 3 天计数并记录培养时间。'
+    raw.innerHTML = (isMax ? 'T = ' + T + ' CFU（两份样品的 ' + arr.join(' / ') + ' 取高值，7.7.6）'
+                           : 'T = ' + anRound(T,1) + ' CFU（' + arr.length + ' 皿平均，7.6.1）')
+      + '；b = ' + b + '；k = ' + area + '/50 = ' + anRound(k,2)
+      + '；未修约 A = ' + (Math.round(A*100)/100) + ' CFU/50cm²。适宜计数范围 10~150 CFU；第 5 天记录结果，真菌过多可第 3 天计数并记录培养时间。'
       + (bad.length ? '<br>⚠ 有 ' + bad.length + ' 个平皿菌落数超出 10~150 CFU 适宜计数范围，应按 7.6.3~7.6.6 规则处理。' : '');
   }
 
@@ -5701,19 +5749,33 @@ function cgInit(){
   }
 
   function anGKindUpd(){
-    var K = anGK();
+    var K = anGK(), isMax = (K.comb === 'max');
     document.getElementById('anGKindHint').innerHTML =
       '细菌总数 <b>' + K.bacTxt + '</b>；大肠菌群 <b>' + K.coli + '</b>；金黄色葡萄球菌 <b>' + K.staph + '</b>；真菌总数 '
       + (K.fungi==null ? '<b>—</b>（表6 未设限值）' : '<b>≤' + K.fungi + ' CFU/50cm²</b>')
-      + '。系数 k：杯具 k=50（结果以 CFU/cm² 报告），其他用品用具 k=1（以 CFU/25cm² 报告）。';
-    anGCalc(); anGFCalc(); anGQualCalc();
+      + '。系数 k：杯具 k=50（结果以 CFU/cm² 报告），其他用品用具 k=1（以 CFU/25cm² 报告）。'
+      + '本类每件采 <b>' + K.parts + ' 份样品</b>，结果口径：' + (isMax ? '<b>两份样品取高值</b>（4.7.6）' : '<b>同一样品两皿取平均</b>（4.5.2）') + '。';
+    var site = document.getElementById('anGSite');
+    if(site) site.innerHTML = '<b>采样部位与面积（附录 A.3）：</b>' + K.site;
+    document.getElementById('anGFArea').value = K.area;
+    anGLbls(); anGCalc(); anGFCalc(); anGQualCalc();
+  }
+  function anGLbls(){
+    var K = anGK(), two = anGTwoMode(), isMax = (K.comb === 'max');
+    document.getElementById('anGLblB1').textContent = two ? '第一（低）稀释度倍数 b₁' : '稀释倍数 b';
+    var s1 = isMax ? '样品 1（第 1 份）' : '平皿 1';
+    var s2 = isMax ? '样品 2（第 2 份）' : '平皿 2';
+    document.getElementById('anGLblC1').textContent = s1 + (two ? '（第一稀释度，CFU）' : ' 平板菌落数（CFU）');
+    document.getElementById('anGLblC2').textContent = s2 + (two ? '（第一稀释度，CFU）' : ' 平板菌落数（CFU）');
+    document.getElementById('anGFLblC1').textContent = (isMax ? '样品 1（第 1 份）' : '平皿 1') + '菌落数（CFU）';
+    document.getElementById('anGFLblC2').textContent = (isMax ? '样品 2（第 2 份）' : '平皿 2') + '菌落数（CFU）';
+    document.getElementById('anGFResTag').innerHTML = 'A = T × b / k，k = 采样面积 / 50（本类采样面积 <b>' + K.area
+      + ' cm²</b> → k = ' + anRound(K.area/50,2) + '）→ 结果以 CFU/50cm² 报告';
   }
   function anGModeUpd(){
     var two = anGTwoMode();
     document.querySelectorAll('.jsG2').forEach(function(el){ el.style.display = two ? '' : 'none'; });
-    document.getElementById('anGLblB1').textContent = two ? '第一（低）稀释度倍数 b₁' : '稀释倍数 b';
-    document.getElementById('anGLblC1').textContent = two ? '平板 1（第一稀释度，CFU）' : '平板 1 菌落数（CFU）';
-    document.getElementById('anGLblC2').textContent = two ? '平板 2（第一稀释度，CFU）' : '平板 2 菌落数（CFU）';
+    anGLbls();
     anGCalc();
   }
   document.getElementById('anGKind').addEventListener('change', anGKindUpd);
