@@ -1017,8 +1017,8 @@
           <div class="dl-grid-fig" id="dlGridFig2"></div>
         </div><!-- /⑤-B 其他室内 -->
 
-        <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量）</label>
-          <input type="number" id="schEw" step="any" placeholder="如 8500"></div>
+        <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量，可填多个取平均）</label>
+          <textarea id="schEw" rows="2" placeholder="如 8500 8480 8520（空格、逗号或换行分隔；多个值取平均，单值直接填）"></textarea></div>
         <div class="field" style="margin-top:11px"><label>室内各测点照度值 Eₙ（lx，空格或逗号分隔，对应采光测点）</label>
           <textarea id="schCdE" rows="2" placeholder="如 320 335 310 300 345 328 360 300 315 340（空格、逗号或换行分隔，可多行输入）"></textarea></div>
         <div class="sch-2col">
@@ -3015,7 +3015,8 @@
 
   // ⑤ 采光系数
   function schCalcCd(){
-    var Ew = parseFloat($sch('schEw').value);
+    var ews = schNums($sch('schEw').value);                       // 室外可填多个，取平均
+    var Ew = ews.length ? ews.reduce(function(a,b){ return a+b; }, 0) / ews.length : NaN;
     var arr = schNums($sch('schCdE').value);
     if(!(Ew > 0) || !arr.length){
       $sch('schCdAvg').textContent = '—'; $sch('schCdAvgRaw').textContent = '';
@@ -3045,7 +3046,9 @@
     schBadge('schCdBadge', txt, cls);
 
     var parts = Cs.map(function(c,i){ return '测点' + (i+1) + '：' + c.toFixed(2) + '%'; });
-    $sch('schCdList').innerHTML = '各测点采光系数 Cᵢ（共 ' + arr.length + ' 点）：<br>' + parts.join('；');
+    var ewTxt = '室外 E<sub>w</sub> = ' + trim2(Ew) + ' lx'
+              + (ews.length > 1 ? '（' + ews.length + ' 次取平均：' + ews.map(function(x){ return trim2(x); }).join('、') + '）' : '');
+    $sch('schCdList').innerHTML = ewTxt + '<br>各测点采光系数 Cᵢ（共 ' + arr.length + ' 点）：<br>' + parts.join('；');
   }
 
   // 绑定
