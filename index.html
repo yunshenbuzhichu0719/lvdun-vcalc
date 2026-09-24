@@ -61,7 +61,7 @@
   /* ===== 采样速查 二级目录 ===== */
   .cx-title{font-size:16px;font-weight:800;color:#0f3a28;margin:8px 2px 14px;display:flex;align-items:center;gap:8px;letter-spacing:.5px;}
   .cx-title::before{content:"";width:4px;height:18px;border-radius:3px;background:linear-gradient(var(--accent),var(--accent2));}
-  .sub-tabs{display:flex;gap:8px;margin-bottom:18px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .sub-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
   .sub-tab{
     flex:1 0 auto;min-width:104px;height:44px;border-radius:12px;border:1px solid var(--line-strong);
     background:rgba(255,255,255,.55);color:var(--sub);
@@ -460,8 +460,9 @@
     .sub-tabs{position:sticky;top:calc(50px + env(safe-area-inset-top,0px));z-index:30;
       margin:0 -12px 14px;padding:8px 12px;
       background:linear-gradient(180deg, rgba(244,252,248,.98), rgba(244,252,248,.9));
-      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
-    .sub-tab{height:48px;font-size:15px;flex:1 0 auto;min-width:0;}
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      flex-wrap:wrap;overflow-x:visible;}
+    .sub-tab{height:44px;font-size:14px;flex:1 1 auto;min-width:0;padding:0 10px;}
 
     .wrap{max-width:100%;padding:12px 12px 0;}
 
@@ -525,6 +526,11 @@
   .safety-block h3::before{content:"";width:4px;height:14px;border-radius:3px;background:linear-gradient(var(--accent),var(--accent2));}
   .safety-block ul{margin:0;padding-left:18px;}
   .safety-block li{font-size:12.5px;color:var(--sub);line-height:1.9;}
+  /* ==ALIGN-CSS-BEGIN== 2026-09-24 全站表格统一：表头行居中 + 左侧第一列居中 ==
+     说明：!important 用于覆盖 .clean-table / .clean-main / .clean-bac 等模块级 left 对齐 */
+  .sch-table th{text-align:center!important;}
+  .sch-table td:first-child{text-align:center!important;}
+  /* ==ALIGN-CSS-END== */
 </style>
 </head>
 <body>
