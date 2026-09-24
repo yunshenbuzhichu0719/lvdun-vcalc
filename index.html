@@ -271,6 +271,18 @@
   .xf-zbox b{color:var(--accent2);}
   .xf-zwarn{color:var(--err);}
 
+  /* ===== 洁净室检测（GB 50333—2013） ===== */
+  .clean-table{min-width:960px;}
+  .clean-table th:first-child,.clean-table td:first-child{white-space:normal;width:11.5em;}
+  .clean-table td{text-align:center;}
+  .clean-table td:first-child{text-align:left;}
+  .clean-table.clean-s{min-width:720px;}
+  #m-clean .s-brief::before{content:none;}
+  #m-clean .s-meta{color:#0284c7;}
+  #m-clean .s-title{color:#0b4f6c;}
+  #m-clean .sch-badge{background:rgba(14,165,233,.12);color:#0369a1;}
+  .clean-note{font-size:11.5px;color:var(--sub);line-height:1.7;}
+
   /* ===== 学校综合评价 ===== */
 
   /* ==SCH5-CSS-BEGIN== */
@@ -512,6 +524,7 @@
       <button class="sub-tab" data-sub="__pub_sampling">公共卫生检测</button>
       <button class="sub-tab" data-sub="m-sch">学校综合评价</button>
       <button class="sub-tab" data-sub="m-water">水质检测</button>
+      <button class="sub-tab" data-sub="m-clean">洁净室检测</button>
     </div>
 
     <!-- 采样速查 · 公共卫生检测（三级） -->
@@ -560,6 +573,303 @@
     
 
         
+
+    <!-- ====== 洁净室检测（GB 50333—2013） ====== -->
+    <div id="m-clean" class="sub-pane">
+    <div class="card">
+      <h2><span class="dot" style="background:#0ea5e9;box-shadow:0 0 10px rgba(14,165,233,.45)"></span>洁净室（洁净手术部）检测 · 8 项指标</h2>
+      <p class="sub-note">依据 <b>GB 50333—2013《医院洁净手术部建筑技术规范》</b>第 4 章（技术指标）与第 13.3 节（工程检验）原文整理。检测状态以 <b>空态或静态</b> 为准，任何检验结果都应注明状态（13.3.4）。沉降菌、浮游菌的检验方法另按 <b>GB/T 16294—2025</b>、<b>GB/T 16293—2025</b>；综合性能全面评定按 <b>GB 50591—2010《洁净室施工及验收规范》</b> 执行（13.3.5）。</p>
+
+      <div class="req-box">
+        <h3><span class="badge">顺序</span>必测项目与检测顺序（13.3.2）</h3>
+        <div class="step"><span class="num">1</span><span><b>风速、风量和静压差应先测</b>，随后测末级过滤器检漏与手术室严密性。</span></div>
+        <div class="step"><span class="num">2</span><span>净化空调系统<b>至少运行 30 min</b>，确认风速、换气次数、检漏、静压差无明显问题后，再测 <b>空气洁净度级别（尘埃粒子）</b>。</span></div>
+        <div class="step"><span class="num">3</span><span><b>细菌浓度（沉降菌 / 浮游菌）最后检测</b>：宜在其他项目检测完毕、对全室表面作<b>常规消毒</b>之后进行，<b>不得进行空气消毒</b>。</span></div>
+        <div class="step"><span class="num">4</span><span>不得以空气洁净度级别或细菌浓度的<b>单项指标代替综合性能全面评定</b>，也不得以工程调整测试结果代替综合性能评定的检验结果（13.3.3）。</span></div>
+      </div>
+
+      <div class="sch-block">
+        <h3>① 洁净用房主要技术指标 <span class="sch-badge">GB 50333—2013 表 4.0.1</span></h3>
+        <div class="std">温度、相对湿度、换气次数 / 风速、噪声、照度 5 项的限值来源；尘埃粒子数与沉降菌的分级限值见表 3.0.2（见下方 ③）。表中「—」表示标准未作规定。</div>
+        <div style="overflow-x:auto;">
+        <table class="sch-table clean-table">
+          <thead><tr><th>洁净用房</th><th>室内压力</th><th>换气次数<br>(次/h)</th><th>工作区平均风速<br>(m/s)</th><th>温度<br>(℃)</th><th>相对湿度<br>(%)</th><th>最小新风量</th><th>噪声<br>dB(A)</th><th>最低照度<br>(lx)</th><th>自净时间<br>(min)</th></tr></thead>
+          <tbody>
+            <tr><td>Ⅰ级洁净手术室和需要无菌操作的特殊用房</td><td>正</td><td>—</td><td>0.20～0.25</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;51</td><td>&gt;350</td><td>10</td></tr>
+            <tr><td>Ⅱ级洁净手术室</td><td>正</td><td>24</td><td>—</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;49</td><td>&gt;350</td><td>20</td></tr>
+            <tr><td>Ⅲ级洁净手术室</td><td>正</td><td>18</td><td>—</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;49</td><td>&gt;350</td><td>20</td></tr>
+            <tr><td>Ⅳ级洁净手术室</td><td>正</td><td>12</td><td>—</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;49</td><td>&gt;350</td><td>30</td></tr>
+            <tr><td>体外循环室</td><td>正</td><td>12</td><td>—</td><td>21～27</td><td>&lt;60</td><td>(2)</td><td>&lt;60</td><td>&gt;150</td><td>—</td></tr>
+            <tr><td>无菌敷料室</td><td>正</td><td>12</td><td>—</td><td>&lt;27</td><td>&lt;60</td><td>(2)</td><td>&lt;60</td><td>&gt;150</td><td>—</td></tr>
+            <tr><td>未拆封器械、无菌药品、一次性物品和精密仪器存放室</td><td>正</td><td>10</td><td>—</td><td>&lt;27</td><td>&lt;60</td><td>(2)</td><td>&lt;60</td><td>&gt;150</td><td>—</td></tr>
+            <tr><td>护士站</td><td>正</td><td>10</td><td>—</td><td>21～27</td><td>&lt;60</td><td>(2)</td><td>&lt;55</td><td>&gt;150</td><td>—</td></tr>
+            <tr><td>预麻醉室</td><td>负</td><td>10</td><td>—</td><td>23～26</td><td>30～60</td><td>(2)</td><td>&lt;55</td><td>&gt;150</td><td>—</td></tr>
+            <tr><td>手术室前室</td><td>正</td><td>8</td><td>—</td><td>21～27</td><td>&lt;60</td><td>(2)</td><td>&lt;60</td><td>&gt;200</td><td>—</td></tr>
+            <tr><td>刷手间</td><td>负</td><td>8</td><td>—</td><td>21～27</td><td>—</td><td>(2)</td><td>&lt;55</td><td>&gt;150</td><td>—</td></tr>
+            <tr><td>洁净区走廊</td><td>正</td><td>8</td><td>—</td><td>21～27</td><td>&lt;60</td><td>(2)</td><td>&lt;52</td><td>&gt;150</td><td>—</td></tr>
+            <tr><td>恢复室</td><td>正</td><td>8</td><td>—</td><td>22～26</td><td>25～60</td><td>(2)</td><td>&lt;48</td><td>&gt;200</td><td>—</td></tr>
+            <tr><td>脱包间（外间 · 脱包）</td><td>负</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            <tr><td>脱包间（内间 · 暂存）</td><td>正</td><td>8</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="legend" style="margin-top:8px;"><div><b>注</b>：① 最小新风量「15～20」的单位为 <b>m³/(h·m²)</b>，带括号如「(2)」的单位为 <b>次/h</b>；② 平均风速指集中送风区地面以上 <b>1.2 m</b> 截面的平均风速；③ <b>眼科手术室</b>截面平均风速应控制在 <b>0.15～0.20 m/s</b>；④ 温湿度范围下限为冬季的最低值、上限为夏季的最高值；⑤ 负压手术室室内压力一栏应为「负」；⑥ 温、湿度不达标不应超过 <b>5 天/年</b>，连续 2 天不达标不应超过 <b>2 次/年</b>（4.0.2 第 6 款）；⑦ 表 4.0.1 中未列出名称的房间可参照用途相近的房间确定指标数值（4.0.2 第 8 款）。</div></div>
+        <div class="clean-note" style="margin-top:14px;font-weight:800;color:var(--txt);">静压差 4 种工况（4.0.2）</div>
+        <div style="overflow-x:auto;">
+        <table class="sch-table clean-table clean-s">
+          <thead><tr><th>相邻关系</th><th>要求</th></tr></thead>
+          <tbody>
+            <tr><td>相互连通、洁净度级别<b>不同</b>的洁净用房之间</td><td>洁净度高的用房对洁净度低的用房保持相对<b>正压</b>；最小静压差 <b>≥5 Pa</b>，最大静压差 <b>&lt;20 Pa</b>，不应因压差而产生哨音或影响开门</td></tr>
+            <tr><td>相互连通、洁净度级别<b>相同</b>的洁净用房之间</td><td>宜有适当压差，保持要求的气流方向</td></tr>
+            <tr><td><b>严重污染</b>的房间对相通的相邻房间</td><td>保持<b>负压</b>，最小静压差 <b>≥5 Pa</b>；用于控制空气感染的手术室应是<b>负压手术室</b>，负压手术室对其吊顶上技术夹层应保持略低于「0」的负压差</td></tr>
+            <tr><td><b>洁净区</b>对与其相通的<b>非洁净区</b></td><td>保持<b>正压</b>，最小静压差 <b>≥5 Pa</b></td></tr>
+            <tr><td>无压差数值要求、或仅有气流流向要求的相邻洁净用房之间</td><td>仅用<b>丝线（或发烟）观察流向</b></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="cat-title">② 8 项检测指标逐项速查（点标题展开）</div>
+
+      <div class="s-item">
+        <div class="s-head" onclick="toggleS(this)">
+          <div class="s-head-main">
+            <div class="s-title">1 · 温度</div>
+            <div class="s-meta-row"><span class="s-meta">手术室 21～25 ℃</span><span class="s-brief">数字式温湿度测量仪，距地面 0.8 m 的室中心点</span></div>
+          </div>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="s-body">
+          <div class="s-row"><span class="s-k">限值</span><span class="s-v">Ⅰ～Ⅳ级洁净手术室 <b>21～25 ℃</b>；预麻醉室 <b>23～26 ℃</b>；恢复室 <b>22～26 ℃</b>；体外循环室、无菌敷料室、护士站、手术室前室、刷手间、洁净区走廊 <b>21～27 ℃</b>；未拆封器械 / 无菌药品 / 一次性物品和精密仪器存放室 <b>&lt;27 ℃</b>。</span></div>
+          <div class="s-row"><span class="s-k">判定</span><span class="s-v">温湿度范围<b>下限为冬季的最低值、上限为夏季的最高值</b>（表 4.0.1 注 4）。温、湿度不达标不应超过 <b>5 天/年</b>，连续 2 天不达标不应超过 <b>2 次/年</b>（4.0.2 第 6 款）。</span></div>
+          <div class="s-row"><span class="s-k">测点</span><span class="s-v">室内温湿度测定应为<b>距地面 0.8 m 高的中心点</b>（13.3.12 第 1 款）——温度、相对湿度<b>共用同一测点</b>。</span></div>
+          <div class="s-row"><span class="s-k">仪器</span><span class="s-v">可显示<b>小数后一位</b>的数字式温湿度测量仪。</span></div>
+          <div class="s-row"><span class="s-k">现场要点</span><span class="s-v">测量值应通过调试达到测定时气象条件下<b>静态能力的极值</b>；如有疑问或建设方有要求，可在<b>动态下或最不利季节复核</b>（13.3.12 第 2 款）。</span></div>
+          <div class="s-row"><span class="s-k">必做</span><span class="s-v">测出室内的温湿度之后，<b>应同时测出当天室外温湿度</b>（13.3.12 第 3 款）。</span></div>
+        </div>
+      </div>
+
+      <div class="s-item">
+        <div class="s-head" onclick="toggleS(this)">
+          <div class="s-head-main">
+            <div class="s-title">2 · 相对湿度</div>
+            <div class="s-meta-row"><span class="s-meta">手术室 30%～60%</span><span class="s-brief">与温度同点同测，距地面 0.8 m 的室中心点</span></div>
+          </div>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="s-body">
+          <div class="s-row"><span class="s-k">限值</span><span class="s-v">Ⅰ～Ⅳ级洁净手术室、预麻醉室 <b>30%～60%</b>；恢复室 <b>25%～60%</b>；体外循环室、无菌敷料室、未拆封器械 / 无菌药品 / 一次性物品和精密仪器存放室、护士站、手术室前室、洁净区走廊 <b>&lt;60%</b>；刷手间标准未作规定（表 4.0.1 为「—」）。</span></div>
+          <div class="s-row"><span class="s-k">测点</span><span class="s-v">与温度共用<b>距地面 0.8 m 高的中心点</b>（13.3.12 第 1 款）。</span></div>
+          <div class="s-row"><span class="s-k">仪器</span><span class="s-v">可显示<b>小数后一位</b>的数字式温湿度测量仪。</span></div>
+          <div class="s-row"><span class="s-k">现场要点</span><span class="s-v">应同时记录<b>当天室外温湿度</b>（13.3.12 第 3 款）；测量值应达到测定时气象条件下静态能力的极值，必要时在<b>最不利季节</b>复核。</span></div>
+        </div>
+      </div>
+
+      <div class="s-item">
+        <div class="s-head" onclick="toggleS(this)">
+          <div class="s-head-main">
+            <div class="s-title">3 · 照度</div>
+            <div class="s-meta-row"><span class="s-meta">&gt;350 lx · 均匀度 ≥0.7</span><span class="s-brief">距地 0.8 m、离墙 0.5 m，间距 ≤2 m 均匀布点</span></div>
+          </div>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="s-body">
+          <div class="s-row"><span class="s-k">限值</span><span class="s-v">Ⅰ～Ⅳ级洁净手术室 <b>&gt;350 lx</b>；手术室前室、恢复室 <b>&gt;200 lx</b>；体外循环室、无菌敷料室、未拆封器械 / 无菌药品 / 一次性物品和精密仪器存放室、护士站、预麻醉室、刷手间、洁净区走廊 <b>&gt;150 lx</b>。</span></div>
+          <div class="s-row"><span class="s-k">均匀度</span><span class="s-v"><b>手术室的照度均匀度不应低于 0.7</b>（11.3.1）。照度均匀度（E<sub>U</sub>）为同一测区<b>最小照度与平均照度之比</b>。</span></div>
+          <div class="s-row"><span class="s-k">检测条件</span><span class="s-v">应在<b>光源输出趋于稳定</b>时、<b>不开无影灯</b>、<b>无自然采光</b>条件下进行（13.3.14 第 1 款）。</span></div>
+          <div class="s-row"><span class="s-k">布点</span><span class="s-v">测点应<b>距地面 0.8 m</b>、<b>离墙面 0.5 m</b>，按间距<b>不超过 2 m</b> 均匀布点；<b>不刻意在灯下或避开灯下选点</b>。</span></div>
+          <div class="s-row"><span class="s-k">判定取值</span><span class="s-v">各点中最小的照度值应符合表 4.0.1 的规定；照度均匀度应符合 11.3.1 条（13.3.14 第 2 款）。</span></div>
+        </div>
+      </div>
+
+      <div class="s-item">
+        <div class="s-head" onclick="toggleS(this)">
+          <div class="s-head-main">
+            <div class="s-title">4 · 静压差</div>
+            <div class="s-meta-row"><span class="s-meta">≥5 Pa 且 &lt;20 Pa</span><span class="s-brief">所有门关闭，距地 0.8 m，微压计（分辨率 1 Pa）</span></div>
+          </div>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="s-body">
+          <div class="s-row"><span class="s-k">限值</span><span class="s-v">相邻不同洁净度级别洁净用房之间最小静压差 <b>≥5 Pa</b>、最大静压差 <b>&lt;20 Pa</b>；严重污染房间与其相邻房间之间、洁净区与非洁净区之间最小静压差 <b>≥5 Pa</b>。详见上方「静压差 4 种工况」（4.0.2）。</span></div>
+          <div class="s-row"><span class="s-k">检测条件</span><span class="s-v">应在<b>洁净区所有门都关闭</b>的条件下进行。</span></div>
+          <div class="s-row"><span class="s-k">检测顺序</span><span class="s-v">从平面上<b>最里面的房间依次向外</b>，或从<b>空气洁净度级别最高的房间依次向低级别</b>的房间进行检验。</span></div>
+          <div class="s-row"><span class="s-k">相邻比对</span><span class="s-v">测出静压差合格后，<b>还应检测其相邻两间洁净用房的静压差</b>；对于 <b>Ⅰ级洁净用房</b>，静压差合格后还应检测其<b>开门后门内 0.6 m 处的洁净度</b>，并应达标。</span></div>
+          <div class="s-row"><span class="s-k">测点与仪器</span><span class="s-v">测定高度应<b>距地面 0.8 m</b>；测孔截面应<b>平行于气流方向</b>；测点应选在<b>无涡流、无回风口</b>的位置；检测仪器应为读值分辨率可达 <b>1 Pa</b> 的微压计（13.3.10 第 3 款）。</span></div>
+          <div class="s-row"><span class="s-k">特殊情形</span><span class="s-v">无压差具体数值要求、或仅有气流流向要求的相邻洁净用房之间，应仅用<b>丝线（或发烟）观察流向</b>；有<b>不可关闭的开口</b>与邻室相通的洁净室，静压差检测按 <b>GB 50591</b> 的规定执行。</span></div>
+        </div>
+      </div>
+
+      <div class="s-item">
+        <div class="s-head" onclick="toggleS(this)">
+          <div class="s-head-main">
+            <div class="s-title">5 · 尘埃粒子数（空气洁净度级别）</div>
+            <div class="s-meta-row"><span class="s-meta">5 / 6 / 7 / 8 / 8.5 级</span><span class="s-brief">光散射粒子计数器；系统运行 ≥30 min 后测，距地 0.8 m</span></div>
+          </div>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="s-body">
+          <div class="s-row"><span class="s-k">检测时机</span><span class="s-v">系统<b>至少已运行 30 min</b>，并确认<b>风速、换气次数、检漏和静压差</b>的检测无明显问题之后进行（13.3.11 第 1 款）。</span></div>
+          <div class="s-row"><span class="s-k">判定</span><span class="s-v">对 <b>≥0.5 μm</b> 和 <b>≥5 μm</b> 的微粒，检测结果<b>均应同时满足</b>：由各点平均含尘浓度和室平均浓度按式(13.3.11-1) 计算 <b>N = 各点平均浓度 + t × 标准差</b>，N 应小于相应级别的<b>上限浓度</b>（见表 3.0.2 分级表／下方 ③）。</span></div>
+          <div class="s-row"><span class="s-k">系数 t</span><span class="s-v">单侧分布系数（置信度上限 95%）：测点数 2→<b>6.31</b>、3→<b>2.92</b>、4→<b>2.35</b>、5→<b>2.13</b>、6→<b>2.02</b>、7→<b>1.94</b>、8→<b>1.90</b>、9→<b>1.86</b>；<b>测点数为 9 点以上时，N 取平均值</b>（表 13.3.11-1 及注）。</span></div>
+          <div class="s-row"><span class="s-k">测点数与位置</span><span class="s-v">送风口<b>集中布置</b>时，应对<b>手术区和周边区分别检测</b>，测点数和位置应符合表 13.3.11-2，<b>测点数不少于 3 点</b>，附近有显著障碍物时可适当避开，应<b>避开送风口正下方</b>；送风口<b>分散布置</b>时，应按<b>全室统一布点</b>检测，测点可均布，但不应布置在送风口正下方。</span></div>
+          <div class="s-row"><span class="s-k">最小采样量</span><span class="s-v">每次粒子计数器采样的最小采样量：<b>5 级区域应为 8.6 L</b>，以下<b>各级区域应为 2.83 L</b>（13.3.11 第 3 款）。</span></div>
+          <div class="s-row"><span class="s-k">测点高度</span><span class="s-v">测点布置应在<b>距地面 0.8 m 高</b>的平面上；在手术区检测时应<b>无手术台</b>，当手术台已固定时，台面上测点应<b>高出台面 0.25 m</b>，并应记录在案（13.3.11 第 4 款）。</span></div>
+          <div class="s-row"><span class="s-k">采样口方向</span><span class="s-v">在 <b>5 级区域</b>检测时，采样口应<b>对着气流方向</b>；在其他级别区域检测时，采样口<b>均应向上</b>（13.3.11 第 5 款）。</span></div>
+          <div class="s-row"><span class="s-k">现场人员</span><span class="s-v">检测含尘浓度时<b>检测人员不得多于 2 人</b>，都应穿<b>洁净工作服</b>，处于测点<b>下风向</b>的位置，减少动作（13.3.11 第 6 款）。</span></div>
+          <div class="s-row"><span class="s-k">照明</span><span class="s-v">检测含尘浓度时，<b>除无影灯外，手术室照明灯应全部打开</b>（13.3.11 第 7 款）。</span></div>
+        </div>
+      </div>
+
+      <div class="s-item">
+        <div class="s-head" onclick="toggleS(this)">
+          <div class="s-head-main">
+            <div class="s-title">6 · 风速（截面风速 / 送风面风速 / 换气次数）</div>
+            <div class="s-meta-row"><span class="s-meta">Ⅰ级 0.20～0.25 m/s · β≤0.24</span><span class="s-brief">测杆固定不手持，分辨率 0.01 m/s，每点 ≥5 s</span></div>
+          </div>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="s-body">
+          <div class="s-row"><span class="s-k">Ⅰ级限值</span><span class="s-v">对达到 5 级洁净度的 Ⅰ级洁净手术室手术区，以及有局部 5 级的 Ⅰ级洁净辅助用房中达到 5 级洁净度的区域，应在<b>送风温度稳定后</b>测其<b>地面上 1.2 m 截面的平均风速</b>；检测结果<b>不应小于表 4.0.1 规定风速范围的平均值</b>（0.20～0.25 m/s → 不低于 0.225 m/s），并<b>不应超过上限 0.25 m/s</b>。眼科手术室截面平均风速应控制在 <b>0.15～0.20 m/s</b>。</span></div>
+          <div class="s-row"><span class="s-k">Ⅰ级布点</span><span class="s-v">测点范围应为<b>集中送风面正投影区边界 0.12 m 内的面积</b>，均匀布点；测点高度<b>距地 1.2 m</b>；应<b>无手术台或工作面阻隔</b>，测点间距<b>不应大于 0.3 m</b>；有不能移动的阻隔时应记录在案（13.3.6 第 3 款）。</span></div>
+          <div class="s-row"><span class="s-k">Ⅰ级仪器</span><span class="s-v">检测仪器最小分辨率应能达到 <b>0.01 m/s</b>，仪器<b>测杆应固定位置、不应手持</b>；<b>每点检测时间不应少于 5 s，每秒记录 1 次，取平均值</b>。</span></div>
+          <div class="s-row"><span class="s-k">不均匀度</span><span class="s-v">Ⅰ级手术室手术区地面以上 1.2 m 截面按 13.3.6 第 3 款布置测点时，风速<b>不均匀度 β 应 ≤0.24</b>（8.2.3 第 6 款）。</span></div>
+          <div class="s-row"><span class="s-k">Ⅱ、Ⅲ级</span><span class="s-v">应测<b>送风面平均风速</b>：测点高度在<b>送风面下方 0.1 m 以内</b>，测点之间距离<b>不应超过 0.3 m</b>；<b>最外边测点应在送风口边界内 0.05 m</b>，均匀布点。送风面各点风速范围宜在 <b>0.10～0.40 m/s</b> 之间，<b>不得出现无速度的盲区</b>（8.2.3 第 7 款）。</span></div>
+          <div class="s-row"><span class="s-k">换气次数</span><span class="s-v">在达到上述点风速条件后计算：<b>n = Q / V</b>。Q 为房间送风量（m³/h），由送风面平均风速换算 <b>Q = 3600 × v̄ × F</b>（v̄ 送风面平均风速 m/s，F 送风面面积 m²）；V 为房间体积（m³）。检测结果<b>不应小于表 4.0.1 的规定</b>，且<b>不宜超过设计值的 15%</b>（13.3.7）。</span></div>
+          <div class="s-row"><span class="s-k">Ⅳ级 / 分散送风</span><span class="s-v">Ⅳ级洁净手术室和洁净辅助用房的<b>分散送风口</b>，应通过检测<b>送风口风量</b>换算得出换气次数，检测结果不应小于表 4.0.1 的规定，不宜超过设计值的 15%；分散布置送风口的检测方法按 <b>GB 50591</b> 执行。</span></div>
+        </div>
+      </div>
+
+      <div class="s-item">
+        <div class="s-head" onclick="toggleS(this)">
+          <div class="s-head-main">
+            <div class="s-title">7 · 噪声</div>
+            <div class="s-meta-row"><span class="s-meta">手术室 &lt;51 / &lt;49 dB(A)</span><span class="s-brief">A 声级；室中心（+四角）；关闭空调测背景噪声</span></div>
+          </div>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="s-body">
+          <div class="s-row"><span class="s-k">限值</span><span class="s-v">Ⅰ级洁净手术室 <b>&lt;51 dB(A)</b>；Ⅱ～Ⅳ级洁净手术室 <b>&lt;49 dB(A)</b>；洁净区走廊 <b>&lt;52</b>；护士站、预麻醉室、刷手间 <b>&lt;55</b>；体外循环室、无菌敷料室、未拆封器械 / 无菌药品 / 一次性物品和精密仪器存放室、手术室前室 <b>&lt;60</b>；恢复室 <b>&lt;48</b>。</span></div>
+          <div class="s-row"><span class="s-k">检测时机</span><span class="s-v">噪声检测宜在<b>外界干扰较小的晚间</b>进行，以 <b>A 声级</b>为准（13.3.13 第 1 款）。</span></div>
+          <div class="s-row"><span class="s-k">测点数</span><span class="s-v"><b>不足 15 m²</b> 的房间应在<b>室中心测 1 点</b>；<b>超过 15 m²</b> 的应在<b>室中心和四角共测 5 点</b>。</span></div>
+          <div class="s-row"><span class="s-k">测点高度</span><span class="s-v">洁净手术室测点高度为<b>地上 1.5 m</b>，其他房间应为<b>地上 1.1 m</b>。</span></div>
+          <div class="s-row"><span class="s-k">仪器</span><span class="s-v">宜用<b>带倍频程分析仪的声级计</b>。</span></div>
+          <div class="s-row"><span class="s-k">背景噪声修正</span><span class="s-v">全部噪声测定之后，应<b>关闭净化空调系统测定背景噪声</b>；当<b>背景噪声与室内噪声之差小于 10 dB</b> 时，室内噪声应<b>按常规予以修正</b>（13.3.13 第 2 款）。</span></div>
+        </div>
+      </div>
+
+      <div class="s-item">
+        <div class="s-head" onclick="toggleS(this)">
+          <div class="s-head-main">
+            <div class="s-title">8 · 沉降菌（沉降法细菌浓度）</div>
+            <div class="s-meta-row"><span class="s-meta">0.2 / 0.75 / 2 / 6 cfu/30min·Φ90</span><span class="s-brief">Φ90 mm 平板暴露 30 min，37 ℃ 培养 24 h，2 次空白对照</span></div>
+          </div>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="s-body">
+          <div class="s-row"><span class="s-k">限值（手术室）</span><span class="s-v">表 3.0.2-1：Ⅰ级 手术区 <b>0.2</b>、周边区 <b>0.4</b>；Ⅱ级 手术区 <b>0.75</b>、周边区 <b>1.5</b>；Ⅲ级 手术区 <b>2</b>、周边区 <b>4</b>；Ⅳ级 <b>6</b>。单位 cfu/30min·Φ90 皿，括号内为<b>浮游法</b>上限（cfu/m³），分别为 Ⅰ 5 / 10、Ⅱ 25 / 50、Ⅲ 75 / 150。</span></div>
+          <div class="s-row"><span class="s-k">限值（辅助用房）</span><span class="s-v">表 3.0.2-2：Ⅰ级 <b>局部集中送风区域 0.2、其他区域 0.4</b>；Ⅱ级 <b>1.5</b>；Ⅲ级 <b>4</b>；Ⅳ级 <b>6</b>（cfu/30min·Φ90 皿）。</span></div>
+          <div class="s-row"><span class="s-k">检测时机</span><span class="s-v">宜在其他项目检测完毕、对全室表面进行<b>常规消毒</b>之后进行，<b>不得进行空气消毒</b>（13.3.18 第 1 款）。</span></div>
+          <div class="s-row"><span class="s-k">区域划分</span><span class="s-v">送风口<b>集中布置</b>时，应对<b>手术区和周边区分别检测</b>；送风口<b>分散布置</b>时，应<b>全室统一检测</b>。</span></div>
+          <div class="s-row"><span class="s-k">测点数 / 皿数</span><span class="s-v">沉降法<b>测点数应和被测区域含尘浓度测点数相同</b>，同时应满足表 13.3.18-2 的<b>最少培养皿数</b>：5 级 <b>13</b> 个、6 级 <b>4</b> 个、7 级 <b>3</b> 个、8 级 <b>2</b> 个、8.5 级 <b>2</b> 个（Φ90 mm，以沉降 <b>30 min</b> 计）。如沉降时间适当延长，最少培养皿数可按比例减少，但<b>不得少于含尘浓度的最少测点数</b>；采样时间略低于或高于 30 min 时可进行换算。</span></div>
+          <div class="s-row"><span class="s-k">布点高度</span><span class="s-v">采样点可布置在<b>地面上</b>或<b>不高于地面 0.8 m 的任意高度</b>上（13.3.18 第 5 款）。</span></div>
+          <div class="s-row"><span class="s-k">空白对照</span><span class="s-v">应有 <b>2 次空白对照</b>：第 1 次对用于检测的培养皿（或培养基条）做对比试验，<b>每批 1 个对照皿</b>；第 2 次在检测时，<b>每室或每区 1 个对照皿</b>，模拟操作过程，但培养皿打开后应又立即封盖。<b>两次对照结果都应为阴性</b>，整个操作应符合无菌操作要求。</span></div>
+          <div class="s-row"><span class="s-k">培养与计数</span><span class="s-v">采样后的培养皿应置于 <b>37 ℃ 培养 24 h</b>，然后计数生长的菌落数；菌落数的<b>平均值均应四舍五入进位到小数点后 1 位</b>（13.3.18 第 6 款）。</span></div>
+          <div class="s-row"><span class="s-k">异常处理</span><span class="s-v">当某个皿菌落数太大受到质疑时，应<b>重测</b>；当结果仍很大时，应以<b>两次均值为准</b>；当结果很小时，可再重测或分析判定。布皿和收皿的检测人员应遵守无菌操作的要求。</span></div>
+          <div class="s-row"><span class="s-k">浮游法对照</span><span class="s-v">浮游法测点数应与含尘浓度测点数相同且宜在同一位置；每次采样应满足表 13.3.18-1 最小采样量（5 级 1 m³、6 级 0.3 m³、7 级 0.2 m³、8 级和 8.5 级 0.1 m³），<b>每次采样时间不应超过 30 min</b>。</span></div>
+        </div>
+      </div>
+
+      <div class="sch-block" style="margin-top:18px;">
+        <h3>③ 布点与采样量速查（表 13.3.11-2 · 13.3.18-1 · 13.3.18-2）</h3>
+        <div class="std">尘埃粒子数的测点数按表 13.3.11-2；沉降菌的最少培养皿数按表 13.3.18-2；浮游菌的最小采样量按表 13.3.18-1。<b>沉降法与浮游法的测点数均应与被测区域含尘浓度测点数相同。</b></div>
+        <div style="overflow-x:auto;">
+        <table class="sch-table clean-table">
+          <thead><tr><th>项目</th><th>5 级</th><th>6 级</th><th>7 级</th><th>8 级</th><th>8.5 级</th></tr></thead>
+          <tbody>
+            <tr><td>尘埃粒子 · 采样口方向</td><td><b>对着气流方向</b></td><td colspan="4">均<b>向上</b></td></tr>
+            <tr><td>尘埃粒子 · 每点最小采样量</td><td><b>8.6 L</b></td><td colspan="4"><b>2.83 L</b></td></tr>
+            <tr><td>沉降菌 · 最少培养皿数（Φ90，30 min）</td><td><b>13</b></td><td><b>4</b></td><td><b>3</b></td><td><b>2</b></td><td><b>2</b></td></tr>
+            <tr><td>浮游菌 · 每点最小采样量</td><td>1 m³（1000 L）</td><td>0.3 m³（300 L）</td><td>0.2 m³（200 L）</td><td>0.1 m³（100 L）</td><td>0.1 m³（100 L）</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div style="overflow-x:auto;">
+        <table class="sch-table clean-table clean-s">
+          <thead><tr><th>区域</th><th>含尘浓度最少测点数</th></tr></thead>
+          <tbody>
+            <tr><td>Ⅰ级洁净手术室手术区和洁净辅助用房局部 5 级区</td><td><b>5 点</b></td></tr>
+            <tr><td>Ⅰ级 周边区</td><td><b>8 点</b>，每边内 2 点</td></tr>
+            <tr><td>Ⅱ级～Ⅲ级洁净手术室手术区</td><td><b>3 点</b></td></tr>
+            <tr><td>Ⅱ级～Ⅲ级 周边区</td><td><b>6 点</b>，长边内 2 点、短边内 1 点</td></tr>
+            <tr><td>Ⅳ级洁净手术室及分散布置送风口的洁净室</td><td>测点数 = √（面积，m²）</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="legend" style="margin-top:8px;"><div><b>系数 t</b>（表 13.3.11-1，置信度上限 95%）：测点数 2→<b>6.31</b>、3→<b>2.92</b>、4→<b>2.35</b>、5→<b>2.13</b>、6→<b>2.02</b>、7→<b>1.94</b>、8→<b>1.90</b>、9→<b>1.86</b>；<b>测点数为 9 点以上时 N 取平均值</b>。判定式 N = 各点平均含尘浓度 + t × 标准差，N 应小于相应级别的上限浓度。</div></div>
+      </div>
+
+      <div class="sch-block" style="margin-top:16px;">
+        <h3>④ 空气洁净度级别与细菌浓度分级 <span class="sch-badge">GB 50333—2013 表 3.0.2</span></h3>
+        <div class="std">洁净手术部洁净用房应按<b>空态或静态条件下的细菌浓度</b>分级（3.0.1）。细菌浓度是<b>直接所测的结果</b>，不是沉降法和浮游法互相换算的结果（表 3.0.2 注 1）。</div>
+        <div style="overflow-x:auto;">
+        <table class="sch-table clean-table">
+          <thead><tr><th>洁净用房等级</th><th>洁净手术室 · 手术区<br>沉降法 cfu/30min·Φ90（浮游法 cfu/m³）</th><th>洁净手术室 · 周边区<br>沉降法（浮游法）</th><th>空气洁净度级别<br>手术区 / 周边区</th><th>参考手术</th></tr></thead>
+          <tbody>
+            <tr><td>Ⅰ级</td><td>0.2（5）</td><td>0.4（10）</td><td>5 级 / 6 级</td><td>假体植入、某些大型器官移植、手术部位感染可直接危及生命及生活质量等手术</td></tr>
+            <tr><td>Ⅱ级</td><td>0.75（25）</td><td>1.5（50）</td><td>6 级 / 7 级</td><td>涉及深部组织及生命主要器官的大型手术</td></tr>
+            <tr><td>Ⅲ级</td><td>2（75）</td><td>4（150）</td><td>7 级 / 8 级</td><td>其他外科手术</td></tr>
+            <tr><td>Ⅳ级</td><td colspan="2">6（—）</td><td>8.5 级</td><td>感染和重度污染手术</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div style="overflow-x:auto;">
+        <table class="sch-table clean-table clean-s">
+          <thead><tr><th>洁净辅助用房等级</th><th>沉降法（浮游法）细菌最大平均浓度</th><th>空气洁净度级别</th></tr></thead>
+          <tbody>
+            <tr><td>Ⅰ级</td><td>局部集中送风区域：0.2 个/30min·Φ90 皿；其他区域：0.4 个/30min·Φ90 皿</td><td>局部 5 级，其他区域 6 级</td></tr>
+            <tr><td>Ⅱ级</td><td>1.5 cfu/30min·Φ90 皿</td><td>7 级</td></tr>
+            <tr><td>Ⅲ级</td><td>4 cfu/30min·Φ90 皿</td><td>8 级</td></tr>
+            <tr><td>Ⅳ级</td><td>6 cfu/30min·Φ90 皿</td><td>8.5 级</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div style="overflow-x:auto;">
+        <table class="sch-table clean-table clean-s">
+          <thead><tr><th>空气洁净度级别</th><th>≥0.5 μm 上限浓度</th><th>≥5 μm 上限浓度</th><th>相当于原级别</th></tr></thead>
+          <tbody>
+            <tr><td>5 级</td><td>≤3500 粒/m³（3.5 粒/L）</td><td>0（0 粒/L）</td><td>原 100 级</td></tr>
+            <tr><td>6 级</td><td>≤35200 粒/m³（35.2 粒/L）</td><td>≤293 粒/m³（0.3 粒/L）</td><td>原 1000 级</td></tr>
+            <tr><td>7 级</td><td>≤352000 粒/m³（352 粒/L）</td><td>≤2930 粒/m³（3 粒/L）</td><td>原 10000 级</td></tr>
+            <tr><td>8 级</td><td>≤3520000 粒/m³（3520 粒/L）</td><td>≤29300 粒/m³（29 粒/L）</td><td>原 100000 级</td></tr>
+            <tr><td>8.5 级</td><td>≤11120000 粒/m³（11120 粒/L）</td><td>≤92500 粒/m³（93 粒/L）</td><td>原 30 万级</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="legend" style="margin-top:8px;"><div><b>注</b>：① 洁净度级别的定义形式为「大于下限浓度、小于等于上限浓度」，实测判定以上限浓度为准（第 2 章 2.0.7～2.0.11）；② <b>眼科专用手术室</b>周边区洁净度级别比手术区的可低 <b>2 级</b>（表 3.0.2-1 注 2）。</div></div>
+      </div>
+
+      <div class="qc-box">
+        <h3>检测状态 · 质量控制与注意事项</h3>
+        <ul>
+          <li><b>检测状态</b>：工程检验和定期检测应以<b>空态或静态</b>为准，任何检验结果都应<b>注明状态</b>（13.3.4）。</li>
+          <li><b>不得替代</b>：不得以空气洁净度级别或细菌浓度的单项指标代替综合性能全面评定；不得以工程的调整测试结果代替综合性能全面评定的检验结果（13.3.3）。</li>
+          <li><b>检测顺序</b>：风速、风量和静压差先测，细菌浓度最后检测（13.3.2）。</li>
+          <li><b>末级过滤器检漏</b>：每个高效过滤器送风口的<b>过滤器安装边框和滤芯以及送风面内所有缝隙</b>都应检漏；<b>每次更换过滤器后都应重新检漏</b>（13.3.8）。</li>
+          <li><b>手术室严密性</b>：应在设计的正压或负压下检验；除门缝不测外，应用<b>发烟管在所有缝隙处发烟</b>，检查有无可见泄漏（13.3.9）。</li>
+          <li><b>含尘浓度检测现场</b>：检测人员不得多于 2 人、穿洁净工作服、处于测点下风向、减少动作；除无影灯外手术室照明灯应全部打开（13.3.11 第 6、7 款）。</li>
+          <li><b>无菌操作</b>：细菌浓度检测应有 <b>2 次空白对照</b>且结果均应为阴性；布皿和收皿人员应遵守无菌操作要求（13.3.18）。</li>
+          <li><b>综合性能全面评定</b>：应按 <b>GB 50591—2010</b> 的有关规定执行（13.3.5）。</li>
+        </ul>
+      </div>
+
+      <div class="legend" style="margin-top:10px;">
+        <div><b>说明</b></div>
+        <div>本速查依据 <b>GB 50333—2013</b> 第 4 章与第 13.3 节原文整理，给出洁净手术部 8 项现场检测指标的限值、仪器、布点与操作要点；条文编号随各项标注，具体测量步骤与结果计算以标准全文为准。公共场所物理因素（温度、相对湿度、风速、噪声、照度）采样另见「公共卫生检测 · 物理因素」页签。</div>
+      </div>
+
+    </div>
+    </div><!-- /m-clean -->
 
     <!-- ====== 体积换算（二级：默认） ====== -->
     <div id="m-volconv" class="sub-pane active">
