@@ -301,6 +301,17 @@
   .clean-table.clean-main td:nth-child(2),.clean-table.clean-main td:nth-child(3),
   .clean-table.clean-main td:nth-child(4),.clean-table.clean-main td:nth-child(9){white-space:nowrap;text-align:center;}
 
+  /* ④ 空气洁净度级别与细菌浓度分级（GB 50333—2013 表 3.0.2）：
+     表头文字定宽换行并居中，第2列（手术区·沉降法/浮游法）等短列收窄，余量让给「参考手术」列 */
+  .clean-table.clean-bac th{text-align:center;}
+  .clean-table.clean-bac th:first-child{text-align:left;}
+  .clean-table.clean-bac .bac-w{display:inline-block;text-align:center;white-space:normal;line-height:1.4;}
+  .clean-table.clean-bac .bac-w2{width:11.4em;}
+  .clean-table.clean-bac .bac-w3{width:9.4em;}
+  .clean-table.clean-bac .bac-w4{width:7.6em;}
+  .clean-table.clean-bac td:nth-child(2),.clean-table.clean-bac td:nth-child(3),
+  .clean-table.clean-bac td:nth-child(4){white-space:nowrap;text-align:center;}
+
   /* 洁净室检测 → 模块分组（洁净手术部 / 后续可扩展洁净病房、工业洁净室等） */
   .clean-module{margin-top:4px;}
   .clean-module-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
@@ -852,8 +863,8 @@
         <h3>④ 空气洁净度级别与细菌浓度分级 <span class="sch-badge">GB 50333—2013 表 3.0.2</span></h3>
         <div class="std">洁净手术部洁净用房应按<b>空态或静态条件下的细菌浓度</b>分级（3.0.1）。细菌浓度是<b>直接所测的结果</b>，不是沉降法和浮游法互相换算的结果（表 3.0.2 注 1）。</div>
         <div style="overflow-x:auto;">
-        <table class="sch-table clean-table">
-          <thead><tr><th>洁净用房等级</th><th>洁净手术室 · 手术区<br>沉降法 cfu/30min·Φ90（浮游法 cfu/m³）</th><th>洁净手术室 · 周边区<br>沉降法（浮游法）</th><th>空气洁净度级别<br>手术区 / 周边区</th><th>参考手术</th></tr></thead>
+        <table class="sch-table clean-table clean-bac">
+          <thead><tr><th>洁净用房等级</th><th><span class="bac-w bac-w2">洁净手术室 · 手术区<br>沉降法 cfu/30min·Φ90<br>（浮游法 cfu/m³）</span></th><th><span class="bac-w bac-w3">洁净手术室 · 周边区<br>沉降法（浮游法）</span></th><th><span class="bac-w bac-w4">空气洁净度级别<br>手术区 / 周边区</span></th><th>参考手术</th></tr></thead>
           <tbody>
             <tr><td>Ⅰ级</td><td>0.2（5）</td><td>0.4（10）</td><td>5 级 / 6 级</td><td>假体植入、某些大型器官移植、手术部位感染可直接危及生命及生活质量等手术</td></tr>
             <tr><td>Ⅱ级</td><td>0.75（25）</td><td>1.5（50）</td><td>6 级 / 7 级</td><td>涉及深部组织及生命主要器官的大型手术</td></tr>
