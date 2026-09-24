@@ -283,6 +283,18 @@
   #m-clean .sch-badge{background:rgba(14,165,233,.12);color:#0369a1;}
   .clean-note{font-size:11.5px;color:var(--sub);line-height:1.7;}
 
+  /* 洁净室检测 → 模块分组（洁净手术部 / 后续可扩展洁净病房、工业洁净室等） */
+  .clean-module{margin-top:4px;}
+  .clean-module-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:13px 16px;margin-bottom:14px;
+    background:linear-gradient(90deg,rgba(14,165,233,.14),rgba(14,165,233,.03));
+    border:1px solid rgba(14,165,233,.35);border-radius:12px;}
+  .clean-module-h .cm-title{font-size:17px;font-weight:800;color:#0b4f6c;letter-spacing:.5px;}
+  .clean-module-h .cm-tag{font-size:12px;color:#0369a1;background:rgba(14,165,233,.10);
+    border:1px solid rgba(14,165,233,.25);border-radius:999px;padding:2px 11px;font-weight:600;}
+  .clean-module-h .dot{width:10px;height:10px;border-radius:50%;background:#0ea5e9;
+    box-shadow:0 0 10px rgba(14,165,233,.5);flex:0 0 auto;}
+
   /* ===== 学校综合评价 ===== */
 
   /* ==SCH5-CSS-BEGIN== */
@@ -576,8 +588,17 @@
 
     <!-- ====== 洁净室检测（GB 50333—2013） ====== -->
     <div id="m-clean" class="sub-pane">
-    <div class="card">
-      <h2><span class="dot" style="background:#0ea5e9;box-shadow:0 0 10px rgba(14,165,233,.45)"></span>洁净室（洁净手术部）检测 · 8 项指标</h2>
+
+      <!-- 模块：洁净手术部（GB 50333—2013）。后续可在此追加其它模块：洁净病房 / 工业洁净室 / 生物安全实验室洁净区 等 -->
+      <div class="clean-module">
+        <div class="clean-module-h">
+          <span class="dot" style="background:#0ea5e9;box-shadow:0 0 10px rgba(14,165,233,.45)"></span>
+          <span class="cm-title">洁净手术部</span>
+          <span class="cm-tag">GB 50333—2013《医院洁净手术部建筑技术规范》</span>
+        </div>
+
+      <div class="card">
+      <h2><span class="dot" style="background:#0ea5e9;box-shadow:0 0 10px rgba(14,165,233,.45)"></span>洁净手术部现场检测 · 8 项指标</h2>
       <p class="sub-note">依据 <b>GB 50333—2013《医院洁净手术部建筑技术规范》</b>第 4 章（技术指标）与第 13.3 节（工程检验）原文整理。检测状态以 <b>空态或静态</b> 为准，任何检验结果都应注明状态（13.3.4）。沉降菌、浮游菌的检验方法另按 <b>GB/T 16294—2025</b>、<b>GB/T 16293—2025</b>；综合性能全面评定按 <b>GB 50591—2010《洁净室施工及验收规范》</b> 执行（13.3.5）。</p>
 
       <div class="req-box">
@@ -869,6 +890,7 @@
       </div>
 
     </div>
+      </div><!-- /clean-module -->
     </div><!-- /m-clean -->
 
     <!-- ====== 体积换算（二级：默认） ====== -->
