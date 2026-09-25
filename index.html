@@ -301,16 +301,41 @@
   .clean-table.clean-main th:nth-child(9),.clean-table.clean-main td:nth-child(9){min-width:5em;}
   .clean-table.clean-main th:nth-child(10),.clean-table.clean-main td:nth-child(10){min-width:3.8em;}
 
-  /* ④ 空气洁净度级别与细菌浓度分级（GB 50333—2013 表 3.0.2）：
-     表头文字定宽换行并居中，第2列（手术区·沉降法/浮游法）等短列收窄，余量让给「参考手术」列 */
-  .clean-table.clean-bac th{text-align:center;}
-  .clean-table.clean-bac th:first-child{text-align:left;}
-  .clean-table.clean-bac .bac-w{display:inline-block;text-align:center;white-space:normal;line-height:1.4;}
-  .clean-table.clean-bac .bac-w2{width:11.4em;}
-  .clean-table.clean-bac .bac-w3{width:9.4em;}
-  .clean-table.clean-bac .bac-w4{width:7.6em;}
+  /* ④ 空气洁净度级别与细菌浓度分级（GB 50333—2013 表 3.0.2）
+     2026-09-25：删去「参考手术」列；表头改用 <br> 显式分行 + white-space:nowrap（每行整行不断字），
+     列宽＝该列最长一行文字宽＋内边距，因此既紧凑又绝不会外溢到相邻表头（旧版定宽 inline-block 会叠字） */
+  .clean-table.clean-bac{min-width:0;width:100%;}
+  .clean-table.clean-bac th{text-align:center;white-space:nowrap;line-height:1.45;}
+  .clean-table.clean-bac th:first-child,.clean-table.clean-bac td:first-child{min-width:3.4em;width:3.4em;}
+  .clean-table.clean-bac th:nth-child(3),.clean-table.clean-bac td:nth-child(3){min-width:5.4em;}
+  .clean-table.clean-bac th:nth-child(4),.clean-table.clean-bac td:nth-child(4){min-width:7.4em;}
   .clean-table.clean-bac td:nth-child(2),.clean-table.clean-bac td:nth-child(3),
   .clean-table.clean-bac td:nth-child(4){white-space:nowrap;text-align:center;}
+
+  /* ④ 表桌面端：第 1 列（洁净用房等级）与第 4 列（空气洁净度级别）只保留
+     「刚好放下本列最长一行文字」的宽度（width:1% + min-width 钉宽），
+     余下宽度按内容长短分给中间两列（手术区/周边区细菌浓度），整表仍铺满容器、不留半空列 */
+  @media (min-width:681px){
+    .clean-table.clean-bac th:nth-child(1),.clean-table.clean-bac td:nth-child(1){width:1%;min-width:6em;}
+    .clean-table.clean-bac th:nth-child(4),.clean-table.clean-bac td:nth-child(4){width:1%;min-width:9em;}
+    .clean-table.clean-bac th:nth-child(2),.clean-table.clean-bac td:nth-child(2){width:auto;}
+    .clean-table.clean-bac th:nth-child(3),.clean-table.clean-bac td:nth-child(3){width:auto;}
+  }
+
+  /* ⑤ 洁净辅助用房分级表（.clean-aux）
+     桌面端：第 1 列只留「洁净辅助用房等级」、第 3 列只留「空气洁净度级别」所需宽度，
+     余量全部给中间「沉降法（浮游法）细菌最大平均浓度」列 —— 该列最长的Ⅰ级内容因此整行写满
+     （不再出现只剩『个/30min·Φ90 皿』几个字的半空行） */
+  @media (min-width:681px){
+    .clean-table.clean-s.clean-aux th:first-child,.clean-table.clean-s.clean-aux td:first-child{width:1%;min-width:10.2em;}
+    .clean-table.clean-s.clean-aux th:nth-child(3),.clean-table.clean-s.clean-aux td:nth-child(3){width:1%;min-width:9.2em;}
+    .clean-table.clean-s.clean-aux th:nth-child(2),.clean-table.clean-s.clean-aux td:nth-child(2){width:auto;}
+  }
+  /* 等级列 / 级别列按语义断行且不再二次折字（列宽不足时整列略变宽，不会从词中间断开） */
+  .clean-table.clean-s.clean-aux th:first-child,.clean-table.clean-s.clean-aux th:nth-child(3),
+  .clean-table.clean-s.clean-aux td:nth-child(3){white-space:nowrap;}
+  /* m-br：仅手机端生效的换行（桌面表头保持一行） */
+  .m-br{display:none;}
 
   /* 洁净室检测 → 模块分组（洁净手术部 / 后续可扩展洁净病房、工业洁净室等） */
   .clean-module{margin-top:4px;}
@@ -524,7 +549,9 @@
     .clean-table.clean-main th:nth-child(8),.clean-table.clean-main td:nth-child(8){min-width:2.8em;}
     .clean-table.clean-main th:nth-child(9),.clean-table.clean-main td:nth-child(9){min-width:3.4em;}
     .clean-table.clean-main th:nth-child(10),.clean-table.clean-main td:nth-child(10){min-width:2.8em;}
-    /* ④ 空气洁净度级别与细菌浓度分级表：数值列整串显示 */
+    /* ④ 空气洁净度级别与细菌浓度分级表：表头按 <br> 分行且整行不断字；数值列整串显示 */
+    .clean-table.clean-bac th{white-space:nowrap!important;padding:5px 3px;}
+    .clean-table.clean-bac td{padding:5px 3px;}
     .clean-table.clean-bac td:nth-child(2),.clean-table.clean-bac td:nth-child(3),
     .clean-table.clean-bac td:nth-child(4){white-space:nowrap!important;}
     /* ③ 6 列布点/采样量速查表：数值列整串显示，首列可换行 */
@@ -534,6 +561,14 @@
     .clean-table:not(.clean-main):not(.clean-s):not(.clean-bac) td:first-child{min-width:7.5em;width:7.5em;}
     /* 2～4 列小表（clean-s）：首列略窄，长文本照常折行 */
     .clean-table.clean-s th:first-child,.clean-table.clean-s td:first-child{min-width:6em;width:6em;}
+    /* ⑤ 洁净辅助用房分级表：内边距收到 3px，三列各按「本列最长一行文字」定宽 ——
+       等级列＝洁净辅助、级别列＝其他区域 6 级、中间列＝整行最长的Ⅰ级内容，
+       因此每格文字都整串放下、每行写满后才折行，且整表仍能在 360px 屏内放完不横向滚动 */
+    .clean-table.clean-s.clean-aux th,.clean-table.clean-s.clean-aux td{padding:5px 3px;}
+    .m-br{display:inline;}
+    .clean-table.clean-s.clean-aux th:first-child,.clean-table.clean-s.clean-aux td:first-child{min-width:4.65em;width:4.65em;}
+    .clean-table.clean-s.clean-aux th:nth-child(2),.clean-table.clean-s.clean-aux td:nth-child(2){min-width:13.1em;width:13.1em;}
+    .clean-table.clean-s.clean-aux th:nth-child(3),.clean-table.clean-s.clean-aux td:nth-child(3){min-width:6.8em;width:6.8em;}
   }
 
 .radio-row{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:4px}
@@ -899,23 +934,23 @@
 
       <div class="sch-block" style="margin-top:16px;">
         <h3>④ 空气洁净度级别与细菌浓度分级 <span class="sch-badge">GB 50333—2013 表 3.0.2</span></h3>
-        <div class="std">洁净手术部洁净用房应按<b>空态或静态条件下的细菌浓度</b>分级（3.0.1）。细菌浓度是<b>直接所测的结果</b>，不是沉降法和浮游法互相换算的结果（表 3.0.2 注 1）。</div>
+        <div class="std">洁净手术部洁净用房应按<b>空态或静态条件下的细菌浓度</b>分级（3.0.1）。细菌浓度是<b>直接所测的结果</b>，不是沉降法和浮游法互相换算的结果（表 3.0.2 注 1）。下表数值针对<b>洁净手术室</b>的手术区与周边区，单位为沉降法 cfu/30min·Φ90 皿（括号内为浮游法 cfu/m³）。</div>
         <div style="overflow-x:auto;">
         <table class="sch-table clean-table clean-bac">
-          <thead><tr><th>洁净用房等级</th><th><span class="bac-w bac-w2">洁净手术室 · 手术区<br>沉降法 cfu/30min·Φ90<br>（浮游法 cfu/m³）</span></th><th><span class="bac-w bac-w3">洁净手术室 · 周边区<br>沉降法（浮游法）</span></th><th><span class="bac-w bac-w4">空气洁净度级别<br>手术区 / 周边区</span></th><th>参考手术</th></tr></thead>
+          <thead><tr><th>洁净<br>用房<br>等级</th><th>手术区<br>沉降法<br>cfu/30min·Φ90<br>（浮游法<br>cfu/m³）</th><th>周边区<br>沉降法<br>（浮游法）</th><th>空气洁净度级别<br>手术区 / 周边区</th></tr></thead>
           <tbody>
-            <tr><td>Ⅰ级</td><td>0.2（5）</td><td>0.4（10）</td><td>5 级 / 6 级</td><td>假体植入、某些大型器官移植、手术部位感染可直接危及生命及生活质量等手术</td></tr>
-            <tr><td>Ⅱ级</td><td>0.75（25）</td><td>1.5（50）</td><td>6 级 / 7 级</td><td>涉及深部组织及生命主要器官的大型手术</td></tr>
-            <tr><td>Ⅲ级</td><td>2（75）</td><td>4（150）</td><td>7 级 / 8 级</td><td>其他外科手术</td></tr>
-            <tr><td>Ⅳ级</td><td colspan="2">6（—）</td><td>8.5 级</td><td>感染和重度污染手术</td></tr>
+            <tr><td>Ⅰ级</td><td>0.2（5）</td><td>0.4（10）</td><td>5 级 / 6 级</td></tr>
+            <tr><td>Ⅱ级</td><td>0.75（25）</td><td>1.5（50）</td><td>6 级 / 7 级</td></tr>
+            <tr><td>Ⅲ级</td><td>2（75）</td><td>4（150）</td><td>7 级 / 8 级</td></tr>
+            <tr><td>Ⅳ级</td><td colspan="2">6（—）</td><td>8.5 级</td></tr>
           </tbody>
         </table>
         </div>
         <div style="overflow-x:auto;">
-        <table class="sch-table clean-table clean-s">
-          <thead><tr><th>洁净辅助用房等级</th><th>沉降法（浮游法）细菌最大平均浓度</th><th>空气洁净度级别</th></tr></thead>
+        <table class="sch-table clean-table clean-s clean-aux">
+          <thead><tr><th>洁净辅助<br class="m-br">用房等级</th><th>沉降法（浮游法）<br>细菌最大平均浓度</th><th>空气洁净度<br class="m-br">级别</th></tr></thead>
           <tbody>
-            <tr><td>Ⅰ级</td><td>局部集中送风区域：0.2 个/30min·Φ90 皿；其他区域：0.4 个/30min·Φ90 皿</td><td>局部 5 级，其他区域 6 级</td></tr>
+            <tr><td>Ⅰ级</td><td>局部集中送风区域：0.2 个/30min·Φ90 皿；其他区域：0.4 个/30min·Φ90 皿</td><td>局部 5 级，<br>其他区域 6 级</td></tr>
             <tr><td>Ⅱ级</td><td>1.5 cfu/30min·Φ90 皿</td><td>7 级</td></tr>
             <tr><td>Ⅲ级</td><td>4 cfu/30min·Φ90 皿</td><td>8 级</td></tr>
             <tr><td>Ⅳ级</td><td>6 cfu/30min·Φ90 皿</td><td>8.5 级</td></tr>
