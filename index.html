@@ -505,30 +505,35 @@
     .step{font-size:13.5px;}
     .qc-box{padding:14px 15px;}
 
-    /* ===== 洁净室检测：手机端全部列一屏看全、可换行、不横向滚动 ===== */
-    .clean-table{table-layout:fixed;width:100%;min-width:0!important;}
-    .clean-table.clean-main,.clean-table.clean-bac,.clean-table.clean-s{table-layout:fixed;width:100%;min-width:0!important;}
-    .clean-table th,.clean-table td{white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important;min-width:0!important;padding:5px 3px;line-height:1.3;}
-    .clean-table.clean-bac .bac-w{width:auto!important;}
-    /* ① 洁净用房主要技术指标表：列宽比例（合计 100%），整表随容器缩放 */
-    .clean-table.clean-main th:nth-child(1){width:16%;}
-    .clean-table.clean-main th:nth-child(2){width:7%;}
-    .clean-table.clean-main th:nth-child(3){width:7%;}
-    .clean-table.clean-main th:nth-child(4){width:12%;}
-    .clean-table.clean-main th:nth-child(5){width:9%;}
-    .clean-table.clean-main th:nth-child(6){width:9%;}
-    .clean-table.clean-main th:nth-child(7){width:10%;}
-    .clean-table.clean-main th:nth-child(8){width:10%;}
-    .clean-table.clean-main th:nth-child(9){width:12%;}
-    .clean-table.clean-main th:nth-child(10){width:8%;}
-    /* ④ 空气洁净度级别与细菌浓度分级表：参考手术列加宽 */
-    .clean-table.clean-bac th:nth-child(1){width:13%;}
-    .clean-table.clean-bac th:nth-child(2){width:19%;}
-    .clean-table.clean-bac th:nth-child(3){width:15%;}
-    .clean-table.clean-bac th:nth-child(4){width:13%;}
-    .clean-table.clean-bac th:nth-child(5){width:40%;}
-    /* 其它洁净小表（通用 6 列 / clean-s 2~4 列）：长文本首列加宽 */
-    .clean-table:not(.clean-main):not(.clean-bac) th:first-child{width:32%;min-width:0;}
+    /* ===== 洁净室检测：手机端列宽按内容撑开（紧凑、数值整串不折断），
+           一屏放不下时在该表格容器内横向滚动，不挤压列宽 ===== */
+    .clean-table{table-layout:auto;width:100%;min-width:0!important;font-size:11px;}
+    .clean-table.clean-main{min-width:0!important;}
+    .clean-table.clean-s{min-width:0!important;}
+    .clean-table th,.clean-table td{padding:5px 4px;line-height:1.3;}
+    .clean-table th{white-space:normal!important;}
+    /* ① 洁净用房主要技术指标表（10 列）：每列只占内容所需宽度，余量不明显时不再拉宽 */
+    .clean-table.clean-main th:first-child,.clean-table.clean-main td:first-child{min-width:7.2em;width:7.2em;}
+    .clean-table.clean-main td:nth-child(n+2){white-space:nowrap!important;}
+    .clean-table.clean-main th:nth-child(2),.clean-table.clean-main td:nth-child(2){min-width:2.6em;}
+    .clean-table.clean-main th:nth-child(3),.clean-table.clean-main td:nth-child(3){min-width:3.4em;}
+    .clean-table.clean-main th:nth-child(4),.clean-table.clean-main td:nth-child(4){min-width:4.6em;}
+    .clean-table.clean-main th:nth-child(5),.clean-table.clean-main td:nth-child(5){min-width:3.2em;}
+    .clean-table.clean-main th:nth-child(6),.clean-table.clean-main td:nth-child(6){min-width:3.2em;}
+    .clean-table.clean-main th:nth-child(7),.clean-table.clean-main td:nth-child(7){min-width:3.4em;}
+    .clean-table.clean-main th:nth-child(8),.clean-table.clean-main td:nth-child(8){min-width:2.8em;}
+    .clean-table.clean-main th:nth-child(9),.clean-table.clean-main td:nth-child(9){min-width:3.4em;}
+    .clean-table.clean-main th:nth-child(10),.clean-table.clean-main td:nth-child(10){min-width:2.8em;}
+    /* ④ 空气洁净度级别与细菌浓度分级表：数值列整串显示 */
+    .clean-table.clean-bac td:nth-child(2),.clean-table.clean-bac td:nth-child(3),
+    .clean-table.clean-bac td:nth-child(4){white-space:nowrap!important;}
+    /* ③ 6 列布点/采样量速查表：数值列整串显示，首列可换行 */
+    .clean-table:not(.clean-main):not(.clean-s):not(.clean-bac) td:nth-child(n+2){white-space:nowrap!important;}
+    .clean-table:not(.clean-main):not(.clean-s):not(.clean-bac) th{width:1%;}
+    .clean-table:not(.clean-main):not(.clean-s):not(.clean-bac) th:first-child,
+    .clean-table:not(.clean-main):not(.clean-s):not(.clean-bac) td:first-child{min-width:7.5em;width:7.5em;}
+    /* 2～4 列小表（clean-s）：首列略窄，长文本照常折行 */
+    .clean-table.clean-s th:first-child,.clean-table.clean-s td:first-child{min-width:6em;width:6em;}
   }
 
 .radio-row{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:4px}
