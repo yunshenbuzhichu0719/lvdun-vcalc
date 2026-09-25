@@ -283,23 +283,23 @@
   #m-clean .s-title{color:#0b4f6c;}
   #m-clean .sch-badge{background:rgba(14,165,233,.12);color:#0369a1;}
   .clean-note{font-size:11.5px;color:var(--sub);line-height:1.7;}
-  /* ① 洁净用房主要技术指标表：室内压力 / 换气次数 / 工作区平均风速 / 最低照度 4 列收窄并居中 */
-  .clean-table.clean-main{table-layout:auto;}
-  .clean-table.clean-main th{text-align:center;}
+  /* ① 洁净用房主要技术指标表：第 2～10 列一律压到「刚够显示内容」，
+     多余宽度全部让给首列「洁净用房」（长名称不再折行），表头用 <br> 拆行居中 */
+  .clean-table.clean-main{table-layout:auto;min-width:800px;}
+  .clean-table.clean-main th{text-align:center;white-space:normal;}
   .clean-table.clean-main th:first-child{text-align:left;}
-  .clean-table.clean-main th:nth-child(2),.clean-table.clean-main td:nth-child(2),
-  .clean-table.clean-main th:nth-child(3),.clean-table.clean-main td:nth-child(3),
-  .clean-table.clean-main th:nth-child(4),.clean-table.clean-main td:nth-child(4),
-  .clean-table.clean-main th:nth-child(9),.clean-table.clean-main td:nth-child(9){
+  .clean-table.clean-main th:nth-child(n+2),.clean-table.clean-main td:nth-child(n+2){
     width:1%;padding-left:4px;padding-right:4px;min-width:0;}
+  .clean-table.clean-main td:nth-child(n+2){white-space:nowrap;text-align:center;}
   .clean-table.clean-main th:nth-child(2),.clean-table.clean-main td:nth-child(2){min-width:3.4em;}
   .clean-table.clean-main th:nth-child(3),.clean-table.clean-main td:nth-child(3){min-width:5em;}
-  .clean-table.clean-main th:nth-child(4),.clean-table.clean-main td:nth-child(4){min-width:8em;}
+  .clean-table.clean-main th:nth-child(4),.clean-table.clean-main td:nth-child(4){min-width:5.9em;}
+  .clean-table.clean-main th:nth-child(5),.clean-table.clean-main td:nth-child(5){min-width:4.2em;}
+  .clean-table.clean-main th:nth-child(6),.clean-table.clean-main td:nth-child(6){min-width:4.2em;}
+  .clean-table.clean-main th:nth-child(7),.clean-table.clean-main td:nth-child(7){min-width:4.4em;}
+  .clean-table.clean-main th:nth-child(8),.clean-table.clean-main td:nth-child(8){min-width:3.8em;}
   .clean-table.clean-main th:nth-child(9),.clean-table.clean-main td:nth-child(9){min-width:5em;}
-  .clean-table.clean-main th:nth-child(2),.clean-table.clean-main th:nth-child(3),
-  .clean-table.clean-main th:nth-child(4),.clean-table.clean-main th:nth-child(9){white-space:normal;}
-  .clean-table.clean-main td:nth-child(2),.clean-table.clean-main td:nth-child(3),
-  .clean-table.clean-main td:nth-child(4),.clean-table.clean-main td:nth-child(9){white-space:nowrap;text-align:center;}
+  .clean-table.clean-main th:nth-child(10),.clean-table.clean-main td:nth-child(10){min-width:3.8em;}
 
   /* ④ 空气洁净度级别与细菌浓度分级（GB 50333—2013 表 3.0.2）：
      表头文字定宽换行并居中，第2列（手术区·沉降法/浮游法）等短列收窄，余量让给「参考手术」列 */
@@ -651,7 +651,7 @@
         <div class="std">温度、相对湿度、换气次数 / 风速、噪声、照度 5 项的限值来源；尘埃粒子数与沉降菌的分级限值见表 3.0.2（见下方 ③）。表中「—」表示标准未作规定。</div>
         <div style="overflow-x:auto;">
         <table class="sch-table clean-table clean-main">
-          <thead><tr><th>洁净用房</th><th>室内压力</th><th>换气次数<br>(次/h)</th><th>工作区平均风速<br>(m/s)</th><th>温度<br>(℃)</th><th>相对湿度<br>(%)</th><th>最小新风量</th><th>噪声<br>dB(A)</th><th>最低照度<br>(lx)</th><th>自净时间<br>(min)</th></tr></thead>
+          <thead><tr><th>洁净用房</th><th>室内压力</th><th>换气次数<br>(次/h)</th><th>工作区<br>平均风速<br>(m/s)</th><th>温度<br>(℃)</th><th>相对<br>湿度<br>(%)</th><th>最小<br>新风量</th><th>噪声<br>dB(A)</th><th>最低照度<br>(lx)</th><th>自净<br>时间<br>(min)</th></tr></thead>
           <tbody>
             <tr><td>Ⅰ级洁净手术室和需要无菌操作的特殊用房</td><td>正</td><td>—</td><td>0.20～0.25</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;51</td><td>&gt;350</td><td>10</td></tr>
             <tr><td>Ⅱ级洁净手术室</td><td>正</td><td>24</td><td>—</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;49</td><td>&gt;350</td><td>20</td></tr>
