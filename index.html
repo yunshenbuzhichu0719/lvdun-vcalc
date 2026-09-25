@@ -295,21 +295,47 @@
   .clean-note{font-size:11.5px;color:var(--sub);line-height:1.7;}
   /* ① 洁净用房主要技术指标表：第 2～10 列一律压到「刚够显示内容」，
      多余宽度全部让给首列「洁净用房」（长名称不再折行），表头用 <br> 拆行居中 */
-  .clean-table.clean-main{table-layout:auto;min-width:800px;}
+  .clean-table.clean-main{table-layout:auto;min-width:0;}   /* 桌面不再强制 800px：窄窗口下各列按比例收缩，不再被右侧裁掉 */
   .clean-table.clean-main th{text-align:center;white-space:normal;}
   .clean-table.clean-main th:first-child{text-align:left;}
   .clean-table.clean-main th:nth-child(n+2),.clean-table.clean-main td:nth-child(n+2){
     width:1%;padding-left:4px;padding-right:4px;min-width:0;}
   .clean-table.clean-main td:nth-child(n+2){white-space:nowrap;text-align:center;}
-  .clean-table.clean-main th:nth-child(2),.clean-table.clean-main td:nth-child(2){min-width:3.4em;}
-  .clean-table.clean-main th:nth-child(3),.clean-table.clean-main td:nth-child(3){min-width:5em;}
-  .clean-table.clean-main th:nth-child(4),.clean-table.clean-main td:nth-child(4){min-width:5.9em;}
+  .clean-table.clean-main th:nth-child(2),.clean-table.clean-main td:nth-child(2){min-width:4.7em;}
+  .clean-table.clean-main th:nth-child(3),.clean-table.clean-main td:nth-child(3){min-width:4.7em;}
+  .clean-table.clean-main th:nth-child(4),.clean-table.clean-main td:nth-child(4){min-width:6em;}
   .clean-table.clean-main th:nth-child(5),.clean-table.clean-main td:nth-child(5){min-width:4.2em;}
   .clean-table.clean-main th:nth-child(6),.clean-table.clean-main td:nth-child(6){min-width:4.2em;}
-  .clean-table.clean-main th:nth-child(7),.clean-table.clean-main td:nth-child(7){min-width:4.4em;}
-  .clean-table.clean-main th:nth-child(8),.clean-table.clean-main td:nth-child(8){min-width:3.8em;}
-  .clean-table.clean-main th:nth-child(9),.clean-table.clean-main td:nth-child(9){min-width:5em;}
-  .clean-table.clean-main th:nth-child(10),.clean-table.clean-main td:nth-child(10){min-width:3.8em;}
+  .clean-table.clean-main th:nth-child(7),.clean-table.clean-main td:nth-child(7){min-width:4.2em;}
+  .clean-table.clean-main th:nth-child(8),.clean-table.clean-main td:nth-child(8){min-width:3.6em;}
+  .clean-table.clean-main th:nth-child(9),.clean-table.clean-main td:nth-child(9){min-width:4.7em;}
+  .clean-table.clean-main th:nth-child(10),.clean-table.clean-main td:nth-child(10){min-width:3.4em;}
+
+  /* ① 表桌面列宽分配（2026-09-25 二次定稿）：首列「洁净用房」固定 14.7em ——
+     内容宽 166px，正好让最长的两格（「未拆封器械…存放室」「Ⅰ级洁净手术室…特殊用房」）
+     各折 2 行且两行都写满（配合 .nb 让「一次性物品」「无菌操作」不断开，断点落在顿号/「需要」后）；
+     右侧 9 列合计 77.1%、按各列内容需求比例分配，短表头列（室内压力、噪声…）因此也够宽。 */
+  @media (min-width:681px){
+    .clean-table.clean-main th:first-child,.clean-table.clean-main td:first-child{width:14.7em;min-width:14.7em;}
+    .clean-table.clean-main .nb{white-space:nowrap;}   /* 「一次性物品」等术语整体不折，断点落在顿号后 */
+    .clean-table.clean-main th:nth-child(2),.clean-table.clean-main td:nth-child(2){width:9.11%;}
+    .clean-table.clean-main th:nth-child(3),.clean-table.clean-main td:nth-child(3){width:9.11%;}
+    .clean-table.clean-main th:nth-child(4),.clean-table.clean-main td:nth-child(4){width:11.63%;}
+    .clean-table.clean-main th:nth-child(5),.clean-table.clean-main td:nth-child(5){width:8.17%;}
+    .clean-table.clean-main th:nth-child(6),.clean-table.clean-main td:nth-child(6){width:8.17%;}
+    .clean-table.clean-main th:nth-child(7),.clean-table.clean-main td:nth-child(7){width:8.17%;}
+    .clean-table.clean-main th:nth-child(8),.clean-table.clean-main td:nth-child(8){width:7.07%;}
+    .clean-table.clean-main th:nth-child(9),.clean-table.clean-main td:nth-child(9){width:9.11%;}
+    .clean-table.clean-main th:nth-child(10),.clean-table.clean-main td:nth-child(10){width:6.6%;}
+  }
+
+  /* 静压差 4 种工况表（.clean-dp）：相邻关系列放宽到「最长的相邻关系一行放下」（44%），
+     「要求」列相应收到 56% —— 长句折成 2 行、每行都写满，不再让一行字横跨整个卡片 */
+  @media (min-width:681px){
+    .clean-table.clean-dp th:first-child,.clean-table.clean-dp td:first-child{width:44%;min-width:28em;}
+    .clean-table.clean-dp th:nth-child(2),.clean-table.clean-dp td:nth-child(2){width:56%;min-width:0;}
+    .clean-table.clean-dp .nb{white-space:nowrap;}   /* 「最大静压差」等术语整体不折，断点落在标点后 */
+  }
 
   /* ④ 空气洁净度级别与细菌浓度分级（GB 50333—2013 表 3.0.2）
      2026-09-25：删去「参考手术」列；表头改用 <br> 显式分行 + white-space:nowrap（每行整行不断字），
@@ -730,13 +756,13 @@
         <table class="sch-table clean-table clean-main">
           <thead><tr><th>洁净用房</th><th>室内压力</th><th>换气次数<br>(次/h)</th><th>工作区<br>平均风速<br>(m/s)</th><th>温度<br>(℃)</th><th>相对<br>湿度<br>(%)</th><th>最小<br>新风量</th><th>噪声<br>dB(A)</th><th>最低照度<br>(lx)</th><th>自净<br>时间<br>(min)</th></tr></thead>
           <tbody>
-            <tr><td>Ⅰ级洁净手术室和需要无菌操作的特殊用房</td><td>正</td><td>—</td><td>0.20～0.25</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;51</td><td>&gt;350</td><td>10</td></tr>
+            <tr><td>Ⅰ级洁净手术室和需要<span class="nb">无菌操作</span>的特殊用房</td><td>正</td><td>—</td><td>0.20～0.25</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;51</td><td>&gt;350</td><td>10</td></tr>
             <tr><td>Ⅱ级洁净手术室</td><td>正</td><td>24</td><td>—</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;49</td><td>&gt;350</td><td>20</td></tr>
             <tr><td>Ⅲ级洁净手术室</td><td>正</td><td>18</td><td>—</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;49</td><td>&gt;350</td><td>20</td></tr>
             <tr><td>Ⅳ级洁净手术室</td><td>正</td><td>12</td><td>—</td><td>21～25</td><td>30～60</td><td>15～20</td><td>&lt;49</td><td>&gt;350</td><td>30</td></tr>
             <tr><td>体外循环室</td><td>正</td><td>12</td><td>—</td><td>21～27</td><td>&lt;60</td><td>(2)</td><td>&lt;60</td><td>&gt;150</td><td>—</td></tr>
             <tr><td>无菌敷料室</td><td>正</td><td>12</td><td>—</td><td>&lt;27</td><td>&lt;60</td><td>(2)</td><td>&lt;60</td><td>&gt;150</td><td>—</td></tr>
-            <tr><td>未拆封器械、无菌药品、一次性物品和精密仪器存放室</td><td>正</td><td>10</td><td>—</td><td>&lt;27</td><td>&lt;60</td><td>(2)</td><td>&lt;60</td><td>&gt;150</td><td>—</td></tr>
+            <tr><td>未拆封器械、无菌药品、<span class="nb">一次性物品</span>和精密仪器存放室</td><td>正</td><td>10</td><td>—</td><td>&lt;27</td><td>&lt;60</td><td>(2)</td><td>&lt;60</td><td>&gt;150</td><td>—</td></tr>
             <tr><td>护士站</td><td>正</td><td>10</td><td>—</td><td>21～27</td><td>&lt;60</td><td>(2)</td><td>&lt;55</td><td>&gt;150</td><td>—</td></tr>
             <tr><td>预麻醉室</td><td>负</td><td>10</td><td>—</td><td>23～26</td><td>30～60</td><td>(2)</td><td>&lt;55</td><td>&gt;150</td><td>—</td></tr>
             <tr><td>手术室前室</td><td>正</td><td>8</td><td>—</td><td>21～27</td><td>&lt;60</td><td>(2)</td><td>&lt;60</td><td>&gt;200</td><td>—</td></tr>
@@ -751,10 +777,10 @@
         <div class="legend" style="margin-top:8px;"><div><b>注</b>：① 最小新风量「15～20」的单位为 <b>m³/(h·m²)</b>，带括号如「(2)」的单位为 <b>次/h</b>；② 平均风速指集中送风区地面以上 <b>1.2 m</b> 截面的平均风速；③ <b>眼科手术室</b>截面平均风速应控制在 <b>0.15～0.20 m/s</b>；④ 温湿度范围下限为冬季的最低值、上限为夏季的最高值；⑤ 负压手术室室内压力一栏应为「负」；⑥ 温、湿度不达标不应超过 <b>5 天/年</b>，连续 2 天不达标不应超过 <b>2 次/年</b>（4.0.2 第 6 款）；⑦ 表 4.0.1 中未列出名称的房间可参照用途相近的房间确定指标数值（4.0.2 第 8 款）。</div></div>
         <div class="clean-note" style="margin-top:14px;font-weight:800;color:var(--txt);">静压差 4 种工况（4.0.2）</div>
         <div style="overflow-x:auto;">
-        <table class="sch-table clean-table clean-s">
+        <table class="sch-table clean-table clean-s clean-dp">
           <thead><tr><th>相邻关系</th><th>要求</th></tr></thead>
           <tbody>
-            <tr><td>相互连通、洁净度级别<b>不同</b>的洁净用房之间</td><td>洁净度高的用房对洁净度低的用房保持相对<b>正压</b>；最小静压差 <b>≥5 Pa</b>，最大静压差 <b>&lt;20 Pa</b>，不应因压差而产生哨音或影响开门</td></tr>
+            <tr><td>相互连通、洁净度级别<b>不同</b>的洁净用房之间</td><td>洁净度高的用房对洁净度低的用房保持相对<b>正压</b>；最小静压差 <b>≥5 Pa</b>，<span class="nb">最大静压差</span> <b>&lt;20 Pa</b>，不应因压差而产生哨音或影响开门</td></tr>
             <tr><td>相互连通、洁净度级别<b>相同</b>的洁净用房之间</td><td>宜有适当压差，保持要求的气流方向</td></tr>
             <tr><td><b>严重污染</b>的房间对相通的相邻房间</td><td>保持<b>负压</b>，最小静压差 <b>≥5 Pa</b>；用于控制空气感染的手术室应是<b>负压手术室</b>，负压手术室对其吊顶上技术夹层应保持略低于「0」的负压差</td></tr>
             <tr><td><b>洁净区</b>对与其相通的<b>非洁净区</b></td><td>保持<b>正压</b>，最小静压差 <b>≥5 Pa</b></td></tr>
