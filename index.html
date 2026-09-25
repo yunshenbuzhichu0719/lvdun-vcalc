@@ -360,11 +360,12 @@
     .clean-table.clean-bac th:nth-child(2),.clean-table.clean-bac td:nth-child(2){width:auto;}
     .clean-table.clean-bac th:nth-child(3),.clean-table.clean-bac td:nth-child(3){width:auto;}
   }
-  /* 窄桌面（681～859px）：容器放不下「一行表头」所需的最小宽度（约 750px），
-     此时恢复表头可折行，避免整张表被迫横向滚动（手机端另有 <br class="m-br"> 固定分行） */
+  /* 窄屏（<900px）与手机：容器放不下「一行表头」所需的最小宽度（约 752px），
+     此时由 <br class="n-br"> 把 ④ 表头钉成「2 行」（表头仍 nowrap，每行整行不断字，
+     绝不出现 3 行以上），表的最小宽度降到约 460px，因此 681px 起的窄桌面仍不需横向滚动。
+     手机端整表放不下时按既有约定在卡片内横向滚动（不做「一屏硬塞」）。 */
   @media (min-width:681px) and (max-width:859px){
-    .clean-table.clean-bac th{white-space:normal;}
-    .clean-table.clean-bac th:nth-child(1),.clean-table.clean-bac td:nth-child(1){min-width:6em;}
+    .clean-table.clean-bac .n-br{display:inline;}
   }
 
   /* ⑤ 洁净辅助用房分级表（.clean-aux）
@@ -381,6 +382,11 @@
   .clean-table.clean-s.clean-aux td:nth-child(3){white-space:nowrap;}
   /* m-br：仅手机端生效的换行（桌面表头保持一行） */
   .m-br{display:none;}
+  /* n-br：视口 <900px 时生效的换行（宽桌面一行、窄屏与手机两行）。
+     分界定 900px 而非 860px：一行表头的最小宽度约 752px，而 860px 视口下卡片宽仅 752px（余量 0），
+     换字体/换机器就可能挤出横向滚动条；900px 时卡片宽 792px，留 40px 余量才稳。 */
+  .n-br{display:inline;}
+  @media (min-width:900px){ .n-br{display:none;} }
 
   /* ② 8 项检测指标：下拉体内的「布点图」控件 */
   .cbp-ctl{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 2px;}
@@ -1008,7 +1014,7 @@
         <div class="std">洁净手术部洁净用房应按<b>空态或静态条件下的细菌浓度</b>分级（3.0.1）。细菌浓度是<b>直接所测的结果</b>，不是沉降法和浮游法互相换算的结果（表 3.0.2 注 1）。下表数值针对<b>洁净手术室</b>的手术区与周边区，单位为沉降法 cfu/30min·Φ90 皿（括号内为浮游法 cfu/m³）。</div>
         <div style="overflow-x:auto;">
         <table class="sch-table clean-table clean-bac">
-          <thead><tr><th>洁净<br class="m-br">用房<br class="m-br">等级</th><th>手术区<br class="m-br">沉降法<br class="m-br">cfu/30min·Φ90<br class="m-br">（浮游法<br class="m-br">cfu/m³）</th><th>周边区<br class="m-br">沉降法<br class="m-br">（浮游法）</th><th>空气洁净度级别<br class="m-br">手术区 / 周边区</th></tr></thead>
+          <thead><tr><th>洁净用房等级</th><th>手术区沉降法<br class="n-br">cfu/30min·Φ90（浮游法cfu/m³）</th><th>周边区沉降法<br class="n-br">（浮游法）</th><th>空气洁净度级别<br class="n-br">手术区 / 周边区</th></tr></thead>
           <tbody>
             <tr><td>Ⅰ级</td><td>0.2（5）</td><td>0.4（10）</td><td>5 级 / 6 级</td></tr>
             <tr><td>Ⅱ级</td><td>0.75（25）</td><td>1.5（50）</td><td>6 级 / 7 级</td></tr>
