@@ -348,14 +348,23 @@
   .clean-table.clean-bac td:nth-child(2),.clean-table.clean-bac td:nth-child(3),
   .clean-table.clean-bac td:nth-child(4){white-space:nowrap;text-align:center;}
 
-  /* ④ 表桌面端：第 1 列（洁净用房等级）与第 4 列（空气洁净度级别）只保留
-     「刚好放下本列最长一行文字」的宽度（width:1% + min-width 钉宽），
-     余下宽度按内容长短分给中间两列（手术区/周边区细菌浓度），整表仍铺满容器、不留半空列 */
+  /* ④ 表桌面端（2026-09-25 三次定稿）：表头改为「一行一句话」——原来的硬 <br> 换成
+     <br class="m-br">（仅手机端生效），桌面表头因此只有一行，整个表头块由 5 行高降到 1 行。
+     第 1、4 列仍用 width:1% 钉住，宽度由 nowrap 表头自身的 min-content 决定（刚好放下该列表头一行），
+     余下宽度按内容长短分给中间两列细菌浓度列。 */
   @media (min-width:681px){
-    .clean-table.clean-bac th:nth-child(1),.clean-table.clean-bac td:nth-child(1){width:1%;min-width:6em;}
-    .clean-table.clean-bac th:nth-child(4),.clean-table.clean-bac td:nth-child(4){width:1%;min-width:9em;}
+    /* 首列必须钉到「洁净用房等级」整整一行（8em=100px，内容宽 82px > 文字 75px）：
+       否则 th:first-child 的 white-space:normal!important 会让它按 1 字/行折成 6 行，整行表头被拉到 124px 高 */
+    .clean-table.clean-bac th:nth-child(1),.clean-table.clean-bac td:nth-child(1){width:1%;min-width:8em;}
+    .clean-table.clean-bac th:nth-child(4),.clean-table.clean-bac td:nth-child(4){width:1%;}
     .clean-table.clean-bac th:nth-child(2),.clean-table.clean-bac td:nth-child(2){width:auto;}
     .clean-table.clean-bac th:nth-child(3),.clean-table.clean-bac td:nth-child(3){width:auto;}
+  }
+  /* 窄桌面（681～859px）：容器放不下「一行表头」所需的最小宽度（约 750px），
+     此时恢复表头可折行，避免整张表被迫横向滚动（手机端另有 <br class="m-br"> 固定分行） */
+  @media (min-width:681px) and (max-width:859px){
+    .clean-table.clean-bac th{white-space:normal;}
+    .clean-table.clean-bac th:nth-child(1),.clean-table.clean-bac td:nth-child(1){min-width:6em;}
   }
 
   /* ⑤ 洁净辅助用房分级表（.clean-aux）
@@ -372,6 +381,16 @@
   .clean-table.clean-s.clean-aux td:nth-child(3){white-space:nowrap;}
   /* m-br：仅手机端生效的换行（桌面表头保持一行） */
   .m-br{display:none;}
+
+  /* ② 8 项检测指标：下拉体内的「布点图」控件 */
+  .cbp-ctl{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 2px;}
+  .cbp-ctl .field{margin-bottom:0;flex:0 0 106px;}
+  .cbp-ctl .field.wide{flex:0 0 158px;}
+  .cbp-ctl .field label{font-size:11.5px;line-height:1.3;margin-bottom:4px;color:var(--sub);}
+  .cbp-ctl input,.cbp-ctl select{width:100%;height:34px;font-size:13px;padding:0 8px;}
+  .cbp-ctl select{flex:none;}
+  .cbp-ctl + .bp-wrap{margin-top:9px;}
+  .s-row.cbp-row{align-items:flex-start;}
 
   /* 洁净室检测 → 模块分组（洁净手术部 / 后续可扩展洁净病房、工业洁净室等） */
   .clean-module{margin-top:4px;}
@@ -607,6 +626,15 @@
     .clean-table.clean-s.clean-aux th:first-child,.clean-table.clean-s.clean-aux td:first-child{min-width:4.65em;width:4.65em;}
     .clean-table.clean-s.clean-aux th:nth-child(2),.clean-table.clean-s.clean-aux td:nth-child(2){min-width:13.1em;width:13.1em;}
     .clean-table.clean-s.clean-aux th:nth-child(3),.clean-table.clean-s.clean-aux td:nth-child(3){min-width:6.8em;width:6.8em;}
+    /* ② 8 项检测指标：下拉内布点图控件（覆盖手机端 48px 通用输入框） */
+    .cbp-ctl{gap:8px;}
+    .cbp-ctl .field{flex:1 1 88px;margin-bottom:0;}
+    .cbp-ctl input,.cbp-ctl select{height:40px;font-size:15px;padding:0 8px;}
+    /* 布点图行改为整行铺开：图拿到整张卡片宽，并按 560px 最小宽度在卡片内横滑，保证图上文字可读 */
+    .s-row.cbp-row{display:block;}
+    .s-row.cbp-row .s-k{display:block;margin-bottom:6px;}
+    .s-row.cbp-row .bp-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    .s-row.cbp-row .bp-wrap svg{min-width:560px;}
   }
 
 .radio-row{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:4px}
@@ -774,7 +802,12 @@
           </tbody>
         </table>
         </div>
-        <div class="legend" style="margin-top:8px;"><div><b>注</b>：① 最小新风量「15～20」的单位为 <b>m³/(h·m²)</b>，带括号如「(2)」的单位为 <b>次/h</b>；② 平均风速指集中送风区地面以上 <b>1.2 m</b> 截面的平均风速；③ <b>眼科手术室</b>截面平均风速应控制在 <b>0.15～0.20 m/s</b>；④ 温湿度范围下限为冬季的最低值、上限为夏季的最高值；⑤ 负压手术室室内压力一栏应为「负」；⑥ 温、湿度不达标不应超过 <b>5 天/年</b>，连续 2 天不达标不应超过 <b>2 次/年</b>（4.0.2 第 6 款）；⑦ 表 4.0.1 中未列出名称的房间可参照用途相近的房间确定指标数值（4.0.2 第 8 款）。</div></div>
+        <details class="dl-fold note-fold" style="margin-top:6px;">
+          <summary class="dl-fold-h"><span class="dl-fold-t">注（表 4.0.1 说明 ①～⑦）</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
+          <div class="dl-body">
+            <div class="legend" style="margin-top:0;"><div><b>注</b>：① 最小新风量「15～20」的单位为 <b>m³/(h·m²)</b>，带括号如「(2)」的单位为 <b>次/h</b>；② 平均风速指集中送风区地面以上 <b>1.2 m</b> 截面的平均风速；③ <b>眼科手术室</b>截面平均风速应控制在 <b>0.15～0.20 m/s</b>；④ 温湿度范围下限为冬季的最低值、上限为夏季的最高值；⑤ 负压手术室室内压力一栏应为「负」；⑥ 温、湿度不达标不应超过 <b>5 天/年</b>，连续 2 天不达标不应超过 <b>2 次/年</b>（4.0.2 第 6 款）；⑦ 表 4.0.1 中未列出名称的房间可参照用途相近的房间确定指标数值（4.0.2 第 8 款）。</div></div>
+          </div>
+        </details>
         <div class="clean-note" style="margin-top:14px;font-weight:800;color:var(--txt);">静压差 4 种工况（4.0.2）</div>
         <div style="overflow-x:auto;">
         <table class="sch-table clean-table clean-s clean-dp">
@@ -790,9 +823,9 @@
         </div>
       </div>
 
-      <div class="cat-title">② 8 项检测指标逐项速查（点标题展开）</div>
+      <div class="cat-title">② 8 项检测指标逐项速查</div>
 
-      <div class="s-item">
+      <div class="s-item" data-cbp="temp">
         <div class="s-head" onclick="toggleS(this)">
           <div class="s-head-main">
             <div class="s-title">1 · 温度</div>
@@ -810,7 +843,7 @@
         </div>
       </div>
 
-      <div class="s-item">
+      <div class="s-item" data-cbp="humi">
         <div class="s-head" onclick="toggleS(this)">
           <div class="s-head-main">
             <div class="s-title">2 · 相对湿度</div>
@@ -826,7 +859,7 @@
         </div>
       </div>
 
-      <div class="s-item">
+      <div class="s-item" data-cbp="lux">
         <div class="s-head" onclick="toggleS(this)">
           <div class="s-head-main">
             <div class="s-title">3 · 照度</div>
@@ -843,7 +876,7 @@
         </div>
       </div>
 
-      <div class="s-item">
+      <div class="s-item" data-cbp="dp">
         <div class="s-head" onclick="toggleS(this)">
           <div class="s-head-main">
             <div class="s-title">4 · 静压差</div>
@@ -861,7 +894,7 @@
         </div>
       </div>
 
-      <div class="s-item">
+      <div class="s-item" data-cbp="part">
         <div class="s-head" onclick="toggleS(this)">
           <div class="s-head-main">
             <div class="s-title">5 · 尘埃粒子数（空气洁净度级别）</div>
@@ -882,7 +915,7 @@
         </div>
       </div>
 
-      <div class="s-item">
+      <div class="s-item" data-cbp="vel">
         <div class="s-head" onclick="toggleS(this)">
           <div class="s-head-main">
             <div class="s-title">6 · 风速（截面风速 / 送风面风速 / 换气次数）</div>
@@ -901,7 +934,7 @@
         </div>
       </div>
 
-      <div class="s-item">
+      <div class="s-item" data-cbp="noise">
         <div class="s-head" onclick="toggleS(this)">
           <div class="s-head-main">
             <div class="s-title">7 · 噪声</div>
@@ -919,7 +952,7 @@
         </div>
       </div>
 
-      <div class="s-item">
+      <div class="s-item" data-cbp="sed">
         <div class="s-head" onclick="toggleS(this)">
           <div class="s-head-main">
             <div class="s-title">8 · 沉降菌（沉降法细菌浓度）</div>
@@ -975,7 +1008,7 @@
         <div class="std">洁净手术部洁净用房应按<b>空态或静态条件下的细菌浓度</b>分级（3.0.1）。细菌浓度是<b>直接所测的结果</b>，不是沉降法和浮游法互相换算的结果（表 3.0.2 注 1）。下表数值针对<b>洁净手术室</b>的手术区与周边区，单位为沉降法 cfu/30min·Φ90 皿（括号内为浮游法 cfu/m³）。</div>
         <div style="overflow-x:auto;">
         <table class="sch-table clean-table clean-bac">
-          <thead><tr><th>洁净<br>用房<br>等级</th><th>手术区<br>沉降法<br>cfu/30min·Φ90<br>（浮游法<br>cfu/m³）</th><th>周边区<br>沉降法<br>（浮游法）</th><th>空气洁净度级别<br>手术区 / 周边区</th></tr></thead>
+          <thead><tr><th>洁净<br class="m-br">用房<br class="m-br">等级</th><th>手术区<br class="m-br">沉降法<br class="m-br">cfu/30min·Φ90<br class="m-br">（浮游法<br class="m-br">cfu/m³）</th><th>周边区<br class="m-br">沉降法<br class="m-br">（浮游法）</th><th>空气洁净度级别<br class="m-br">手术区 / 周边区</th></tr></thead>
           <tbody>
             <tr><td>Ⅰ级</td><td>0.2（5）</td><td>0.4（10）</td><td>5 级 / 6 级</td></tr>
             <tr><td>Ⅱ级</td><td>0.75（25）</td><td>1.5（50）</td><td>6 级 / 7 级</td></tr>
@@ -986,7 +1019,7 @@
         </div>
         <div style="overflow-x:auto;">
         <table class="sch-table clean-table clean-s clean-aux">
-          <thead><tr><th>洁净辅助<br class="m-br">用房等级</th><th>沉降法（浮游法）<br>细菌最大平均浓度</th><th>空气洁净度<br class="m-br">级别</th></tr></thead>
+          <thead><tr><th>洁净辅助<br class="m-br">用房等级</th><th>沉降法（浮游法）<br class="m-br">细菌最大平均浓度</th><th>空气洁净度<br class="m-br">级别</th></tr></thead>
           <tbody>
             <tr><td>Ⅰ级</td><td>局部集中送风区域：0.2 个/30min·Φ90 皿；其他区域：0.4 个/30min·Φ90 皿</td><td>局部 5 级，<br>其他区域 6 级</td></tr>
             <tr><td>Ⅱ级</td><td>1.5 cfu/30min·Φ90 皿</td><td>7 级</td></tr>
@@ -4038,6 +4071,272 @@
   ['airbioLen','airbioWid','airbioBpSel','airbioMethod'].forEach(function(id){ var e = $sch(id); if(e){ e.addEventListener('input', airbioBpUpdate); e.addEventListener('change', airbioBpUpdate); } });
   physBpUpdate(); chemBpUpdate(); acBpUpdate(); airbioBpUpdate();
   /* ==SAMPLING-BP-JS-END== */
+
+  /* ==CLEANBP-JS-BEGIN== */
+  /* ============ 洁净室检测 ② 8 项检测指标：下拉内「布点图」 ============
+     依据 GB 50333—2013 表 13.3.11-2（含尘浓度最少测点数）、表 13.3.18-2（沉降菌最少培养皿数）
+     与 13.3.12 / 13.3.13 / 13.3.14 / 13.3.15 / 13.3.16 / 13.3.18 的布点要求绘制示意图。
+     .s-item[data-cbp="key"] 的 .s-body 末尾会被注入「尺寸输入 + 布点图 + 结论」；
+     改动任一输入即实时重绘（横向∶纵向同一比例尺，可直接量取测点位置）。 */
+  var CBP_PT  = {5:[5, 8], 6:[3, 6], 7:[3, 6]};      /* 手术区 / 周边区 最少测点数（表 13.3.11-2） */
+  var CBP_SED = {5:13, 6:4, 7:3, 8:2, 8.5:2};        /* 沉降菌最少培养皿数（表 13.3.18-2） */
+  var CBP_SELOPT = '<option value="5">5 级（Ⅰ级）</option>'
+    + '<option value="6">6 级（Ⅱ级）</option>'
+    + '<option value="7">7 级（Ⅲ级）</option>'
+    + '<option value="8">8 级（Ⅳ级）</option>'
+    + '<option value="8.5">8.5 级</option>';
+
+  function cbpV(id, dflt){
+    var e = document.getElementById(id); if(!e) return dflt;
+    var v = parseFloat(e.value); return (isFinite(v) && v > 0) ? v : dflt;
+  }
+  function cbpS(id){ var e = document.getElementById(id); return e ? e.value : ''; }
+  function cbpN(v){ return String(Math.round(v * 100) / 100); }
+
+  /* 房间内网格布点：离墙 inset、相邻测点间距 ≤ maxSp（标准允许的最大间距） */
+  function cbpGrid(L, B, maxSp, inset){
+    inset = (inset === undefined) ? 0.5 : inset;
+    function axis(len){
+      var span = len - 2 * inset, k, out = [], i;
+      if(span <= 0.02) return [len / 2];
+      k = Math.max(1, Math.ceil(span / maxSp));
+      for(i = 0; i <= k; i++) out.push(inset + span * i / k);
+      return out;
+    }
+    var xs = axis(L), ys = axis(B), pts = [];
+    ys.forEach(function(y){ xs.forEach(function(x){ pts.push([x, y]); }); });
+    return {pts:pts, nx:xs.length, ny:ys.length};
+  }
+  /* 近方阵均匀布点（Ⅳ级 / 8.5 级：测点数 = √面积） */
+  function cbpSquare(n, L, B, inset){
+    inset = (inset === undefined) ? 0.5 : inset;
+    var nx = Math.max(1, Math.round(Math.sqrt(n * L / B))), ny = Math.ceil(n / nx);
+    var sx = L - 2 * inset, sy = B - 2 * inset, pts = [], i, j;
+    for(i = 0; i < nx; i++) for(j = 0; j < ny; j++)
+      pts.push([inset + sx * (i + 0.5) / nx, inset + sy * (j + 0.5) / ny]);
+    return {pts:pts, nx:nx, ny:ny};
+  }
+  /* 中央区（手术区 / 集中送风面）内 n 个测点 */
+  function cbpIn(r, n){
+    var x0 = (r.L - r.SL) / 2, y0 = (r.B - r.SB) / 2, x1 = x0 + r.SL, y1 = y0 + r.SB;
+    var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2, d, t;
+    if(n === 5){
+      d = Math.min(0.4, r.SL / 4, r.SB / 4);
+      return [[x0 + d, y0 + d], [x1 - d, y0 + d], [cx, cy], [x0 + d, y1 - d], [x1 - d, y1 - d]];
+    }
+    if(n === 4) return [[cx - r.SL / 4, cy - r.SB / 4], [cx + r.SL / 4, cy - r.SB / 4],
+                        [cx - r.SL / 4, cy + r.SB / 4], [cx + r.SL / 4, cy + r.SB / 4]];
+    if(n === 3) t = [0.2, 0.5, 0.8];
+    else if(n === 2) t = [0.28, 0.72];
+    else return cbpGrid(r.SL, r.SB, Math.sqrt(r.SL * r.SB) / 2, 0.35).pts.map(function(p){ return [x0 + p[0], y0 + p[1]]; });
+    return t.map(function(v){ return [x0 + r.SL * v, cy]; });
+  }
+  /* 周边区测点：绕手术区一圈 —— 长边每边 nLong 点、短边每边 nShort 点，距边界 off（且不越墙 0.45 m） */
+  function cbpRing(r, nLong, nShort, off){
+    var x0 = (r.L - r.SL) / 2, y0 = (r.B - r.SB) / 2, x1 = x0 + r.SL, y1 = y0 + r.SB;
+    off = (off === undefined) ? 0.7 : off;
+    var gx = Math.max(0.2, Math.min(off, (r.L - r.SL) / 2 - 0.45));
+    var gy = Math.max(0.2, Math.min(off, (r.B - r.SB) / 2 - 0.45));
+    var longIsX = r.SL >= r.SB, out = [];
+    function fr(n){ var a = [], i; for(i = 1; i <= n; i++) a.push(i / (n + 1)); return a; }
+    var nx = longIsX ? nLong : nShort, ny = longIsX ? nShort : nLong;
+    fr(nx).forEach(function(t){ out.push([x0 + r.SL * t, y0 - gy]); out.push([x0 + r.SL * t, y1 + gy]); });
+    fr(ny).forEach(function(t){ out.push([x0 - gx, y0 + r.SB * t]); out.push([x1 + gx, y0 + r.SB * t]); });
+    return out;
+  }
+
+  /* 各检测项的布点方案 + 结论文字 */
+  function cbpPlan(key){
+    var L = cbpV('cbpL-' + key, 6), B = cbpV('cbpW-' + key, 5);
+    var cx = L / 2, cy = B / 2;
+    var r = {L:L, B:B, SL:0, SB:0, groups:[], foot:'', title:'', info:'', rectLabel:''};
+    var g, a, b, n, iy, sp, lv, ox0, oy0;
+
+    if(key === 'temp' || key === 'humi'){
+      r.groups = [{color:'#13b875', pts:[[cx, cy]]}];
+      r.title = '温湿度测点布点 · GB 50333—2013 13.3.12';
+      r.foot = '● 测点 1 个（室中心）｜距地面 0.8 m｜温度与相对湿度共用同一测点';
+      r.info = '测点 <b>1</b> 个：室内<b>距地面 0.8 m 高的中心点</b>；温度、相对湿度<b>共用同一测点</b>。测得室内值后<b>应同时测出当天室外温湿度</b>（13.3.12 第 3 款）。';
+    } else if(key === 'lux'){
+      g = cbpGrid(L, B, 2, 0.5);
+      r.groups = [{color:'#13b875', pts:g.pts}];
+      r.title = '照度测点布点 · GB 50333—2013 13.3.14';
+      r.foot = '● 测点 ' + g.pts.length + ' 个（长向 ' + g.nx + ' × 宽向 ' + g.ny + '）｜距地 0.8 m｜离墙 0.5 m｜间距 ≤2 m';
+      r.info = '建议测点 <b>' + g.pts.length + '</b> 个（长向 ' + g.nx + ' × 宽向 ' + g.ny + '）；测点<b>距地面 0.8 m</b>、<b>离墙面 0.5 m</b>，按间距<b>不超过 2 m</b> 均匀布点，<b>不刻意在灯下或避开灯下选点</b>；应在光源输出趋于稳定、不开无影灯、无自然采光条件下测量，手术室照度均匀度不应低于 <b>0.7</b>。';
+    } else if(key === 'dp'){
+      r.groups = [{color:'#13b875', pts:[[cx, cy]]}];
+      r.door = true;
+      r.title = '静压差测点布点 · GB 50333—2013 13.3.13';
+      r.foot = '● 测点 1 个（室中心）｜所有门关闭｜微压计（分辨率 1 Pa）';
+      r.info = '测点 <b>1</b> 个（室中心）：测量时<b>所有门关闭</b>，用<b>分辨率 1 Pa</b> 的微压计测室内与相邻房间之间的压差；洁净度高的用房对洁净度低的用房保持相对<b>正压</b>，最小静压差 <b>≥5 Pa</b>、最大 <b>&lt;20 Pa</b>，且不应因压差而产生哨音或影响开门。';
+    } else if(key === 'part' || key === 'sed'){
+      lv = parseFloat(cbpS('cbpSel-' + key)) || 5;
+      r.SL = Math.min(cbpV('cbpSL-' + key, 2.6), Math.max(1, L - 1));
+      r.SB = Math.min(cbpV('cbpSB-' + key, 2.4), Math.max(1, B - 1));
+      r.rectLabel = '手术区（集中送风区）';
+      if(key === 'sed'){
+        n = CBP_SED[lv] || 2;
+        r.title = '沉降菌培养皿布点 · GB 50333—2013 13.3.18（表 13.3.18-2）';
+        if(n >= 13){
+          a = cbpIn(r, 5); b = cbpRing(r, 2, 2);
+          r.groups = [{color:'#0ea5e9', pts:a}, {color:'#13b875', pts:b}];
+          r.foot = '● 培养皿 13 皿（手术区 5 + 周边区 8）｜Φ90 mm 暴露 30 min｜37 ℃ 培养 24 h';
+        } else {
+          a = cbpIn(r, n);
+          r.groups = [{color:'#13b875', pts:a}];
+          r.foot = '● 培养皿 ' + n + ' 皿（' + lv + ' 级）｜Φ90 mm 暴露 30 min｜37 ℃ 培养 24 h';
+        }
+        r.info = '沉降菌最少培养皿数按<b>表 13.3.18-2</b>：5 级 <b>13 皿</b>、6 级 <b>4 皿</b>、7 级 <b>3 皿</b>、8 级 / 8.5 级 <b>2 皿</b>；Φ90 mm 平皿暴露 <b>30 min</b>、37 ℃ 培养 <b>24 h</b> 后计数，另做 <b>2 次空白对照</b>。布点位置宜与被测区域含尘浓度测点一致（见下方 ③ 速查）。';
+      } else {
+        r.title = '尘埃粒子测点布点 · GB 50333—2013 表 13.3.11-2';
+        if(CBP_PT[lv]){
+          n = CBP_PT[lv][1];
+          a = cbpIn(r, CBP_PT[lv][0]);
+          b = cbpRing(r, 2, n === 8 ? 2 : 1);
+          r.groups = [{color:'#0ea5e9', pts:a}, {color:'#13b875', pts:b}];
+          r.foot = '● 手术区 ' + a.length + ' 点 + 周边区 ' + b.length + ' 点 = ' + (a.length + b.length) + ' 点｜' +
+                   (n === 8 ? '周边区每边内 2 点' : '周边区：长边内 2 点、短边内 1 点') + '｜测点距地 0.8 m';
+          r.info = '尘埃粒子测点数按<b>表 13.3.11-2</b>：手术区 <b>' + a.length + ' 点</b> + 周边区 <b>' + b.length + ' 点</b> = <b>' + (a.length + b.length) + ' 点</b>；测点距地 <b>0.8 m</b>，采样口 5 级<b>对着气流方向</b>、6 级及以下<b>均向上</b>；每点最小采样量 5 级 <b>8.6 L</b>、6 级及以下 <b>2.83 L</b>，每次采样时间不应超过 30 min。';
+        } else {
+          n = Math.max(2, Math.round(Math.sqrt(L * B)));
+          g = cbpSquare(n, L, B, 0.5);
+          r.SL = 0; r.SB = 0;
+          r.groups = [{color:'#13b875', pts:g.pts}];
+          r.foot = '● 测点数 = √面积 ≈ ' + n + ' 个（图上按 ' + g.nx + '×' + g.ny + ' 布 ' + g.pts.length + ' 点）｜测点距地 0.8 m';
+          r.info = 'Ⅳ级洁净手术室及分散布置送风口的洁净室：<b>测点数 = √（面积，m²）</b> = √' + cbpN(L * B) + ' ≈ <b>' + n + '</b> 个；图中按 ' + g.nx + ' × ' + g.ny + ' 均匀布 ' + g.pts.length + ' 点，测点距地 0.8 m。';
+        }
+      }
+    } else if(key === 'vel'){
+      sp = (cbpS('cbpSel-vel') === 'non') ? 2 : 1;
+      r.SL = Math.min(cbpV('cbpSL-vel', 2.6), Math.max(1, L - 1));
+      r.SB = Math.min(cbpV('cbpSB-vel', 2.4), Math.max(1, B - 1));
+      r.rectLabel = '集中送风面（地面以上 1.2 m 截面）';
+      ox0 = (L - r.SL) / 2; oy0 = (B - r.SB) / 2;
+      g = cbpGrid(r.SL, r.SB, sp, 0.15);
+      r.groups = [{color:'#0ea5e9', pts:g.pts.map(function(p){ return [ox0 + p[0], oy0 + p[1]]; })}];
+      r.title = '风速测点布点 · GB 50333—2013 13.3.16';
+      r.foot = '● 送风面上 ' + g.pts.length + ' 点（' + g.nx + '×' + g.ny + '，网格 ≤' + sp + ' m）｜测于地面以上 1.2 m 截面';
+      if(sp === 1){
+        r.info = '集中送风区地面以上 <b>1.2 m</b> 截面的平均风速应控制在 <b>0.20～0.25 m/s</b>（眼科手术室 <b>0.15～0.20 m/s</b>）；测点在集中送风面范围内按 ≤1 m 网格布置，共 <b>' + g.pts.length + '</b> 点（' + g.nx + '×' + g.ny + '）；测杆<b>固定不手持</b>、分辨率 0.01 m/s、每点测 <b>≥5 s</b>，截面风速不均匀度 β ≤ 0.24。';
+      } else {
+        r.info = 'Ⅱ～Ⅳ级为非单向流，按<b>送风量法</b>测换气次数（换气次数 = 总送风量 ÷ 房间体积），在每个送风口处测风量并换算风速；图中在集中送风面（送风口）范围内按 ≤2 m 网格布 <b>' + g.pts.length + '</b> 点。';
+      }
+    } else if(key === 'noise'){
+      iy = Math.min(1, L / 3, B / 3);
+      r.groups = [{color:'#13b875', pts:[[cx, cy], [iy, iy], [L - iy, iy], [iy, B - iy], [L - iy, B - iy]]}];
+      r.title = '噪声测点布点 · GB 50333—2013 13.3.15';
+      r.foot = '● 测点 5 个（室中心 + 四角，距墙 1 m）｜关闭空调测背景噪声';
+      r.info = '测点 <b>5</b> 个：室中心 <b>1</b> 点 + 四角各 <b>1</b> 点（距墙 1 m、距地 1.2～1.5 m），用 A 计权声级计测量；测<b>背景噪声</b>时应关闭空调系统。手术室噪声 <b>&lt;51 dB(A)</b>（Ⅰ级手术室 <b>&lt;49 dB(A)</b>）。';
+    }
+    return r;
+  }
+
+  /* 布点图（SVG，横向∶纵向同一比例尺） */
+  function cbpSvg(r){
+    var W = 680, PL = 66, PR = 48, PT = 44, PB = 82;
+    var PW = W - PL - PR, PH = 320, H = PH + PT + PB;
+    var sc = Math.min(PW / r.L, PH / r.B);
+    var w = r.L * sc, h = r.B * sc;
+    var ox = PL + (PW - w) / 2, oy = PT + (PH - h) / 2;
+    function X(v){ return +(ox + v * sc).toFixed(2); }
+    function Y(v){ return +(oy + v * sc).toFixed(2); }
+    var C_TXT = '#103325', C_SUB = '#5b7569', C_LINE = '#9fb8ad';
+    var o = [], F = ' font-family=\'' + BP_FONT + '\'', k = 0, yD, xD, barM, bw, sx, sy, dy, hd;
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img">');
+    o.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#ffffff"/>');
+    o.push('<text x="14" y="22" font-size="13" font-weight="700" fill="' + C_TXT + '"' + F + '>' + r.title + '</text>');
+    o.push('<rect x="' + X(0) + '" y="' + Y(0) + '" width="' + w.toFixed(2) + '" height="' + h.toFixed(2) +
+           '" fill="#f5fbfe" stroke="' + C_TXT + '" stroke-width="1.4"/>');
+    if(r.SL > 0.2 && r.SB > 0.2){
+      sx = X((r.L - r.SL) / 2); sy = Y((r.B - r.SB) / 2);
+      o.push('<rect x="' + sx + '" y="' + sy + '" width="' + (r.SL * sc).toFixed(2) + '" height="' + (r.SB * sc).toFixed(2) +
+             '" fill="rgba(14,165,233,.08)" stroke="#0ea5e9" stroke-width="1.2" stroke-dasharray="5 4"/>');
+      o.push('<text x="' + (sx + r.SL * sc / 2).toFixed(2) + '" y="' + (sy - 6) + '" text-anchor="middle" font-size="10.5" fill="#0284c7"' + F + '>' +
+             r.rectLabel + ' ' + cbpN(r.SL) + ' × ' + cbpN(r.SB) + ' m</text>');
+    }
+    if(r.L > 1.02 && r.B > 1.02){
+      o.push('<rect x="' + X(0.5) + '" y="' + Y(0.5) + '" width="' + ((r.L - 1) * sc).toFixed(2) + '" height="' + ((r.B - 1) * sc).toFixed(2) +
+             '" fill="none" stroke="' + C_LINE + '" stroke-width="1" stroke-dasharray="3 3"/>');
+    }
+    if(r.door){
+      dy = r.B / 2; hd = Math.min(0.45, r.B / 6);
+      o.push('<rect x="' + (X(r.L) - 2.5) + '" y="' + Y(dy - hd) + '" width="5" height="' + (2 * hd * sc).toFixed(2) + '" fill="#ffffff"/>');
+      o.push('<path d="M ' + X(r.L) + ' ' + Y(dy - hd) + ' L ' + (X(r.L) - 2 * hd * sc).toFixed(2) + ' ' + Y(dy - hd) + '" fill="none" stroke="' + C_TXT + '" stroke-width="1.6"/>');
+      o.push('<path d="M ' + (X(r.L) - 2 * hd * sc).toFixed(2) + ' ' + Y(dy - hd) + ' A ' + (2 * hd * sc).toFixed(2) + ' ' + (2 * hd * sc).toFixed(2) + ' 0 0 1 ' + X(r.L) + ' ' + Y(dy + hd) + '" fill="none" stroke="' + C_LINE + '" stroke-width="1" stroke-dasharray="3 3"/>');
+      o.push('<text x="' + (X(r.L) + 7) + '" y="' + (Y(dy) - 4) + '" font-size="10.5" fill="' + C_SUB + '"' + F + '>门</text>');
+    }
+    r.groups.forEach(function(gp){
+      gp.pts.forEach(function(p){
+        k++;
+        o.push('<circle cx="' + X(p[0]) + '" cy="' + Y(p[1]) + '" r="4.2" fill="' + gp.color + '" stroke="#ffffff" stroke-width="1"/>');
+        o.push('<text x="' + (X(p[0]) + 6) + '" y="' + (Y(p[1]) - 5.5) + '" font-size="9.5" fill="' + C_SUB + '"' + F + '>' + k + '</text>');
+      });
+    });
+    yD = oy + h + 26;
+    o.push('<line x1="' + ox + '" y1="' + yD + '" x2="' + (ox + w) + '" y2="' + yD + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + ox + '" y1="' + (yD - 4) + '" x2="' + ox + '" y2="' + (yD + 4) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + (ox + w) + '" y1="' + (yD - 4) + '" x2="' + (ox + w) + '" y2="' + (yD + 4) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<text x="' + (ox + w / 2) + '" y="' + (yD - 6) + '" text-anchor="middle" font-size="11.5" fill="' + C_TXT + '"' + F + '>长 L ' + r.L.toFixed(2) + ' m</text>');
+    xD = ox - 40;
+    o.push('<line x1="' + xD + '" y1="' + oy + '" x2="' + xD + '" y2="' + (oy + h) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + (xD - 4) + '" y1="' + oy + '" x2="' + (xD + 4) + '" y2="' + oy + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<line x1="' + (xD - 4) + '" y1="' + (oy + h) + '" x2="' + (xD + 4) + '" y2="' + (oy + h) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
+    o.push('<text transform="rotate(-90 ' + xD + ' ' + (oy + h / 2) + ')" x="' + xD + '" y="' + (oy + h / 2 - 6) + '" text-anchor="middle" font-size="11.5" fill="' + C_TXT + '"' + F + '>宽 B ' + r.B.toFixed(2) + ' m</text>');
+    barM = sc > 110 ? 0.5 : (sc < 44 ? 2 : 1);
+    bw = barM * sc;
+    o.push('<line x1="' + (ox + w - bw) + '" y1="' + (oy - 15) + '" x2="' + (ox + w) + '" y2="' + (oy - 15) + '" stroke="' + C_TXT + '" stroke-width="2"/>');
+    o.push('<line x1="' + (ox + w - bw) + '" y1="' + (oy - 18.5) + '" x2="' + (ox + w - bw) + '" y2="' + (oy - 11.5) + '" stroke="' + C_TXT + '" stroke-width="2"/>');
+    o.push('<line x1="' + (ox + w) + '" y1="' + (oy - 18.5) + '" x2="' + (ox + w) + '" y2="' + (oy - 11.5) + '" stroke="' + C_TXT + '" stroke-width="2"/>');
+    o.push('<text x="' + (ox + w - bw / 2) + '" y="' + (oy - 22) + '" text-anchor="middle" font-size="10.5" fill="' + C_TXT + '"' + F + '>' + barM + ' m</text>');
+    o.push('<text x="' + ox + '" y="' + (yD + 26) + '" font-size="10.5" fill="' + C_SUB + '"' + F + '>' + r.foot + '</text>');
+    o.push('</svg>');
+    return o.join('');
+  }
+
+  function cbpRender(key){
+    var box = document.getElementById('cbpBox-' + key), info = document.getElementById('cbpInfo-' + key);
+    if(!box) return;
+    var r = cbpPlan(key);
+    box.innerHTML = cbpSvg(r);
+    if(info) info.innerHTML = r.info;
+  }
+  function cbpBuild(){
+    var items = document.querySelectorAll('.s-item[data-cbp]');
+    Array.prototype.forEach.call(items, function(it){
+      var key = it.getAttribute('data-cbp');
+      var body = it.querySelector('.s-body');
+      if(!body || body.getAttribute('cbpDone') === '1') return;
+      body.setAttribute('cbpDone', '1');
+      var dim = (key === 'part' || key === 'vel' || key === 'sed');
+      var ctl = '<div class="cbp-ctl">'
+        + '<div class="field"><label>房间长 L（m）</label><input id="cbpL-' + key + '" type="number" min="0.1" step="0.1" value="6"></div>'
+        + '<div class="field"><label>房间宽 B（m）</label><input id="cbpW-' + key + '" type="number" min="0.1" step="0.1" value="5"></div>'
+        + (dim ? '<div class="field"><label>' + (key === 'vel' ? '送风面长（m）' : '手术区长（m）') + '</label>'
+                 + '<input id="cbpSL-' + key + '" type="number" min="0.2" step="0.1" value="2.6"></div>'
+               + '<div class="field"><label>' + (key === 'vel' ? '送风面宽（m）' : '手术区宽（m）') + '</label>'
+                 + '<input id="cbpSB-' + key + '" type="number" min="0.2" step="0.1" value="2.4"></div>' : '')
+        + (key === 'vel' ? '<div class="field wide"><label>气流形式</label><select id="cbpSel-' + key + '">'
+             + '<option value="uni">Ⅰ级（单向流 · 截面风速）</option>'
+             + '<option value="non">Ⅱ～Ⅳ级（非单向流 · 换气次数）</option></select></div>' : '')
+        + ((key === 'part' || key === 'sed') ? '<div class="field wide"><label>空气洁净度级别</label><select id="cbpSel-' + key + '">'
+             + CBP_SELOPT + '</select></div>' : '')
+        + '</div>';
+      var row = document.createElement('div');
+      row.className = 's-row cbp-row';
+      row.innerHTML = '<span class="s-k">布点图</span><span class="s-v">' + ctl
+        + '<div class="bp-wrap" id="cbpBox-' + key + '"></div>'
+        + '<div class="sch-grid-info" id="cbpInfo-' + key + '"></div></span>';
+      body.appendChild(row);
+      Array.prototype.forEach.call(row.querySelectorAll('input,select'), function(el){
+        el.addEventListener('input', function(){ cbpRender(key); });
+        el.addEventListener('change', function(){ cbpRender(key); });
+      });
+      cbpRender(key);
+    });
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', cbpBuild);
+  else cbpBuild();
+  /* ==CLEANBP-JS-END== */
 
   schCalcArea(); schCalcWD(); schCalcCL(); schCalcBD();   // winAddRow 已在绑定时初始化
 
