@@ -278,6 +278,16 @@
   .clean-table td:first-child{text-align:left;}
   .clean-table.clean-s{min-width:560px;}
   .clean-table.clean-s th:first-child,.clean-table.clean-s td:first-child{white-space:normal;min-width:11.5em;width:11.5em;}
+  /* ③ 布点/采样量速查表（.clean-samp）：项目列按「最长一行『皿数（Φ90，30 min）』128.5px」定宽
+     → 每格最多 2 行；表头一行不折；6 级起各列只保底，余量由级别列平分 */
+  .clean-table.clean-samp{min-width:0;}   /* 桌面不再强制 840px，消除右侧被切的 36px 横向滚动 */
+  .clean-table.clean-samp th:first-child,.clean-table.clean-samp td:first-child{min-width:11.7em;width:11.7em;}
+  .clean-table.clean-samp th{white-space:nowrap;}
+  .clean-table.clean-samp td:nth-child(2){white-space:nowrap;}
+  .clean-table.clean-samp .nb{white-space:nowrap;}
+  .clean-table.clean-samp th:nth-child(n+3),.clean-table.clean-samp td:nth-child(n+3){min-width:4.6em;}
+  /* ③ 含尘浓度最少测点数表（.clean-pt）：区域列加宽，最长格「Ⅰ级洁净手术室手术区…」折 3 行 */
+  .clean-table.clean-pt th:first-child,.clean-table.clean-pt td:first-child{min-width:11.5em;width:11.5em;}
   #m-clean .s-brief::before{content:none;}
   #m-clean .s-meta{color:#0284c7;}
   #m-clean .s-title{color:#0b4f6c;}
@@ -554,13 +564,15 @@
     .clean-table.clean-bac td{padding:5px 3px;}
     .clean-table.clean-bac td:nth-child(2),.clean-table.clean-bac td:nth-child(3),
     .clean-table.clean-bac td:nth-child(4){white-space:nowrap!important;}
-    /* ③ 6 列布点/采样量速查表：数值列整串显示，首列可换行 */
-    .clean-table:not(.clean-main):not(.clean-s):not(.clean-bac) td:nth-child(n+2){white-space:nowrap!important;}
-    .clean-table:not(.clean-main):not(.clean-s):not(.clean-bac) th{width:1%;}
-    .clean-table:not(.clean-main):not(.clean-s):not(.clean-bac) th:first-child,
-    .clean-table:not(.clean-main):not(.clean-s):not(.clean-bac) td:first-child{min-width:7.5em;width:7.5em;}
+    /* ③ 布点/采样量速查表（.clean-samp）：项目列加宽到「最长的沉降菌行折成 2 行」，
+       5 级列整串一行；6 级起各列收到「表头级别名整串显示」的宽度，数据在括号处折成 2 行 */
+    .clean-table.clean-samp th:first-child,.clean-table.clean-samp td:first-child{min-width:11em;width:11em;}
+    .clean-table.clean-samp td:nth-child(2){white-space:nowrap!important;}
+    .clean-table.clean-samp th:nth-child(n+3){width:5.6em;min-width:5.6em;}
     /* 2～4 列小表（clean-s）：首列略窄，长文本照常折行 */
     .clean-table.clean-s th:first-child,.clean-table.clean-s td:first-child{min-width:6em;width:6em;}
+    /* ③ 含尘浓度最少测点数表（.clean-pt）：区域列加宽，最长格「Ⅰ级洁净手术室手术区…」折成 3 行 */
+    .clean-table.clean-s.clean-pt th:first-child,.clean-table.clean-s.clean-pt td:first-child{min-width:9.2em;width:9.2em;}
     /* ⑤ 洁净辅助用房分级表：内边距收到 3px，三列各按「本列最长一行文字」定宽 ——
        等级列＝洁净辅助、级别列＝其他区域 6 级、中间列＝整行最长的Ⅰ级内容，
        因此每格文字都整串放下、每行写满后才折行，且整表仍能在 360px 屏内放完不横向滚动 */
@@ -907,18 +919,18 @@
         <h3>③ 布点与采样量速查（表 13.3.11-2 · 13.3.18-1 · 13.3.18-2）</h3>
         <div class="std">尘埃粒子数的测点数按表 13.3.11-2；沉降菌的最少培养皿数按表 13.3.18-2；浮游菌的最小采样量按表 13.3.18-1。<b>沉降法与浮游法的测点数均应与被测区域含尘浓度测点数相同。</b></div>
         <div style="overflow-x:auto;">
-        <table class="sch-table clean-table">
+        <table class="sch-table clean-table clean-samp">
           <thead><tr><th>项目</th><th>5 级</th><th>6 级</th><th>7 级</th><th>8 级</th><th>8.5 级</th></tr></thead>
           <tbody>
-            <tr><td>尘埃粒子 · 采样口方向</td><td><b>对着气流方向</b></td><td colspan="4">均<b>向上</b></td></tr>
-            <tr><td>尘埃粒子 · 每点最小采样量</td><td><b>8.6 L</b></td><td colspan="4"><b>2.83 L</b></td></tr>
-            <tr><td>沉降菌 · 最少培养皿数（Φ90，30 min）</td><td><b>13</b></td><td><b>4</b></td><td><b>3</b></td><td><b>2</b></td><td><b>2</b></td></tr>
-            <tr><td>浮游菌 · 每点最小采样量</td><td>1 m³（1000 L）</td><td>0.3 m³（300 L）</td><td>0.2 m³（200 L）</td><td>0.1 m³（100 L）</td><td>0.1 m³（100 L）</td></tr>
+            <tr><td><span class="nb">尘埃粒子 ·</span> <span class="nb">采样口方向</span></td><td><b>对着气流方向</b></td><td colspan="4">均<b>向上</b></td></tr>
+            <tr><td><span class="nb">尘埃粒子 ·</span> <span class="nb">每点最小采样量</span></td><td><b>8.6 L</b></td><td colspan="4"><b>2.83 L</b></td></tr>
+            <tr><td><span class="nb">沉降菌 ·</span> <span class="nb">最少培养皿数</span> <span class="nb">（Φ90，30 min）</span></td><td><b>13</b></td><td><b>4</b></td><td><b>3</b></td><td><b>2</b></td><td><b>2</b></td></tr>
+            <tr><td><span class="nb">浮游菌 ·</span> <span class="nb">每点最小采样量</span></td><td>1 m³（1000 L）</td><td>0.3 m³（300 L）</td><td>0.2 m³（200 L）</td><td>0.1 m³（100 L）</td><td>0.1 m³（100 L）</td></tr>
           </tbody>
         </table>
         </div>
         <div style="overflow-x:auto;">
-        <table class="sch-table clean-table clean-s">
+        <table class="sch-table clean-table clean-s clean-pt">
           <thead><tr><th>区域</th><th>含尘浓度最少测点数</th></tr></thead>
           <tbody>
             <tr><td>Ⅰ级洁净手术室手术区和洁净辅助用房局部 5 级区</td><td><b>5 点</b></td></tr>
