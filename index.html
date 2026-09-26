@@ -4300,7 +4300,9 @@
     o.push('<line x1="' + ox + '" y1="' + (yD - 4) + '" x2="' + ox + '" y2="' + (yD + 4) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
     o.push('<line x1="' + (ox + w) + '" y1="' + (yD - 4) + '" x2="' + (ox + w) + '" y2="' + (yD + 4) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
     o.push('<text x="' + (ox + w / 2) + '" y="' + (yD - 6) + '" text-anchor="middle" font-size="12.5" fill="' + C_TXT + '"' + F + '>长 L ' + r.L.toFixed(2) + ' m</text>');
-    xD = ox - 40;
+    /* 竖向尺寸线：内缩 24（与底边尺寸线 26 基本一致）。注意 rotate(-90) 后文字 y 偏移
+       会变成 x 方向偏移，若把线放在 ox-40 则整串「宽 B …」会被画幅左边界裁掉 */
+    xD = ox - 24;
     o.push('<line x1="' + xD + '" y1="' + oy + '" x2="' + xD + '" y2="' + (oy + h) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
     o.push('<line x1="' + (xD - 4) + '" y1="' + oy + '" x2="' + (xD + 4) + '" y2="' + oy + '" stroke="' + C_SUB + '" stroke-width="1"/>');
     o.push('<line x1="' + (xD - 4) + '" y1="' + (oy + h) + '" x2="' + (xD + 4) + '" y2="' + (oy + h) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
