@@ -387,6 +387,10 @@
      换字体/换机器就可能挤出横向滚动条；900px 时卡片宽 792px，留 40px 余量才稳。 */
   .n-br{display:inline;}
   @media (min-width:900px){ .n-br{display:none;} }
+  /* bcnw：把表头的中文标签按语义切成「不折行」的片段（如 周边区 | 沉降法）。
+     中文默认可在任意两字之间断行，会折出「周边区沉/降法」这类难看断法；
+     用本类保证片段完整，断点只落在片段之间。子元素自身声明优先于 th 继承的 white-space。 */
+  .bcnw{white-space:nowrap;}
 
   /* ② 8 项检测指标：下拉体内的「布点图」控件 */
   .cbp-ctl{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 2px;}
@@ -610,16 +614,20 @@
     .clean-table.clean-main th:nth-child(8),.clean-table.clean-main td:nth-child(8){min-width:2.8em;}
     .clean-table.clean-main th:nth-child(9),.clean-table.clean-main td:nth-child(9){min-width:3.4em;}
     .clean-table.clean-main th:nth-child(10),.clean-table.clean-main td:nth-child(10){min-width:2.8em;}
-    /* ④ 空气洁净度级别与细菌浓度分级表：表头按 <br> 分行且整行不断字；数值列整串显示 */
-    .clean-table.clean-bac th{white-space:nowrap!important;padding:5px 3px;}
-    .clean-table.clean-bac td{padding:5px 3px;}
-    .clean-table.clean-bac td:nth-child(2),.clean-table.clean-bac td:nth-child(3),
-    .clean-table.clean-bac td:nth-child(4){white-space:nowrap!important;}
-    /* ③ 布点/采样量速查表（.clean-samp）：项目列加宽到「最长的沉降菌行折成 2 行」，
-       5 级列整串一行；6 级起各列收到「表头级别名整串显示」的宽度，数据在括号处折成 2 行 */
-    .clean-table.clean-samp th:first-child,.clean-table.clean-samp td:first-child{min-width:11em;width:11em;}
-    .clean-table.clean-samp td:nth-child(2){white-space:nowrap!important;}
-    .clean-table.clean-samp th:nth-child(n+3){width:5.6em;min-width:5.6em;}
+    /* ④ 空气洁净度级别与细菌浓度分级表：百分比列宽让整表在 360~680px 全部装进卡片（无横向滚动）；
+       表头放开 nowrap 按 <br class="n-br"> 与 <wbr> 定点换行，数值列整串不折断 */
+    .clean-table.clean-samp,.clean-table.clean-bac{min-width:0!important;width:100%!important;}
+    .clean-table.clean-samp th,.clean-table.clean-samp td,
+    .clean-table.clean-bac th{white-space:normal!important;}
+    .clean-table.clean-samp .nb{white-space:normal!important;}
+    .clean-table.clean-samp th:first-child,.clean-table.clean-samp td:first-child{width:4.4em!important;min-width:4.4em!important;}
+    .clean-table.clean-samp th:nth-child(n+2),.clean-table.clean-samp td:nth-child(n+2){width:auto!important;min-width:3.6em!important;}
+    .clean-table.clean-bac th:first-child,.clean-table.clean-bac td:first-child{width:19%!important;min-width:3.4em!important;}
+    .clean-table.clean-bac th:nth-child(2),.clean-table.clean-bac td:nth-child(2){width:25%!important;min-width:0!important;}
+    .clean-table.clean-bac th:nth-child(3),.clean-table.clean-bac td:nth-child(3){width:25%!important;min-width:0!important;}
+    .clean-table.clean-bac th:nth-child(4),.clean-table.clean-bac td:nth-child(4){width:31%!important;min-width:0!important;}
+    .clean-table.clean-samp th,.clean-table.clean-samp td,
+    .clean-table.clean-bac th,.clean-table.clean-bac td{padding:4px 1.5px;line-height:1.35;overflow-wrap:anywhere;word-break:break-word;}
     /* 2～4 列小表（clean-s）：首列略窄，长文本照常折行 */
     .clean-table.clean-s th:first-child,.clean-table.clean-s td:first-child{min-width:6em;width:6em;}
     /* ③ 含尘浓度最少测点数表（.clean-pt）：区域列加宽，最长格「Ⅰ级洁净手术室手术区…」折成 3 行 */
@@ -1014,7 +1022,7 @@
         <div class="std">洁净手术部洁净用房应按<b>空态或静态条件下的细菌浓度</b>分级（3.0.1）。细菌浓度是<b>直接所测的结果</b>，不是沉降法和浮游法互相换算的结果（表 3.0.2 注 1）。下表数值针对<b>洁净手术室</b>的手术区与周边区，单位为沉降法 cfu/30min·Φ90 皿（括号内为浮游法 cfu/m³）。</div>
         <div style="overflow-x:auto;">
         <table class="sch-table clean-table clean-bac">
-          <thead><tr><th>洁净用房等级</th><th>手术区沉降法<br class="n-br">cfu/30min·Φ90（浮游法cfu/m³）</th><th>周边区沉降法<br class="n-br">（浮游法）</th><th>空气洁净度级别<br class="n-br">手术区 / 周边区</th></tr></thead>
+          <thead><tr><th><span class="bcnw">洁净用</span><span class="bcnw">房等级</span></th><th><span class="bcnw">手术区</span><span class="bcnw">沉降法</span><br class="n-br">cfu/30min·Φ90<wbr>（浮游法cfu/m³）</th><th><span class="bcnw">周边区</span><span class="bcnw">沉降法</span><br class="n-br"><span class="bcnw">（浮游法）</span></th><th><span class="bcnw">空气洁净度</span><span class="bcnw">级别</span><br class="n-br">手术区 / 周边区</th></tr></thead>
           <tbody>
             <tr><td>Ⅰ级</td><td>0.2（5）</td><td>0.4（10）</td><td>5 级 / 6 级</td></tr>
             <tr><td>Ⅱ级</td><td>0.75（25）</td><td>1.5（50）</td><td>6 级 / 7 级</td></tr>
