@@ -401,6 +401,8 @@
   .cbp-ctl select{flex:none;}
   .cbp-ctl + .bp-wrap{margin-top:9px;}
   .s-row.cbp-row{align-items:flex-start;}
+  /* ② 布点图：图形卡靠左、宽度随图形（不再撑满整列），图内无多余留白 */
+  .s-row.cbp-row .bp-wrap{max-width:430px;}
 
   /* 洁净室检测 → 模块分组（洁净手术部 / 后续可扩展洁净病房、工业洁净室等） */
   .clean-module{margin-top:4px;}
@@ -420,6 +422,8 @@
   .bp-wrap{margin-top:10px;background:rgba(255,255,255,.75);border:1px solid var(--line);
     border-radius:12px;padding:8px 8px 6px;}
   .bp-wrap svg{display:block;width:100%;height:auto;}
+  .bp-cap{font-size:12.5px;font-weight:700;color:var(--txt);line-height:1.45;margin:1px 2px 7px;}
+  .bp-foot{font-size:11.5px;color:var(--sub);line-height:1.55;margin:7px 2px 1px;}
   .bp-empty{font-size:12.5px;color:var(--sub);padding:22px 10px;text-align:center;}
   /* ==SCH5-CSS-END== */
   .sch-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0 6px;}
@@ -644,11 +648,13 @@
     .cbp-ctl{gap:8px;}
     .cbp-ctl .field{flex:1 1 88px;margin-bottom:0;}
     .cbp-ctl input,.cbp-ctl select{height:40px;font-size:15px;padding:0 8px;}
-    /* 布点图行改为整行铺开：图拿到整张卡片宽，并按 560px 最小宽度在卡片内横滑，保证图上文字可读 */
+    /* 布点图行改为整行铺开：图按卡片宽度整幅缩放，整张图完整显示（不再横滑） */
     .s-row.cbp-row{display:block;}
     .s-row.cbp-row .s-k{display:block;margin-bottom:6px;}
-    .s-row.cbp-row .bp-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-    .s-row.cbp-row .bp-wrap svg{min-width:560px;}
+    .s-row.cbp-row .bp-wrap{max-width:100%;}
+    .s-row.cbp-row .bp-wrap svg{width:100%;min-width:0;}
+    .bp-cap{font-size:13px;}
+    .bp-foot{font-size:12px;}
   }
 
 .radio-row{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:4px}
@@ -4224,7 +4230,7 @@
       sp = (cbpS('cbpSel-vel') === 'non') ? 2 : 1;
       r.SL = Math.min(cbpV('cbpSL-vel', 2.6), Math.max(1, L - 1));
       r.SB = Math.min(cbpV('cbpSB-vel', 2.4), Math.max(1, B - 1));
-      r.rectLabel = '集中送风面（地面以上 1.2 m 截面）';
+      r.rectLabel = '集中送风面';
       ox0 = (L - r.SL) / 2; oy0 = (B - r.SB) / 2;
       g = cbpGrid(r.SL, r.SB, sp, 0.15);
       r.groups = [{color:'#0ea5e9', pts:g.pts.map(function(p){ return [ox0 + p[0], oy0 + p[1]]; })}];
@@ -4245,27 +4251,30 @@
     return r;
   }
 
-  /* 布点图（SVG，横向∶纵向同一比例尺） */
+  /* 布点图（SVG，横向∶纵向同一比例尺，图上可直接量取测点位置）
+     标题 .bp-cap 与脚注 .bp-foot 由 HTML 承载（自动换行、可复制）；
+     viewBox 紧贴图形本身（左边只留竖向尺寸标注的位置、右边只留「门」标注），
+     因此图按卡片宽度整幅缩放即可完整显示，不会出现大片留白或需要横向滑动。 */
   function cbpSvg(r){
-    var W = 680, PL = 66, PR = 48, PT = 44, PB = 82;
-    var PW = W - PL - PR, PH = 320, H = PH + PT + PB;
+    var PL = 50, PR = 24, PT = 38, PB = 34;   /* 图内四边留白（viewBox 单位） */
+    var PW = 270, PH = 200;                   /* 绘图区：房间按同一比例尺缩放到其中 */
     var sc = Math.min(PW / r.L, PH / r.B);
     var w = r.L * sc, h = r.B * sc;
-    var ox = PL + (PW - w) / 2, oy = PT + (PH - h) / 2;
+    var ox = PL, oy = PT;
+    var W = Math.round(PL + w + PR), H = Math.round(oy + h + PB);
     function X(v){ return +(ox + v * sc).toFixed(2); }
     function Y(v){ return +(oy + v * sc).toFixed(2); }
     var C_TXT = '#103325', C_SUB = '#5b7569', C_LINE = '#9fb8ad';
     var o = [], F = ' font-family=\'' + BP_FONT + '\'', k = 0, yD, xD, barM, bw, sx, sy, dy, hd;
     o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img">');
     o.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="#ffffff"/>');
-    o.push('<text x="14" y="22" font-size="13" font-weight="700" fill="' + C_TXT + '"' + F + '>' + r.title + '</text>');
     o.push('<rect x="' + X(0) + '" y="' + Y(0) + '" width="' + w.toFixed(2) + '" height="' + h.toFixed(2) +
            '" fill="#f5fbfe" stroke="' + C_TXT + '" stroke-width="1.4"/>');
     if(r.SL > 0.2 && r.SB > 0.2){
       sx = X((r.L - r.SL) / 2); sy = Y((r.B - r.SB) / 2);
       o.push('<rect x="' + sx + '" y="' + sy + '" width="' + (r.SL * sc).toFixed(2) + '" height="' + (r.SB * sc).toFixed(2) +
              '" fill="rgba(14,165,233,.08)" stroke="#0ea5e9" stroke-width="1.2" stroke-dasharray="5 4"/>');
-      o.push('<text x="' + (sx + r.SL * sc / 2).toFixed(2) + '" y="' + (sy - 6) + '" text-anchor="middle" font-size="10.5" fill="#0284c7"' + F + '>' +
+      o.push('<text x="' + (sx + r.SL * sc / 2).toFixed(2) + '" y="' + (sy - 13) + '" text-anchor="middle" font-size="11.5" fill="#0284c7"' + F + '>' +
              r.rectLabel + ' ' + cbpN(r.SL) + ' × ' + cbpN(r.SB) + ' m</text>');
     }
     if(r.L > 1.02 && r.B > 1.02){
@@ -4277,32 +4286,31 @@
       o.push('<rect x="' + (X(r.L) - 2.5) + '" y="' + Y(dy - hd) + '" width="5" height="' + (2 * hd * sc).toFixed(2) + '" fill="#ffffff"/>');
       o.push('<path d="M ' + X(r.L) + ' ' + Y(dy - hd) + ' L ' + (X(r.L) - 2 * hd * sc).toFixed(2) + ' ' + Y(dy - hd) + '" fill="none" stroke="' + C_TXT + '" stroke-width="1.6"/>');
       o.push('<path d="M ' + (X(r.L) - 2 * hd * sc).toFixed(2) + ' ' + Y(dy - hd) + ' A ' + (2 * hd * sc).toFixed(2) + ' ' + (2 * hd * sc).toFixed(2) + ' 0 0 1 ' + X(r.L) + ' ' + Y(dy + hd) + '" fill="none" stroke="' + C_LINE + '" stroke-width="1" stroke-dasharray="3 3"/>');
-      o.push('<text x="' + (X(r.L) + 7) + '" y="' + (Y(dy) - 4) + '" font-size="10.5" fill="' + C_SUB + '"' + F + '>门</text>');
+      o.push('<text x="' + (X(r.L) + 7) + '" y="' + (Y(dy) - 4) + '" font-size="11.5" fill="' + C_SUB + '"' + F + '>门</text>');
     }
     r.groups.forEach(function(gp){
       gp.pts.forEach(function(p){
         k++;
         o.push('<circle cx="' + X(p[0]) + '" cy="' + Y(p[1]) + '" r="4.2" fill="' + gp.color + '" stroke="#ffffff" stroke-width="1"/>');
-        o.push('<text x="' + (X(p[0]) + 6) + '" y="' + (Y(p[1]) - 5.5) + '" font-size="9.5" fill="' + C_SUB + '"' + F + '>' + k + '</text>');
+        o.push('<text x="' + (X(p[0]) + 6) + '" y="' + (Y(p[1]) - 5.5) + '" font-size="10.5" fill="' + C_SUB + '"' + F + '>' + k + '</text>');
       });
     });
     yD = oy + h + 26;
     o.push('<line x1="' + ox + '" y1="' + yD + '" x2="' + (ox + w) + '" y2="' + yD + '" stroke="' + C_SUB + '" stroke-width="1"/>');
     o.push('<line x1="' + ox + '" y1="' + (yD - 4) + '" x2="' + ox + '" y2="' + (yD + 4) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
     o.push('<line x1="' + (ox + w) + '" y1="' + (yD - 4) + '" x2="' + (ox + w) + '" y2="' + (yD + 4) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
-    o.push('<text x="' + (ox + w / 2) + '" y="' + (yD - 6) + '" text-anchor="middle" font-size="11.5" fill="' + C_TXT + '"' + F + '>长 L ' + r.L.toFixed(2) + ' m</text>');
+    o.push('<text x="' + (ox + w / 2) + '" y="' + (yD - 6) + '" text-anchor="middle" font-size="12.5" fill="' + C_TXT + '"' + F + '>长 L ' + r.L.toFixed(2) + ' m</text>');
     xD = ox - 40;
     o.push('<line x1="' + xD + '" y1="' + oy + '" x2="' + xD + '" y2="' + (oy + h) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
     o.push('<line x1="' + (xD - 4) + '" y1="' + oy + '" x2="' + (xD + 4) + '" y2="' + oy + '" stroke="' + C_SUB + '" stroke-width="1"/>');
     o.push('<line x1="' + (xD - 4) + '" y1="' + (oy + h) + '" x2="' + (xD + 4) + '" y2="' + (oy + h) + '" stroke="' + C_SUB + '" stroke-width="1"/>');
-    o.push('<text transform="rotate(-90 ' + xD + ' ' + (oy + h / 2) + ')" x="' + xD + '" y="' + (oy + h / 2 - 6) + '" text-anchor="middle" font-size="11.5" fill="' + C_TXT + '"' + F + '>宽 B ' + r.B.toFixed(2) + ' m</text>');
+    o.push('<text transform="rotate(-90 ' + xD + ' ' + (oy + h / 2) + ')" x="' + xD + '" y="' + (oy + h / 2 - 6) + '" text-anchor="middle" font-size="12.5" fill="' + C_TXT + '"' + F + '>宽 B ' + r.B.toFixed(2) + ' m</text>');
     barM = sc > 110 ? 0.5 : (sc < 44 ? 2 : 1);
     bw = barM * sc;
     o.push('<line x1="' + (ox + w - bw) + '" y1="' + (oy - 15) + '" x2="' + (ox + w) + '" y2="' + (oy - 15) + '" stroke="' + C_TXT + '" stroke-width="2"/>');
     o.push('<line x1="' + (ox + w - bw) + '" y1="' + (oy - 18.5) + '" x2="' + (ox + w - bw) + '" y2="' + (oy - 11.5) + '" stroke="' + C_TXT + '" stroke-width="2"/>');
     o.push('<line x1="' + (ox + w) + '" y1="' + (oy - 18.5) + '" x2="' + (ox + w) + '" y2="' + (oy - 11.5) + '" stroke="' + C_TXT + '" stroke-width="2"/>');
-    o.push('<text x="' + (ox + w - bw / 2) + '" y="' + (oy - 22) + '" text-anchor="middle" font-size="10.5" fill="' + C_TXT + '"' + F + '>' + barM + ' m</text>');
-    o.push('<text x="' + ox + '" y="' + (yD + 26) + '" font-size="10.5" fill="' + C_SUB + '"' + F + '>' + r.foot + '</text>');
+    o.push('<text x="' + (ox + w - bw / 2) + '" y="' + (oy - 22) + '" text-anchor="middle" font-size="11.5" fill="' + C_TXT + '"' + F + '>' + barM + ' m</text>');
     o.push('</svg>');
     return o.join('');
   }
@@ -4311,7 +4319,8 @@
     var box = document.getElementById('cbpBox-' + key), info = document.getElementById('cbpInfo-' + key);
     if(!box) return;
     var r = cbpPlan(key);
-    box.innerHTML = cbpSvg(r);
+    box.innerHTML = '<div class="bp-cap">' + r.title + '</div>' + cbpSvg(r)
+                  + (r.foot ? '<div class="bp-foot">' + r.foot + '</div>' : '');
     if(info) info.innerHTML = r.info;
   }
   function cbpBuild(){
