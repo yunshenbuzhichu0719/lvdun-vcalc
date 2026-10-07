@@ -689,6 +689,43 @@
   .sch-table th{text-align:center!important;}
   .sch-table td:first-child{text-align:center!important;}
   /* ==ALIGN-CSS-END== */
+  /* ======= 全局返回按钮 / 离开确认（防止左划误退出） ======= */
+  .ld-back-btn{
+    position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));z-index:9000;
+    display:inline-flex;align-items:center;gap:4px;
+    padding:10px 17px;border:1px solid rgba(15,58,110,.35);border-radius:999px;
+    background:linear-gradient(95deg,#0f3a6e,#16559c);color:#fff;
+    font-size:14.5px;font-weight:800;letter-spacing:.5px;cursor:pointer;white-space:nowrap;
+    box-shadow:0 8px 22px rgba(15,58,110,.30), inset 0 1px 0 rgba(255,255,255,.22);
+    transition:transform .15s, opacity .15s;-webkit-tap-highlight-color:transparent;
+  }
+  .ld-back-btn .ld-arw{font-size:18px;line-height:1;font-weight:900;}
+  .ld-back-btn:active{transform:scale(.94);}
+  .ld-mask{
+    position:fixed;inset:0;z-index:9500;display:flex;align-items:center;justify-content:center;
+    background:rgba(8,32,22,.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:20px;
+  }
+  .ld-mask[hidden]{display:none;}
+  .ld-box{
+    width:100%;max-width:330px;background:var(--panel-solid);border-radius:16px;padding:22px 20px 18px;
+    box-shadow:0 18px 44px rgba(8,32,22,.28);text-align:center;
+  }
+  .ld-box h4{font-size:17px;font-weight:800;color:#0f3a6e;margin-bottom:10px;}
+  .ld-box p{font-size:13.5px;line-height:1.65;color:var(--sub);margin-bottom:18px;}
+  .ld-btns{display:flex;gap:10px;}
+  .ld-btns button{
+    flex:1;padding:11px 8px;border-radius:11px;font-size:14.5px;font-weight:800;
+    cursor:pointer;border:1px solid transparent;-webkit-tap-highlight-color:transparent;
+  }
+  .ld-btn-stay{
+    background:linear-gradient(95deg,#1ecb80,#11a367);color:#fff;
+    box-shadow:0 6px 16px rgba(19,184,117,.25);
+  }
+  .ld-btn-leave{background:#fff;color:#b4553f;border-color:rgba(216,69,59,.35);}
+  @media (max-width:680px){
+    .ld-back-btn{right:12px;bottom:calc(12px + env(safe-area-inset-bottom, 0px));padding:9px 15px;font-size:14px;}
+    body{padding-bottom:76px;}
+  }
 </style>
 </head>
 <body>
@@ -6848,5 +6885,143 @@ function cgInit(){
 
 
 </script>
+<!-- ======= 全局返回按钮 + 离开确认（避免左划/返回手势误退出） ======= -->
+<button id="ldBackBtn" class="ld-back-btn" type="button"><span class="ld-arw">&#8249;</span><span id="ldBackTxt">离开</span></button>
+<div id="ldMask" class="ld-mask" hidden>
+  <div class="ld-box" role="dialog" aria-modal="true" aria-labelledby="ldBoxT">
+    <h4 id="ldBoxT">离开绿盾助手？</h4>
+    <p id="ldBoxMsg">页面上未保存的检测数据与计算结果将不再保留。<br>在模块之间切换时，建议使用页面内的「返回」按钮。</p>
+    <div class="ld-btns">
+      <button id="ldStay" class="ld-btn-stay" type="button">留在本页</button>
+      <button id="ldLeave" class="ld-btn-leave" type="button">确定离开</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+/* ======= 全局导航返回栈 + 禁止左划/返回手势误退出 ======= */
+(function(){
+  function q(s, r){ return (r || document).querySelector(s); }
+  function qa(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function vis(row){
+    try{ return window.getComputedStyle(row).display !== 'none'; }
+    catch(e){ return row.style.display !== 'none'; }
+  }
+  /* 当前视图快照：一级 / 二级 / 三级，均只取"可见行"内的激活项 */
+  function snap(){
+    /* 必须按"层级归属"取，不能只按 display 判断：
+       初始状态下 showTop 从未被调用、各未激活分组没有内联 style，
+       CSS 里 .sub-tabs 默认就是 flex，会被误判成可见而取错激活项。*/
+    var ta = q('.top-tab.active');
+    var top = ta ? ta.dataset.top : null;
+    var s = null, ss = null;
+    if(top){
+      var row = q('.sub-tabs[data-group="' + top + '"]');
+      if(row) s = q('.sub-tab.active', row);
+    }
+    if(s){
+      var key = s.dataset.sub;
+      var parent = (key.indexOf('__pub_') === 0) ? key.slice(6) : key;   // __pub_xxx -> xxx
+      var srow = q('.sub-sub-tabs[data-parent="' + parent + '"]');
+      if(srow && vis(srow)) ss = q('.sub-sub-tab.active', srow);
+    }
+    return { top: top, sub: s ? s.dataset.sub : null, subsub: ss ? ss.dataset.sub : null };
+  }
+  function same(a, b){ return !!a && !!b && a.top === b.top && a.sub === b.sub && a.subsub === b.subsub; }
+
+  var stack = [], lock = false, pending = null, suppress = false, restoring = false;
+
+  /* 把视图恢复到某个快照：直接复用页面原有的 tab 切换逻辑，零侵入 */
+  function restore(s){
+    restoring = true;
+    try{
+      if(s.top){ var t = q('.top-tab[data-top="' + s.top + '"]'); if(t) t.click(); }
+      if(s.sub){ var b = q('.sub-tab[data-sub="' + s.sub + '"]'); if(b) b.click(); }
+      if(s.subsub){ var c = q('.sub-sub-tab[data-sub="' + s.subsub + '"]'); if(c) c.click(); }
+    } finally { restoring = false; }
+  }
+
+  /* 记录导航历史。必须用捕获阶段：目标按钮自身的 handler 会立刻改 DOM，
+     冒泡阶段再取就已经是"变更后"了。
+     showTop -> first.click() -> 三级.click() 是同一个同步任务内的级联，用 lock 去重。*/
+  document.addEventListener('click', function(e){
+    var el = (e.target && e.target.closest) ? e.target.closest('.top-tab,.sub-tab,.sub-sub-tab') : null;
+    if(!el) return;
+    if(suppress || restoring) return;
+    if(!lock){ lock = true; pending = snap(); }
+    setTimeout(function(){
+      if(lock){
+        var after = snap();
+        if(!same(pending, after)) stack.push(pending);
+        lock = false; pending = null; paint();
+      }
+    }, 0);
+  }, true);
+
+  var mask = q('#ldMask'), btn = q('#ldBackBtn'), txt = q('#ldBackTxt');
+  var stay = q('#ldStay'), leave = q('#ldLeave'), msg = q('#ldBoxMsg');
+  var armed = false;   // 用户已明确选择离开
+
+  function paint(){
+    if(!btn) return;
+    var n = stack.length;
+    if(txt) txt.textContent = n ? '返回' : '离开';
+    btn.setAttribute('aria-label', n ? '返回上一层' : '离开本页');
+  }
+  function openMask(){ if(mask) mask.hidden = false; }
+  function closeMask(){ if(mask) mask.hidden = true; }
+
+  /* 压一条哨兵历史：让"后退"落到本页而非直接离开，从而有机会被 popstate 拦下 */
+  function guardPush(){
+    if(armed) return;
+    try{ history.pushState({ ldGuard: 1, t: Date.now() }, '', location.href); }catch(e){}
+  }
+
+  /* 返回按钮：优先在模块间逐级返回；已在最上层则询问是否离开 */
+  if(btn) btn.addEventListener('click', function(){
+    if(stack.length){
+      var s = stack.pop();
+      suppress = true;
+      try{ restore(s); } finally { suppress = false; }
+      paint();
+      return;
+    }
+    if(msg) msg.innerHTML = '当前已在首页。<br>离开后页面上未保存的检测数据与计算结果将不再保留。';
+    if(leave) leave.style.display = '';
+    openMask();
+  });
+
+  if(stay) stay.addEventListener('click', function(){ closeMask(); guardPush(); });
+  if(mask) mask.addEventListener('click', function(e){ if(e.target === mask){ closeMask(); guardPush(); } });
+
+  if(leave) leave.addEventListener('click', function(){
+    closeMask();
+    armed = true;                      // 放行：不再拦截接下来的 popstate
+    var went = false;
+    try{ if(history.length > 1){ history.back(); went = true; } }catch(e){}
+    if(!went){ try{ window.close(); }catch(e2){} }
+    setTimeout(function(){
+      // 兜底：本页是直接打开、没有上一页时不走 back，给出手动提示
+      if(armed && !document.hidden){
+        if(msg) msg.innerHTML = '已放行本次离开。<br>若页面仍停留在此，请手动关闭标签页或使用系统返回。';
+        if(leave) leave.style.display = 'none';
+        openMask();
+      }
+    }, 700);
+  });
+
+  /* 拦截手机侧滑返回 / 浏览器返回键：不直接退出，改为弹窗确认 */
+  window.addEventListener('popstate', function(){
+    if(armed) return;
+    openMask();
+    guardPush();        // 再压一条抵消这次后退，把页面"钉"住
+  });
+
+  guardPush();
+  paint();
+})();
+</script>
+
 </body>
 </html>
