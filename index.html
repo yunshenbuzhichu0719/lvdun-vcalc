@@ -3940,11 +3940,11 @@
 
       /* 测点（网格中心）：编号 + 坐标标注（图中标记 x＝距黑板、y＝距左墙） */
       var showNum = (r.n <= 44), showC = (r.n <= 36);
-      for(j = 0; j < r.ny; j++){
-        for(i = 0; i < r.nx; i++){
+      for(i = 0; i < r.nx; i++){        /* 行：沿进深（自书写板向后再向后墙） */
+        for(j = 0; j < r.ny; j++){      /* 列：沿横向（自左墙向右） */
           var wcx = Sx((r.yb[j] + r.yb[j + 1]) / 2), dcy = Sy((r.xb[i] + r.xb[i + 1]) / 2);
           o.push('<circle cx="'+wcx+'" cy="'+dcy+'" r="3.6" fill="'+C_ACC+'" stroke="#ffffff" stroke-width="1.4"/>');
-          if(showNum) o.push('<text x="'+(wcx+6)+'" y="'+(dcy-5)+'" font-size="9.5" fill="'+C_TXT+'"'+F+'>'+(j*r.nx+i+1)+'</text>');
+          if(showNum) o.push('<text x="'+(wcx+6)+'" y="'+(dcy-5)+'" font-size="9.5" fill="'+C_TXT+'"'+F+'>'+(i*r.ny+j+1)+'</text>');
           if(showC) o.push('<text x="'+wcx+'" y="'+(dcy+13)+'" text-anchor="middle" font-size="8.5" fill="'+C_SUB+'"'+F+'>('+r.xs[i].toFixed(2)+','+r.ys[j].toFixed(2)+')</text>');
         }
       }
