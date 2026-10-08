@@ -103,6 +103,18 @@
   .sub-sub-tab.active{background:#13b879;color:#fff;border-color:transparent;
     box-shadow:0 4px 12px rgba(19,184,117,.25);}
 
+  /* ===== 单位换算 内部子项（体积换算 / RSD） ===== */
+  .vs-tabs{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 18px 0;}
+  .vs-tab{
+    flex:0 0 auto;padding:8px 16px;border:1px solid var(--line-strong);background:#fff;
+    color:var(--sub);border-radius:999px;font-size:13.5px;font-weight:700;cursor:pointer;
+    white-space:nowrap;transition:all .15s;
+  }
+  .vs-tab.active{background:#0ea5e9;color:#fff;border-color:transparent;
+    box-shadow:0 4px 12px rgba(14,165,233,.25);}
+  .vs-sub{display:none;}
+  .vs-sub.active{display:block;}
+
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
   @media (max-width:680px){.grid{grid-template-columns:1fr;}}
   .card{
@@ -762,7 +774,7 @@
 
     <!-- 采样速查 · 二级目录 -->
     <div class="sub-tabs" data-group="sampling">
-      <button class="sub-tab active" data-sub="m-volconv">体积换算</button>
+      <button class="sub-tab active" data-sub="m-volconv">单位换算</button>
       <button class="sub-tab" data-sub="__pub_sampling">公共卫生检测</button>
       <button class="sub-tab" data-sub="m-sch">学校综合评价</button>
       <button class="sub-tab" data-sub="m-water">水质检测</button>
@@ -1166,6 +1178,11 @@
 
     <!-- ====== 体积换算（二级：默认） ====== -->
     <div id="m-volconv" class="sub-pane active">
+    <div class="vs-tabs">
+      <button class="vs-tab active" data-vs="vol">1 · 体积换算</button>
+      <button class="vs-tab" data-vs="rsd">2 · 相对标准偏差 RSD</button>
+    </div>
+    <div id="vs-vol" class="vs-sub active">
     <div class="grid">
       <!-- 输入区 -->
       <div class="card">
@@ -1247,6 +1264,32 @@
             <div><b>修约规则（四舍六入五成双）</b></div>
             <div>拟舍弃数字 &lt;5 舍去，&gt;5 进位；恰为 5 时，其后有非零数则进位，其后全零则凑偶（使保留位为偶数）。</div>
           </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /vs-vol -->
+    <div id="vs-rsd" class="vs-sub">
+      <div class="card">
+        <h2><span class="dot"></span>相对标准偏差 RSD 计算</h2>
+        <p class="sub-note">输入一组重复测定值（用空格、逗号或分号分隔），自动计算样品数 n、平均值、样本标准差 s 与相对标准偏差 RSD（%），用于平行样 / 重复测定的精密度评价。</p>
+        <div class="field">
+          <label>测定值（多个数值，用 空格 / 逗号 / 分号 分隔）</label>
+          <textarea id="rsdIn" rows="4" placeholder="如：1.02 1.05 0.98 1.03 1.00" style="width:100%;font-size:15px;line-height:1.7;padding:10px;border:1px solid var(--line-strong);border-radius:10px;resize:vertical;font-family:inherit;"></textarea>
+        </div>
+        <div class="actions">
+          <button id="rsdCalcBtn" class="ghost">计算</button>
+          <button id="rsdClearBtn" class="ghost">清空</button>
+        </div>
+        <div class="res-box std" style="margin-top:14px;">
+          <div class="tag">计算结果</div>
+          <div class="val" style="font-size:15px;line-height:1.9;" id="rsdRes">—</div>
+        </div>
+        <div class="legend" style="margin-top:12px;">
+          <div><b>公式与说明</b></div>
+          <div>平均值 x̄ = Σxᵢ / n</div>
+          <div>样本标准差 s = √[ Σ(xᵢ − x̄)² / (n − 1) ]</div>
+          <div>相对标准偏差 RSD = s / |x̄| × 100%</div>
+          <div>RSD 越小精密度越高；平行样 / 重复测定结果通常用 RSD 评价离散程度。</div>
         </div>
       </div>
     </div>
@@ -2772,7 +2815,12 @@
       if(subRow){ subRow.style.display='flex'; const c=subRow.querySelector('.sub-sub-tab'); if(c) c.click(); }
       const pane=document.getElementById(key);
       if(pane) pane.classList.add('active');
-      if(key==='m-volconv'){ loadInputs(); calc(); }
+      if(key==='m-volconv'){
+        document.querySelectorAll('.vs-tab').forEach(b=>b.classList.toggle('active', b.dataset.vs==='vol'));
+        document.querySelectorAll('.vs-sub').forEach(p=>p.classList.remove('active'));
+        const vv=document.getElementById('vs-vol'); if(vv) vv.classList.add('active');
+        loadInputs(); calc();
+      }
     }
   }
   document.querySelectorAll('.sub-tab').forEach(btn=>{
@@ -6882,6 +6930,34 @@ function cgInit(){
     out.textContent = 'n=' + n + '，均值=' + anRound(mean,4) + '，s=' + anRound(s,4) + '，RSD=' + anRound(rsd,2) + '%';
   }
   document.getElementById('anStatIn').addEventListener('input', anStatCalc);
+
+  // ============ 单位换算 内部子项切换（体积换算 / RSD） ============
+  document.querySelectorAll('.vs-tab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.vs-tab').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = btn.dataset.vs;
+      document.querySelectorAll('.vs-sub').forEach(function(p){ p.classList.remove('active'); });
+      var p = document.getElementById('vs-'+target);
+      if(p) p.classList.add('active');
+      if(target==='vol'){ if(typeof loadInputs==='function') loadInputs(); if(typeof calc==='function') calc(); }
+    });
+  });
+
+  // ============ 相对标准偏差 RSD 计算 ============
+  function rsdCalc(){
+    var raw = document.getElementById('rsdIn').value;
+    var out = document.getElementById('rsdRes');
+    var arr = (raw||'').split(/[\s,;，；]+/).map(function(s){ return parseFloat(s); }).filter(function(x){ return !isNaN(x); });
+    if(!arr.length){ out.textContent='—'; return; }
+    var n = arr.length, mean = arr.reduce(function(a,b){return a+b;},0)/n;
+    var s = n>1 ? Math.sqrt(arr.reduce(function(a,b){return a+(b-mean)*(b-mean);},0)/(n-1)) : 0;
+    var rsd = mean!==0 ? s/Math.abs(mean)*100 : 0;
+    out.textContent = 'n=' + n + '，均值=' + anRound(mean,4) + '，s=' + anRound(s,4) + '，RSD=' + anRound(rsd,2) + '%';
+  }
+  document.getElementById('rsdIn').addEventListener('input', rsdCalc);
+  document.getElementById('rsdCalcBtn').addEventListener('click', rsdCalc);
+  document.getElementById('rsdClearBtn').addEventListener('click', function(){ document.getElementById('rsdIn').value=''; document.getElementById('rsdRes').textContent='—'; });
 
 
 </script>
