@@ -103,17 +103,8 @@
   .sub-sub-tab.active{background:#13b879;color:#fff;border-color:transparent;
     box-shadow:0 4px 12px rgba(19,184,117,.25);}
 
-  /* ===== 单位换算 内部子项（体积换算 / RSD） ===== */
-  .vs-tabs{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 18px 0;}
-  .vs-tab{
-    flex:0 0 auto;padding:8px 16px;border:1px solid var(--line-strong);background:#fff;
-    color:var(--sub);border-radius:999px;font-size:13.5px;font-weight:700;cursor:pointer;
-    white-space:nowrap;transition:all .15s;
-  }
-  .vs-tab.active{background:#0ea5e9;color:#fff;border-color:transparent;
-    box-shadow:0 4px 12px rgba(14,165,233,.25);}
-  .vs-sub{display:none;}
-  .vs-sub.active{display:block;}
+  /* ===== 单位换算 两个子模块直接平铺展示 ===== */
+  .vs-sec{margin-top:22px;}
 
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
   @media (max-width:680px){.grid{grid-template-columns:1fr;}}
@@ -1178,11 +1169,7 @@
 
     <!-- ====== 体积换算（二级：默认） ====== -->
     <div id="m-volconv" class="sub-pane active">
-    <div class="vs-tabs">
-      <button class="vs-tab active" data-vs="vol">1 · 体积换算</button>
-      <button class="vs-tab" data-vs="rsd">2 · 相对标准偏差 RSD</button>
-    </div>
-    <div id="vs-vol" class="vs-sub active">
+    <div id="vs-vol">
     <div class="grid">
       <!-- 输入区 -->
       <div class="card">
@@ -1268,7 +1255,7 @@
       </div>
     </div>
     </div><!-- /vs-vol -->
-    <div id="vs-rsd" class="vs-sub">
+    <div id="vs-rsd" class="vs-sec">
       <div class="card">
         <h2><span class="dot"></span>相对标准偏差 RSD 计算</h2>
         <p class="sub-note">输入一组重复测定值（用空格、逗号或分号分隔），自动计算样品数 n、平均值、样本标准差 s 与相对标准偏差 RSD（%），用于平行样 / 重复测定的精密度评价。</p>
@@ -2815,12 +2802,7 @@
       if(subRow){ subRow.style.display='flex'; const c=subRow.querySelector('.sub-sub-tab'); if(c) c.click(); }
       const pane=document.getElementById(key);
       if(pane) pane.classList.add('active');
-      if(key==='m-volconv'){
-        document.querySelectorAll('.vs-tab').forEach(b=>b.classList.toggle('active', b.dataset.vs==='vol'));
-        document.querySelectorAll('.vs-sub').forEach(p=>p.classList.remove('active'));
-        const vv=document.getElementById('vs-vol'); if(vv) vv.classList.add('active');
-        loadInputs(); calc();
-      }
+      if(key==='m-volconv'){ loadInputs(); calc(); }
     }
   }
   document.querySelectorAll('.sub-tab').forEach(btn=>{
@@ -6930,19 +6912,6 @@ function cgInit(){
     out.textContent = 'n=' + n + '，均值=' + anRound(mean,4) + '，s=' + anRound(s,4) + '，RSD=' + anRound(rsd,2) + '%';
   }
   document.getElementById('anStatIn').addEventListener('input', anStatCalc);
-
-  // ============ 单位换算 内部子项切换（体积换算 / RSD） ============
-  document.querySelectorAll('.vs-tab').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('.vs-tab').forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      var target = btn.dataset.vs;
-      document.querySelectorAll('.vs-sub').forEach(function(p){ p.classList.remove('active'); });
-      var p = document.getElementById('vs-'+target);
-      if(p) p.classList.add('active');
-      if(target==='vol'){ if(typeof loadInputs==='function') loadInputs(); if(typeof calc==='function') calc(); }
-    });
-  });
 
   // ============ 相对标准偏差 RSD 计算 ============
   function rsdCalc(){
