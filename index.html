@@ -1527,11 +1527,16 @@
         <div class="sch-grid-info" id="schClGrid">填写教室长宽后，自动计算建议测点数（GB/T 5700-2023 表 D.9：间距 ≤2.0 m×2.0 m，网格中心为测点）。</div>
         <div class="field" style="margin-top:11px"><label>各测点照度值（lx，空格或逗号分隔）</label>
           <textarea id="schClE" rows="2" placeholder="如 320 335 310 300 345 328（空格、逗号或换行分隔，可多行输入）"></textarea></div>
-        <div class="sch-2col">
+        <div class="sch-3col">
           <div class="res-box std">
             <div class="tag">教室平均照度 E<sub>av</sub></div>
             <div class="val"><span id="schClAvg">—</span><span class="unit">lx</span></div>
             <div class="raw" id="schClAvgRaw"></div>
+          </div>
+          <div class="res-box ref">
+            <div class="tag">教室最低照度 E<sub>min</sub></div>
+            <div class="val"><span id="schClMin">—</span><span class="unit">lx</span></div>
+            <div class="raw" id="schClMinRaw"></div>
           </div>
           <div class="res-box ref">
             <div class="tag">教室照度均匀度 U</div>
@@ -1562,11 +1567,16 @@
         <div class="sch-grid-info" id="schBdGrid">填写黑板尺寸后，自动计算建议测点数（GB/T 5700-2023 表 D.9：黑板面 ≤0.5 m×0.5 m）。</div>
         <div class="field" style="margin-top:11px"><label>各测点照度值（lx，空格或逗号分隔）</label>
           <textarea id="schBdE" rows="2" placeholder="如 520 540 510 530 550 525 515 545（空格、逗号或换行分隔，可多行输入）"></textarea></div>
-        <div class="sch-2col">
+        <div class="sch-3col">
           <div class="res-box std">
             <div class="tag">黑板平均照度 E<sub>av</sub></div>
             <div class="val"><span id="schBdAvg">—</span><span class="unit">lx</span></div>
             <div class="raw" id="schBdAvgRaw"></div>
+          </div>
+          <div class="res-box ref">
+            <div class="tag">黑板最低照度 E<sub>min</sub></div>
+            <div class="val"><span id="schBdMin">—</span><span class="unit">lx</span></div>
+            <div class="raw" id="schBdMinRaw"></div>
           </div>
           <div class="res-box ref">
             <div class="tag">黑板照度均匀度 U</div>
@@ -3636,17 +3646,21 @@
     if(st){
       schVal('schClAvg', roundHalfEven(st.avg, 0).toFixed(0), trim2(st.avg));   // 限值 300 lx（整数）
       $sch('schClAvgRaw').textContent = '';
+      schVal('schClMin', roundHalfEven(st.min, 0).toFixed(0), trim2(st.min));   // 最低照度（整数）
+      $sch('schClMinRaw').textContent = '';
       schVal('schClUni', roundHalfEven(st.uni, 1).toFixed(1), trim2(st.uni));   // 限值 0.7（1 位）
       $sch('schClUniRaw').textContent = '';
       const avgOk = st.avg >= 300, uniOk = st.uni >= 0.7;   // GB 7793-2025 5.3.2
       const txt = (avgOk ? 'E_av ' + roundHalfEven(st.avg,0).toFixed(0) + ' lx 达标（≥300 lx）'
                          : 'E_av ' + roundHalfEven(st.avg,0).toFixed(0) + ' lx 不达标（<300 lx）')
                 + '｜' + (uniOk ? '均匀度 ' + roundHalfEven(st.uni,1).toFixed(1) + ' 达标（≥0.7）'
-                                : '均匀度 ' + roundHalfEven(st.uni,1).toFixed(1) + ' 不达标（<0.7）');
+                                : '均匀度 ' + roundHalfEven(st.uni,1).toFixed(1) + ' 不达标（<0.7）')
+                + '｜最低 E_min ' + roundHalfEven(st.min,0).toFixed(0) + ' lx';
       const cls = (avgOk && uniOk) ? 'sch-ok' : ((avgOk || uniOk) ? 'sch-warn' : 'sch-bad');
       schBadge('schCLBadge', txt, cls);
     } else {
       schVal('schClAvg','—',''); $sch('schClAvgRaw').textContent = '';
+      schVal('schClMin','—',''); $sch('schClMinRaw').textContent = '';
       schVal('schClUni','—',''); $sch('schClUniRaw').textContent = '';
       schBadge('schCLBadge','待输入','');
     }
@@ -3669,17 +3683,21 @@
     if(st){
       schVal('schBdAvg', roundHalfEven(st.avg, 0).toFixed(0), trim2(st.avg));   // 限值 500 lx（整数）
       $sch('schBdAvgRaw').textContent = '';
+      schVal('schBdMin', roundHalfEven(st.min, 0).toFixed(0), trim2(st.min));   // 最低照度（整数）
+      $sch('schBdMinRaw').textContent = '';
       schVal('schBdUni', roundHalfEven(st.uni, 1).toFixed(1), trim2(st.uni));   // 限值 0.8（1 位）
       $sch('schBdUniRaw').textContent = '';
       const avgOk = st.avg >= 500, uniOk = st.uni >= 0.8;   // GB 7793-2025 5.3.3
       const txt = (avgOk ? 'E_av ' + roundHalfEven(st.avg,0).toFixed(0) + ' lx 达标（≥500 lx）'
                          : 'E_av ' + roundHalfEven(st.avg,0).toFixed(0) + ' lx 不达标（<500 lx）')
                 + '｜' + (uniOk ? '均匀度 ' + roundHalfEven(st.uni,1).toFixed(1) + ' 达标（≥0.8）'
-                                : '均匀度 ' + roundHalfEven(st.uni,1).toFixed(1) + ' 不达标（<0.8）');
+                                : '均匀度 ' + roundHalfEven(st.uni,1).toFixed(1) + ' 不达标（<0.8）')
+                + '｜最低 E_min ' + roundHalfEven(st.min,0).toFixed(0) + ' lx';
       const cls = (avgOk && uniOk) ? 'sch-ok' : ((avgOk || uniOk) ? 'sch-warn' : 'sch-bad');
       schBadge('schBdBadge', txt, cls);
     } else {
       schVal('schBdAvg','—',''); $sch('schBdAvgRaw').textContent = '';
+      schVal('schBdMin','—',''); $sch('schBdMinRaw').textContent = '';
       schVal('schBdUni','—',''); $sch('schBdUniRaw').textContent = '';
       schBadge('schBdBadge','待输入','');
     }
