@@ -744,19 +744,6 @@
   .main-pane{display:none;}
   .main-pane.active{display:block;animation:fade .25s ease;}
 
-  /* ===== 欢迎页 hero ===== */
-  .hero{margin:6px 0 8px;}
-  .hero-badge{display:inline-block;padding:6px 14px;border-radius:999px;background:rgba(19,184,117,.12);color:var(--accent);font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:18px;}
-  .hero-title{font-size:38px;font-weight:900;letter-spacing:3px;line-height:1.2;background:linear-gradient(95deg,#16a34a,#13b875 45%,#0fb8a0);-webkit-background-clip:text;background-clip:text;color:transparent;}
-  .hero-sub{font-size:16px;color:var(--txt);font-weight:700;margin-top:12px;letter-spacing:1px;}
-  .hero-desc{font-size:14px;color:var(--sub);line-height:1.85;margin:14px auto 26px;max-width:620px;}
-  .hero-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-  .hero-card{display:block;text-decoration:none;cursor:pointer;border-radius:18px;padding:24px 20px;background:var(--panel);border:1px solid var(--line);box-shadow:0 12px 30px rgba(16,51,37,.09), inset 0 1px 0 rgba(255,255,255,.6);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:all .18s;text-align:center;}
-  .hero-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(16,51,37,.14);}
-  .hero-card .hc-ico{font-size:30px;margin-bottom:10px;}
-  .hero-card .hc-t{font-size:18px;font-weight:800;color:#0f3a28;letter-spacing:1px;}
-  .hero-card .hc-d{font-size:13px;color:var(--sub);margin-top:8px;line-height:1.6;}
-  .hero-card .hc-go{display:inline-block;margin-top:14px;font-size:13px;font-weight:700;color:var(--accent);}
   .mod-hero{margin:4px 0 16px;}
   .mod-hero h2{font-size:24px;font-weight:900;letter-spacing:1px;color:#0f3a28;}
   .mod-hero p{font-size:14px;color:var(--sub);line-height:1.8;margin-top:8px;max-width:680px;}
@@ -772,8 +759,6 @@
   @media (max-width:680px){
     .ld-back-btn{right:12px;bottom:calc(12px + env(safe-area-inset-bottom, 0px));padding:9px 15px;font-size:14px;}
     body{padding-bottom:76px;}
-    .hero-cards{grid-template-columns:1fr;}
-    .hero-title{font-size:30px;}
   }
 </style>
 </head>
@@ -801,43 +786,12 @@
 
   <!-- ========== 主模块导航：欢迎 / 专业技术 / 报价 / 培训 ========== -->
   <div class="top-tabs" id="mainTabs" style="margin-top:6px">
-    <button class="main-tab active" data-main="welcome">欢迎</button>
-    <button class="main-tab" data-main="tech">专业技术</button>
+    <button class="main-tab active" data-main="tech">专业技术</button>
     <button class="main-tab" data-main="baojia">报价</button>
     <button class="main-tab" data-main="train">培训</button>
   </div>
 
-  <!-- ========== 欢迎首页 ========== -->
-  <section id="welcome" class="main-pane active">
-    <div class="hero">
-      <div class="hero-badge">湖南绿盾卫士检测技术有限公司</div>
-      <div class="hero-title">专业 · 透明 · 温暖</div>
-      <div class="hero-sub">绿盾助手 · 检测人的随身工具箱</div>
-      <p class="hero-desc">汇聚卫生检测专业技术速查、透明报价与系统培训于一体的随身工具。让每一位检测人的现场作业、每一份报告、每一次学习，都更专业、更高效、更温暖。</p>
-      <div class="hero-cards">
-        <div class="hero-card" data-goto="tech">
-          <div class="hc-ico">🛠️</div>
-          <div class="hc-t">专业技术</div>
-          <div class="hc-d">采样方法、分析计算、安全要点，检测现场随身查</div>
-          <div class="hc-go">进入 ›</div>
-        </div>
-        <div class="hero-card" data-goto="baojia">
-          <div class="hc-ico">💰</div>
-          <div class="hc-t">透明报价</div>
-          <div class="hc-d">常见公共卫生检测项目报价，公开透明</div>
-          <div class="hc-go">进入 ›</div>
-        </div>
-        <div class="hero-card" data-goto="train">
-          <div class="hc-ico">📚</div>
-          <div class="hc-t">系统培训</div>
-          <div class="hc-d">检测标准、操作规范与实操课程</div>
-          <div class="hc-go">进入 ›</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== 顶部一级目录（专业技术内部）：采样速查 / 分析速查 / 安全 ========== -->
+<!-- ========== 顶部一级目录（专业技术内部）：采样速查 / 分析速查 / 安全 ========== -->
   <div class="top-tabs" id="topTabs">
     <button class="top-tab active" data-top="sampling">采样速查</button>
     <button class="top-tab" data-top="analysis">分析速查</button>
@@ -2839,7 +2793,7 @@
   document.querySelectorAll('[data-goto]').forEach(el=>{
     el.addEventListener('click', ()=>showMain(el.dataset.goto));
   });
-  showMain('welcome');
+  showMain('tech');
 
   // ============ 二级目录切换 ============
   function activateSub(btn){
