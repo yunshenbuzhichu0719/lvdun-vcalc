@@ -1664,7 +1664,7 @@
           <textarea id="schEw" rows="2" placeholder="如 5500 6600 77000 9900 2000（空格、逗号或换行分隔，按序与室内测点一一对应；只填 1 个值时全部测点共用）"></textarea></div>
         <div class="field" style="margin-top:11px"><label>室内各测点照度值 Eₙ（lx，空格或逗号分隔，对应采光测点）</label>
           <textarea id="schCdE" rows="2" placeholder="如 320 335 310 300 345 328 360 300 315 340（空格、逗号或换行分隔，可多行输入）"></textarea></div>
-        <div class="sch-2col">
+        <div class="sch-3col">
           <div class="res-box std">
             <div class="tag">采光系数平均值 C<sub>av</sub></div>
             <div class="val"><span id="schCdAvg">—</span><span class="unit">%</span></div>
@@ -1675,11 +1675,11 @@
             <div class="val"><span id="schCdMin">—</span><span class="unit">%</span></div>
             <div class="raw" id="schCdMinRaw"></div>
           </div>
-        </div>
-        <div class="res-box std" style="margin-top:10px">
-          <div class="tag">采光均匀度 U</div>
-          <div class="val"><span id="schCdUni">—</span></div>
-          <div class="raw" id="schCdUniRaw"></div>
+          <div class="res-box ref">
+            <div class="tag">采光均匀度 U</div>
+            <div class="val"><span id="schCdUni">—</span></div>
+            <div class="raw" id="schCdUniRaw"></div>
+          </div>
         </div>
         <div class="sch-grid-info" id="schCdList" style="margin-top:10px"></div>
 
