@@ -729,6 +729,52 @@
     .ld-back-btn{right:12px;bottom:calc(12px + env(safe-area-inset-bottom, 0px));padding:9px 15px;font-size:14px;}
     body{padding-bottom:76px;}
   }
+
+  /* ===== 主模块导航（欢迎/专业技术/报价/培训） ===== */
+  .main-tab{
+    flex:1 0 auto;min-width:0;padding:12px 18px;border:1px solid var(--line-strong);
+    background:rgba(255,255,255,.55);color:var(--sub);border-radius:12px;
+    font-size:15px;font-weight:800;letter-spacing:.5px;cursor:pointer;white-space:nowrap;
+    transition:all .15s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  }
+  .main-tab.active{
+    background:linear-gradient(95deg,#1ecb80,#11a367);color:#fff;border-color:transparent;
+    box-shadow:0 6px 16px rgba(19,184,117,.25), inset 0 1px 0 rgba(255,255,255,.22);
+  }
+  .main-pane{display:none;}
+  .main-pane.active{display:block;animation:fade .25s ease;}
+
+  /* ===== 欢迎页 hero ===== */
+  .hero{margin:6px 0 8px;}
+  .hero-badge{display:inline-block;padding:6px 14px;border-radius:999px;background:rgba(19,184,117,.12);color:var(--accent);font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:18px;}
+  .hero-title{font-size:38px;font-weight:900;letter-spacing:3px;line-height:1.2;background:linear-gradient(95deg,#16a34a,#13b875 45%,#0fb8a0);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero-sub{font-size:16px;color:var(--txt);font-weight:700;margin-top:12px;letter-spacing:1px;}
+  .hero-desc{font-size:14px;color:var(--sub);line-height:1.85;margin:14px auto 26px;max-width:620px;}
+  .hero-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .hero-card{display:block;text-decoration:none;cursor:pointer;border-radius:18px;padding:24px 20px;background:var(--panel);border:1px solid var(--line);box-shadow:0 12px 30px rgba(16,51,37,.09), inset 0 1px 0 rgba(255,255,255,.6);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:all .18s;text-align:center;}
+  .hero-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(16,51,37,.14);}
+  .hero-card .hc-ico{font-size:30px;margin-bottom:10px;}
+  .hero-card .hc-t{font-size:18px;font-weight:800;color:#0f3a28;letter-spacing:1px;}
+  .hero-card .hc-d{font-size:13px;color:var(--sub);margin-top:8px;line-height:1.6;}
+  .hero-card .hc-go{display:inline-block;margin-top:14px;font-size:13px;font-weight:700;color:var(--accent);}
+  .mod-hero{margin:4px 0 16px;}
+  .mod-hero h2{font-size:24px;font-weight:900;letter-spacing:1px;color:#0f3a28;}
+  .mod-hero p{font-size:14px;color:var(--sub);line-height:1.8;margin-top:8px;max-width:680px;}
+  .mod-list{margin:6px 0 0;padding:0;list-style:none;}
+  .mod-list li{position:relative;padding:10px 14px 10px 30px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.5);margin-bottom:10px;font-size:14px;color:var(--txt);line-height:1.6;}
+  .mod-list li::before{content:"";position:absolute;left:12px;top:18px;width:8px;height:8px;border-radius:50%;background:linear-gradient(var(--accent),var(--accent2));}
+  .baojia-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:13.5px;overflow:hidden;border-radius:12px;}
+  .baojia-table th,.baojia-table td{border:1px solid var(--line);padding:10px 12px;text-align:left;line-height:1.55;}
+  .baojia-table th{background:rgba(19,184,117,.12);color:#0f3a28;font-weight:800;}
+  .baojia-table td{background:rgba(255,255,255,.6);color:var(--txt);}
+  .coming{display:inline-block;margin-top:8px;padding:5px 12px;border-radius:999px;background:rgba(15,58,110,.1);color:#16559c;font-size:12.5px;font-weight:700;}
+
+  @media (max-width:680px){
+    .ld-back-btn{right:12px;bottom:calc(12px + env(safe-area-inset-bottom, 0px));padding:9px 15px;font-size:14px;}
+    body{padding-bottom:76px;}
+    .hero-cards{grid-template-columns:1fr;}
+    .hero-title{font-size:30px;}
+  }
 </style>
 </head>
 <body>
@@ -745,7 +791,7 @@
       <text x="32" y="41" text-anchor="middle" font-size="28" font-weight="800" fill="url(#g)" font-family="Microsoft YaHei, sans-serif">盾</text>
     </svg>
     <h1>绿盾助手</h1>
-    <p>湖南绿盾卫士检测技术有限公司 · <b>工况体积换算</b> 与 <b>采样方法速查</b> 随身工具</p>
+    <p>湖南绿盾卫士检测技术有限公司 · 检测人随身工具箱 · <b>专业技术</b> · <b>透明报价</b> · <b>系统培训</b></p>
   </header>
 
   <div id="phoneTip" class="phone-tip">
@@ -753,14 +799,52 @@
     <button type="button" class="pt-close" aria-label="关闭" onclick="document.getElementById('phoneTip').style.display='none'">×</button>
   </div>
 
-  <!-- ========== 顶部一级目录：采样速查 ========== -->
+  <!-- ========== 主模块导航：欢迎 / 专业技术 / 报价 / 培训 ========== -->
+  <div class="top-tabs" id="mainTabs" style="margin-top:6px">
+    <button class="main-tab active" data-main="welcome">欢迎</button>
+    <button class="main-tab" data-main="tech">专业技术</button>
+    <button class="main-tab" data-main="baojia">报价</button>
+    <button class="main-tab" data-main="train">培训</button>
+  </div>
+
+  <!-- ========== 欢迎首页 ========== -->
+  <section id="welcome" class="main-pane active">
+    <div class="hero">
+      <div class="hero-badge">湖南绿盾卫士检测技术有限公司</div>
+      <div class="hero-title">专业 · 透明 · 温暖</div>
+      <div class="hero-sub">绿盾助手 · 检测人的随身工具箱</div>
+      <p class="hero-desc">汇聚卫生检测专业技术速查、透明报价与系统培训于一体的随身工具。让每一位检测人的现场作业、每一份报告、每一次学习，都更专业、更高效、更温暖。</p>
+      <div class="hero-cards">
+        <div class="hero-card" data-goto="tech">
+          <div class="hc-ico">🛠️</div>
+          <div class="hc-t">专业技术</div>
+          <div class="hc-d">采样方法、分析计算、安全要点，检测现场随身查</div>
+          <div class="hc-go">进入 ›</div>
+        </div>
+        <div class="hero-card" data-goto="baojia">
+          <div class="hc-ico">💰</div>
+          <div class="hc-t">透明报价</div>
+          <div class="hc-d">常见公共卫生检测项目报价，公开透明</div>
+          <div class="hc-go">进入 ›</div>
+        </div>
+        <div class="hero-card" data-goto="train">
+          <div class="hc-ico">📚</div>
+          <div class="hc-t">系统培训</div>
+          <div class="hc-d">检测标准、操作规范与实操课程</div>
+          <div class="hc-go">进入 ›</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 顶部一级目录（专业技术内部）：采样速查 / 分析速查 / 安全 ========== -->
   <div class="top-tabs" id="topTabs">
     <button class="top-tab active" data-top="sampling">采样速查</button>
     <button class="top-tab" data-top="analysis">分析速查</button>
     <button class="top-tab" data-top="safety">安全</button>
   </div>
 
-  <section id="sampling" class="tab-pane active">
+  <section id="sampling" class="tab-pane tech-pane">
     <div class="cx-title" id="cxTitle">采样速查</div>
 
     <!-- 采样速查 · 二级目录 -->
@@ -2196,7 +2280,7 @@
     </div><!-- /m-monit -->
   </section>
 
-  <section id="analysis" class="tab-pane">
+  <section id="analysis" class="tab-pane tech-pane">
     <div class="cx-title">分析速查</div>
     <p class="sub-note">依据 <b>GB 37488-2019</b>（空气、空调、用品用具评价）、<b>GB/T 5750 系列</b>（水质，5749）、<b>GB/T 18204.3 / 4 / 5-2025</b>（微生物）整理。填写原始数据即自动计算结果，并给出合格判定。微生物检测分 <b>空气 / 空调 / 水质 / 用品用具</b> 四类；理化检测为方法速查与通用计算。</p>
     <div class="sub-tabs" data-group="analysis">
@@ -2583,7 +2667,7 @@
     </div>
   </section>
 
-  <section id="safety" class="tab-pane">
+  <section id="safety" class="tab-pane tech-pane">
     <div class="cx-title">安全</div>
     <p class="sub-note">实验室与现场安全要点，依据 <b>GB 19489</b>（实验室 生物安全通用要求）、<b>WS 233</b>（微生物和生物医学实验室 生物安全通用准则）、<b>GB 37488-2019</b> 及公司安全管理体系整理。分 <b>采样安全 / 检测安全 / 生物安全</b> 三类。</p>
     <div class="sub-tabs" data-group="safety">
@@ -2656,6 +2740,47 @@
     </div>
   </section>
 
+  <!-- ========== 报价 ========== -->
+  <section id="baojia" class="main-pane">
+    <div class="mod-hero">
+      <h2>透明报价</h2>
+      <p>常见公共卫生检测项目报价公开透明，按检测类别与项目核算。下列为报价框架示例，具体以正式报价单为准。</p>
+    </div>
+    <div class="card">
+      <h3>常见检测项目报价（示例，待补充）</h3>
+      <table class="baojia-table">
+        <thead><tr><th>检测类别</th><th>项目</th><th>报价说明</th></tr></thead>
+        <tbody>
+          <tr><td>公共场所</td><td>空气 / 空调通风 / 用品用具</td><td>按点位与指标核算</td></tr>
+          <tr><td>生活饮用水</td><td>水质常规与扩展指标</td><td>按指标项核算</td></tr>
+          <tr><td>学校</td><td>教室采光与照明 / 环境</td><td>按教室间数与指标核算</td></tr>
+          <tr><td>洁净室</td><td>洁净手术部 / 洁净厂房</td><td>按洁净级别与检测项数核算</td></tr>
+        </tbody>
+      </table>
+      <div class="mod-note">注：以上为框架示意，实际报价请联系业务人员获取正式报价单。</div>
+      <span class="coming">报价明细建设中，敬请期待</span>
+    </div>
+  </section>
+
+  <!-- ========== 培训 ========== -->
+  <section id="train" class="main-pane">
+    <div class="mod-hero">
+      <h2>系统培训</h2>
+      <p>面向检测人员与管理人员的系统培训，覆盖标准解读、现场操作与安全管理。</p>
+    </div>
+    <div class="card">
+      <h3>培训方向</h3>
+      <ul class="mod-list">
+        <li><b>公共场所卫生检测</b>：物理因素、化学因素与微生物采样的标准方法与实操。</li>
+        <li><b>洁净室 / 洁净手术部检测</b>：GB 50333、GB 50591 现场检测流程与数据分析。</li>
+        <li><b>实验室生物安全</b>：GB 19489、WS 233 与 BSL-2 实验室管理要点。</li>
+        <li><b>报告编制与质量控制</b>：GB 37488 评价、原始记录与报告规范。</li>
+      </ul>
+      <div class="mod-note">培训资料与课程持续建设中，敬请期待。</div>
+      <span class="coming">培训资料建设中，敬请期待</span>
+    </div>
+  </section>
+
   <div class="brand-foot">湖南绿盾卫士检测技术有限公司</div>
 </div>
 
@@ -2692,6 +2817,29 @@
   document.querySelectorAll('.top-tab').forEach(btn=>{
     btn.addEventListener('click', ()=>showTop(btn.dataset.top));
   });
+
+  // ============ 主模块切换（欢迎 / 专业技术 / 报价 / 培训） ============
+  function showMain(main){
+    document.querySelectorAll('.main-tab').forEach(b=>b.classList.toggle('active', b.dataset.main===main));
+    const isTech = main==='tech';
+    document.querySelectorAll('.main-pane').forEach(p=>p.classList.remove('active'));
+    const topTabs = document.getElementById('topTabs');
+    if(topTabs) topTabs.style.display = isTech ? 'flex' : 'none';
+    if(isTech){
+      if(!document.querySelector('.tech-pane.active')) showTop('sampling');
+    } else {
+      document.querySelectorAll('.tech-pane').forEach(p=>p.classList.remove('active'));
+      const el = document.getElementById(main);
+      if(el) el.classList.add('active');
+    }
+  }
+  document.querySelectorAll('.main-tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>showMain(btn.dataset.main));
+  });
+  document.querySelectorAll('[data-goto]').forEach(el=>{
+    el.addEventListener('click', ()=>showMain(el.dataset.goto));
+  });
+  showMain('welcome');
 
   // ============ 二级目录切换 ============
   function activateSub(btn){
