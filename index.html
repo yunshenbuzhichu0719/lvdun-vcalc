@@ -756,9 +756,18 @@
   .baojia-table td{background:rgba(255,255,255,.6);color:var(--txt);}
   .coming{display:inline-block;margin-top:8px;padding:5px 12px;border-radius:999px;background:rgba(15,58,110,.1);color:#16559c;font-size:12.5px;font-weight:700;}
 
+  /* ===== 首页三大模块入口 ===== */
+  .home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:24px 0 10px;}
+  .home-card{display:block;text-decoration:none;cursor:pointer;border-radius:18px;padding:32px 20px;background:var(--panel);border:1px solid var(--line);box-shadow:0 12px 30px rgba(16,51,37,.09), inset 0 1px 0 rgba(255,255,255,.6);text-align:center;transition:all .18s;}
+  .home-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(16,51,37,.14);}
+  .home-card .hc-ico{font-size:34px;margin-bottom:12px;}
+  .home-card .hc-t{font-size:18px;font-weight:800;color:#0f3a28;letter-spacing:1px;}
+  .home-card .hc-d{font-size:13px;color:var(--sub);margin-top:8px;line-height:1.6;}
+
   @media (max-width:680px){
     .ld-back-btn{right:12px;bottom:calc(12px + env(safe-area-inset-bottom, 0px));padding:9px 15px;font-size:14px;}
     body{padding-bottom:76px;}
+    .home-grid{grid-template-columns:1fr;}
   }
 </style>
 </head>
@@ -784,15 +793,36 @@
     <button type="button" class="pt-close" aria-label="关闭" onclick="document.getElementById('phoneTip').style.display='none'">×</button>
   </div>
 
-  <!-- ========== 主模块导航：欢迎 / 专业技术 / 报价 / 培训 ========== -->
+  <!-- ========== 主模块导航：专业技术 / 报价 / 培训 ========== -->
   <div class="top-tabs" id="mainTabs" style="margin-top:6px">
-    <button class="main-tab active" data-main="tech">专业技术</button>
+    <button class="main-tab" data-main="tech">专业技术</button>
     <button class="main-tab" data-main="baojia">报价</button>
     <button class="main-tab" data-main="train">培训</button>
   </div>
 
-<!-- ========== 顶部一级目录（专业技术内部）：采样速查 / 分析速查 / 安全 ========== -->
-  <div class="top-tabs" id="topTabs">
+  <!-- ========== 首页：三大模块入口 ========== -->
+  <section id="home" class="main-pane active">
+    <div class="home-grid">
+      <div class="home-card" data-goto="tech">
+        <div class="hc-ico">🔬</div>
+        <div class="hc-t">专业技术</div>
+        <div class="hc-d">采样方法、分析计算、安全要点</div>
+      </div>
+      <div class="home-card" data-goto="baojia">
+        <div class="hc-ico">📋</div>
+        <div class="hc-t">透明报价</div>
+        <div class="hc-d">检测项目报价与透明说明</div>
+      </div>
+      <div class="home-card" data-goto="train">
+        <div class="hc-ico">📚</div>
+        <div class="hc-t">系统培训</div>
+        <div class="hc-d">标准解读、操作规范与课程</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 顶部一级目录（专业技术内部）：采样速查 / 分析速查 / 安全 ========== -->
+  <div class="top-tabs" id="topTabs" style="display:none">
     <button class="top-tab active" data-top="sampling">采样速查</button>
     <button class="top-tab" data-top="analysis">分析速查</button>
     <button class="top-tab" data-top="safety">安全</button>
@@ -2777,12 +2807,12 @@
     document.querySelectorAll('.main-tab').forEach(b=>b.classList.toggle('active', b.dataset.main===main));
     const isTech = main==='tech';
     document.querySelectorAll('.main-pane').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.tech-pane').forEach(p=>p.classList.remove('active'));
     const topTabs = document.getElementById('topTabs');
     if(topTabs) topTabs.style.display = isTech ? 'flex' : 'none';
     if(isTech){
-      if(!document.querySelector('.tech-pane.active')) showTop('sampling');
+      showTop('sampling');
     } else {
-      document.querySelectorAll('.tech-pane').forEach(p=>p.classList.remove('active'));
       const el = document.getElementById(main);
       if(el) el.classList.add('active');
     }
@@ -2793,7 +2823,7 @@
   document.querySelectorAll('[data-goto]').forEach(el=>{
     el.addEventListener('click', ()=>showMain(el.dataset.goto));
   });
-  showMain('tech');
+  showMain('home');
 
   // ============ 二级目录切换 ============
   function activateSub(btn){
