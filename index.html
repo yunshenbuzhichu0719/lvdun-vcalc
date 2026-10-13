@@ -491,6 +491,8 @@
   /* ==DL-CSS-END== */
   .sch-block{background:rgba(19,184,117,.035);border:1px solid var(--line);border-radius:12px;
     padding:14px;margin-top:14px;}
+  .sch-meta{background:#ffffff;border:1px solid var(--line);border-radius:12px;
+    padding:13px 14px;margin-top:12px;box-shadow:0 1px 3px rgba(20,40,60,.04);}
   .sch-block h3{font-size:14px;color:var(--txt);margin:0 0 5px;font-weight:800;
     display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .sch-block .std{font-size:11.5px;color:var(--sub);line-height:1.65;margin-bottom:11px;}
@@ -1529,6 +1531,19 @@
         <div class="dl-body"><p class="sub-note" style="margin:0">计算结果按 <b>四舍六入五成双</b> 修约。卫生限值依据：教室人均面积按 <b>GB 50099-2011《中小学校设计规范》</b>；窗地面积比、课桌面及书写板（黑板）的平均照度与照度均匀度按 <b>GB 7793-2025《中小学校教室采光和照明卫生标准》</b>（2025-10-05 发布，2026-11-01 实施）。</p></div>
       </details>
 
+      <!-- 任务单信息 + 保存导出 -->
+      <div class="sch-meta">
+        <div class="grid2">
+          <div class="field"><label>任务单号</label><input type="text" id="schTaskNo" placeholder="如 LD2026-001"></div>
+          <div class="field"><label>项目名称</label><input type="text" id="schProjName" placeholder="如 某学校教室采光照明检测"></div>
+        </div>
+        <div class="field" style="margin-top:10px">
+          <button type="button" id="schSaveExcel" class="accent">保存并导出 Excel（不合格项标红）</button>
+          <span id="schSaveBadge" class="sch-badge" style="margin-left:8px">未保存</span>
+          <span id="schSaveMsg" style="margin-left:10px;color:#888"></span>
+        </div>
+      </div>
+
       <!-- ① 教室人均面积 -->
       <div class="sch-block">
         <h3>① 教室人均面积 <span class="sch-badge" id="schAreaBadge">待输入</span></h3>
@@ -1616,15 +1631,15 @@
         <div class="field" style="margin-top:11px"><label>各测点照度值（lx，空格或逗号分隔）</label>
           <textarea id="schClE" rows="2" placeholder="如 320 335 310 300 345 328（空格、逗号或换行分隔，可多行输入）"></textarea></div>
         <div class="sch-3col">
-          <div class="res-box std">
-            <div class="tag">教室平均照度 E<sub>av</sub></div>
-            <div class="val"><span id="schClAvg">—</span><span class="unit">lx</span></div>
-            <div class="raw" id="schClAvgRaw"></div>
-          </div>
           <div class="res-box ref">
             <div class="tag">教室最低照度 E<sub>min</sub></div>
             <div class="val"><span id="schClMin">—</span><span class="unit">lx</span></div>
             <div class="raw" id="schClMinRaw"></div>
+          </div>
+          <div class="res-box std">
+            <div class="tag">教室平均照度 E<sub>av</sub></div>
+            <div class="val"><span id="schClAvg">—</span><span class="unit">lx</span></div>
+            <div class="raw" id="schClAvgRaw"></div>
           </div>
           <div class="res-box ref">
             <div class="tag">教室照度均匀度 U</div>
@@ -1656,15 +1671,15 @@
         <div class="field" style="margin-top:11px"><label>各测点照度值（lx，空格或逗号分隔）</label>
           <textarea id="schBdE" rows="2" placeholder="如 520 540 510 530 550 525 515 545（空格、逗号或换行分隔，可多行输入）"></textarea></div>
         <div class="sch-3col">
-          <div class="res-box std">
-            <div class="tag">黑板平均照度 E<sub>av</sub></div>
-            <div class="val"><span id="schBdAvg">—</span><span class="unit">lx</span></div>
-            <div class="raw" id="schBdAvgRaw"></div>
-          </div>
           <div class="res-box ref">
             <div class="tag">黑板最低照度 E<sub>min</sub></div>
             <div class="val"><span id="schBdMin">—</span><span class="unit">lx</span></div>
             <div class="raw" id="schBdMinRaw"></div>
+          </div>
+          <div class="res-box std">
+            <div class="tag">黑板平均照度 E<sub>av</sub></div>
+            <div class="val"><span id="schBdAvg">—</span><span class="unit">lx</span></div>
+            <div class="raw" id="schBdAvgRaw"></div>
           </div>
           <div class="res-box ref">
             <div class="tag">黑板照度均匀度 U</div>
@@ -3824,7 +3839,7 @@
                 + '｜' + (uniOk ? '均匀度 ' + roundHalfEven(st.uni,1).toFixed(1) + ' 达标（≥0.7）'
                                 : '均匀度 ' + roundHalfEven(st.uni,1).toFixed(1) + ' 不达标（<0.7）')
                 + '｜最低 E_min ' + roundHalfEven(st.min,0).toFixed(0) + ' lx';
-      const cls = (avgOk && uniOk) ? 'sch-ok' : ((avgOk || uniOk) ? 'sch-warn' : 'sch-bad');
+      const cls = (avgOk && uniOk) ? 'sch-ok' : 'sch-bad';
       schBadge('schCLBadge', txt, cls);
     } else {
       schVal('schClAvg','—',''); $sch('schClAvgRaw').textContent = '';
@@ -3861,7 +3876,7 @@
                 + '｜' + (uniOk ? '均匀度 ' + roundHalfEven(st.uni,1).toFixed(1) + ' 达标（≥0.8）'
                                 : '均匀度 ' + roundHalfEven(st.uni,1).toFixed(1) + ' 不达标（<0.8）')
                 + '｜最低 E_min ' + roundHalfEven(st.min,0).toFixed(0) + ' lx';
-      const cls = (avgOk && uniOk) ? 'sch-ok' : ((avgOk || uniOk) ? 'sch-warn' : 'sch-bad');
+      const cls = (avgOk && uniOk) ? 'sch-ok' : 'sch-bad';
       schBadge('schBdBadge', txt, cls);
     } else {
       schVal('schBdAvg','—',''); $sch('schBdAvgRaw').textContent = '';
@@ -3901,7 +3916,7 @@
     var avgOk = cav >= std - 1e-9, uniOk = u >= 0.5 - 1e-9;
     var txt = 'C_av ' + roundHalfEven(cav,2).toFixed(2) + '% ' + (avgOk ? '达标（≥' + std + '%）' : '不达标（<' + std + '%）')
             + '｜均匀度 ' + roundHalfEven(u,2).toFixed(2) + ' ' + (uniOk ? '达标（≥0.5）' : '不达标（<0.5）');
-    var cls = (avgOk && uniOk) ? 'sch-ok' : ((avgOk || uniOk) ? 'sch-warn' : 'sch-bad');
+    var cls = (avgOk && uniOk) ? 'sch-ok' : 'sch-bad';
     schBadge('schCdBadge', txt, cls);
 
     var parts = Cs.map(function(c,i){
@@ -3912,6 +3927,106 @@
               + ((ews.length > 1 && ews.length !== arr.length)
                  ? '<br><b style="color:#b8302a">室内 ' + arr.length + ' 点与室外 ' + ews.length + ' 个值数量不一致，室外值循环对应</b>' : '');
     $sch('schCdList').innerHTML = ewTxt + '<br>各测点采光系数 Cᵢ（共 ' + arr.length + ' 点，逐点配对 Eₙ/E_w）：<br>' + parts.join('；');
+  }
+
+  // 保存并导出 Excel（不合格项标红）
+  function schExportExcel(){
+    if(!$sch('schSaveExcel')) return;
+    var g = function(id){ var e = $sch(id); return e ? e.textContent.trim() : ''; };
+    var iv = function(id){ var e = $sch(id); return e ? e.value.trim() : ''; };
+    var fail = function(bid){ var e = $sch(bid); return !!e && e.textContent.indexOf('不达标') >= 0; };
+    var esc = function(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+    var RED = 'background:#ffc7ce;color:#9c0006;font-weight:700';
+    var GREEN = 'background:#c6efce;color:#006100';
+    var HDR = '#1f3a5f', SUB = '#eef2f7';
+
+    function sec(title, bid){
+      var bg = fail(bid) ? '#b8302a' : HDR;
+      return '<tr><th colspan="4" style="background:'+bg+';color:#fff;font-size:13px;text-align:left;'
+           + 'padding:5px 8px">'+esc(title)+'</th></tr>';
+    }
+    function head(){
+      return '<tr style="background:'+SUB+'"><th style="padding:3px 8px">项目</th>'
+           + '<th style="padding:3px 8px">数值</th><th style="padding:3px 8px">限值</th>'
+           + '<th style="padding:3px 8px">判定</th></tr>';
+    }
+    function kv(item, val, limit, bad){
+      var vstyle = bad ? RED : '', jstyle = bad ? RED : GREEN;
+      return '<tr>'
+        + '<td style="padding:3px 8px">'+esc(item)+'</td>'
+        + '<td style="padding:3px 8px;'+vstyle+'">'+esc(val)+'</td>'
+        + '<td style="padding:3px 8px">'+esc(limit)+'</td>'
+        + '<td style="padding:3px 8px;'+jstyle+'">'+(bad?'不达标':'达标')+'</td>'
+        + '</tr>';
+    }
+
+    var qh = schQH();
+    var aBad = fail('schAreaBadge'), wdBad = fail('schWDBadge'),
+        clBad = fail('schCLBadge'),  bdBad = fail('schBdBadge'), cdBad = fail('schCdBadge');
+
+    var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" '
+      + 'xmlns:x="urn:schemas-microsoft-com:office:excel" '
+      + 'xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"></head><body>'
+      + '<table border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse;'
+      + 'font-family:Microsoft YaHei,SimSun,Arial;font-size:11px">';
+    html += '<tr><th colspan="4" style="background:'+HDR+';color:#fff;font-size:15px;text-align:center;'
+      + 'padding:7px">学校综合评价检测结果汇总</th></tr>';
+    html += '<tr><th style="padding:3px 8px;background:'+SUB+'">任务单号</th>'
+      + '<td colspan="3" style="padding:3px 8px">'+esc(iv('schTaskNo'))+'</td></tr>';
+    html += '<tr><th style="padding:3px 8px;background:'+SUB+'">项目名称</th>'
+      + '<td colspan="3" style="padding:3px 8px">'+esc(iv('schProjName'))+'</td></tr>';
+    html += '<tr><th style="padding:3px 8px;background:'+SUB+'">检测日期</th>'
+      + '<td colspan="3" style="padding:3px 8px">'+esc(new Date().toLocaleDateString('zh-CN'))+'</td></tr>';
+
+    // ① 教室人均面积
+    html += sec('① 教室人均面积', 'schAreaBadge'); html += head();
+    html += kv('学校类型', iv('schType')==='primary'?'小学':'中学', '', false);
+    html += kv('学生人数 a', iv('schA')+' 人', '', false);
+    html += kv('教室长×宽', iv('schLen')+' × '+iv('schWid')+' m', '', false);
+    html += kv('教室面积 S₂', g('schS2V')+' m²', '', false);
+    html += kv('人均面积 S₁', g('schAreaV')+' m²/人', ($sch('schType').value==='primary'?'小学≥1.36':'中学≥1.39')+' m²/人', aBad);
+
+    // ② 窗地面积比
+    html += sec('② 窗地面积比', 'schWDBadge'); html += head();
+    html += kv('光气候区', qh.name+'类', '', false);
+    html += kv('地面净面积 A_d', iv('schAd')+' m²', '', false);
+    html += kv('窗洞口总面积 A_c', g('schAcV')+' m²', '', false);
+    html += kv('窗地面积比 A_c : A_d', g('schWDV'), '≥'+qh.ratio+':5', wdBad);
+
+    // ③ 教室照度
+    html += sec('③ 教室照度（课桌面）', 'schCLBadge'); html += head();
+    html += kv('教室长×宽', iv('schClA')+' × '+iv('schClB')+' m', '', false);
+    html += kv('最低照度 E_min', g('schClMin')+' lx', '—', false);
+    html += kv('平均照度 E_av', g('schClAvg')+' lx', '≥300 lx', clBad);
+    html += kv('照度均匀度 U', g('schClUni'), '≥0.7', clBad);
+
+    // ④ 黑板照度
+    html += sec('④ 黑板照度（黑板面）', 'schBdBadge'); html += head();
+    html += kv('黑板长×高', iv('schBdL')+' × '+iv('schBdH')+' m', '', false);
+    html += kv('最低照度 E_min', g('schBdMin')+' lx', '—', false);
+    html += kv('平均照度 E_av', g('schBdAvg')+' lx', '≥500 lx', bdBad);
+    html += kv('照度均匀度 U', g('schBdUni'), '≥0.8', bdBad);
+
+    // ⑤ 采光系数
+    html += sec('⑤ 采光系数', 'schCdBadge'); html += head();
+    html += kv('采光系数平均值 C_av', g('schCdAvg')+' %', '≥'+qh.df+'%', cdBad);
+    html += kv('采光系数最低值 C_min', g('schCdMin')+' %', '—', false);
+    html += kv('采光均匀度 U', g('schCdUni'), '≥0.5', cdBad);
+
+    html += '</table></body></html>';
+
+    var blob = new Blob(['﻿'+html], {type:'application/vnd.ms-excel;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var tn = iv('schTaskNo') || '学校综合评价';
+    a.href = url;
+    a.download = tn + '_学校综合评价_' + new Date().toISOString().slice(0,10) + '.xls';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+
+    var anyBad = aBad || wdBad || clBad || bdBad || cdBad;
+    schBadge('schSaveBadge', anyBad ? '已导出（含不合格项标红）' : '已导出（全部达标）', anyBad ? 'sch-bad' : 'sch-ok');
+    $sch('schSaveMsg').textContent = '已生成 Excel 文件，可用 Excel 打开，不合格项已标红。';
   }
 
   // 绑定
@@ -3940,6 +4055,10 @@
     const el = $sch(id); if(!el) return;
     el.addEventListener('input', schCalcCd); el.addEventListener('change', schCalcCd);
   });
+  (function(){
+    const b = $sch('schSaveExcel');
+    if(b) b.addEventListener('click', schExportExcel);
+  })();
 
   /* ==SCH5-JS-BEGIN== */
   /* ================= 光气候区（GB 50033 分区；GB 7793-2025 表 1 / 表 2） ================= */
