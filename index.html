@@ -1601,7 +1601,7 @@
           <summary class="dl-fold-h"><span class="dl-fold-t">说明（国标及限值）</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
           <div class="dl-body"><div class="std">>GB/T 5699-2025 7.1：窗面积 A<sub>c</sub> 应为<b>窗洞口面积</b>，地面面积 A<sub>d</sub> 应为<b>室内地面的净面积</b>；侧面采光时 A<sub>c</sub> 取参考平面以上的窗洞口面积。<br><b>多扇窗户逐扇列出</b>：同尺寸的窗户只填一组「长×宽」，在「数量」中填扇数即可；A<sub>c</sub> 为各扇窗洞口面积之和。<br><b>卫生限值依据（GB 7793-2025 4.5 及表 2）：</b>Ⅲ类光气候区的新建普通教室不应低于 <b>1:5</b>；其他光气候区按表 2——Ⅰ类 0.85:5、Ⅱ类 0.90:5、Ⅲ类 1.00:5、<b>Ⅳ类 1.10:5</b>、Ⅴ类 1.20:5。下方选定光气候区后按对应限值判定（长沙及湖南大部属Ⅳ类）。</div></div>
         </details>
-        <div class="win-head"><span>窗洞长(m)</span><span>窗洞宽(m)</span><span>数量</span><span>小计(m²)</span><span></span></div>
+        <div class="win-head"><span>窗洞高(m)</span><span>窗洞宽(m)</span><span>数量</span><span>小计(m²)</span><span></span></div>
         <div id="schWinList"></div>
         <button type="button" class="win-add" id="schWinAdd">+ 增加一扇窗户</button>
         <div class="field"><select id="schQH">
@@ -1646,7 +1646,7 @@
         </div>
         <div class="sch-grid-info" id="schClGrid">填写教室长宽后，自动计算建议测点数（GB/T 5700-2023 表 D.9：间距 ≤2.0 m×2.0 m，网格中心为测点）。</div>
         <div class="field" style="margin-top:11px"><label>各测点照度值（lx，空格或逗号分隔）</label>
-          <textarea id="schClE" rows="2" placeholder="如 320 335 310 300 345 328（空格、逗号或换行分隔，可多行输入）"></textarea></div>
+          <textarea id="schClE" rows="2" placeholder=""></textarea></div>
         <div class="sch-3col">
           <div class="res-box ref">
             <div class="tag">教室最低照度 E<sub>min</sub></div>
@@ -1686,7 +1686,7 @@
         </div>
         <div class="sch-grid-info" id="schBdGrid">填写黑板尺寸后，自动计算建议测点数（GB/T 5700-2023 表 D.9：黑板面 ≤0.5 m×0.5 m）。</div>
         <div class="field" style="margin-top:11px"><label>各测点照度值（lx，空格或逗号分隔）</label>
-          <textarea id="schBdE" rows="2" placeholder="如 520 540 510 530 550 525 515 545（空格、逗号或换行分隔，可多行输入）"></textarea></div>
+          <textarea id="schBdE" rows="2" placeholder=""></textarea></div>
         <div class="sch-3col">
           <div class="res-box ref">
             <div class="tag">黑板最低照度 E<sub>min</sub></div>
@@ -1779,9 +1779,9 @@
         </div><!-- /⑤-B 其他室内 -->
 
         <div class="field"><label>室外无遮挡水平面漫射光照度 Ew（lx，与室内同时测量，多个值按序对应各室内测点）</label>
-          <textarea id="schEw" rows="2" placeholder="如 5500 6600 77000 9900 2000（空格、逗号或换行分隔，按序与室内测点一一对应；只填 1 个值时全部测点共用）"></textarea></div>
+          <textarea id="schEw" rows="2" placeholder=""></textarea></div>
         <div class="field" style="margin-top:11px"><label>室内各测点照度值 Eₙ（lx，空格或逗号分隔，对应采光测点）</label>
-          <textarea id="schCdE" rows="2" placeholder="如 320 335 310 300 345 328 360 300 315 340（空格、逗号或换行分隔，可多行输入）"></textarea></div>
+          <textarea id="schCdE" rows="2" placeholder=""></textarea></div>
         <div class="sch-3col">
           <div class="res-box std">
             <div class="tag">采光系数平均值 C<sub>av</sub></div>
