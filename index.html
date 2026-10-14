@@ -509,6 +509,9 @@
   .sch-2col .res-box .val{font-size:21px;}
   .sch-3col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:start;}
   .sch-3col .res-box .val{font-size:18px;}
+  .sch-4col{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:start;}
+  .sch-4col .res-box .val{font-size:17px;}
+  .sch-4col .field{margin-bottom:0;}
   .sch-grid-info{font-size:12px;color:var(--sub);background:rgba(15,184,160,.07);
     border-left:3px solid var(--accent2);padding:7px 10px;border-radius:0 8px 8px 0;
     margin-top:9px;line-height:1.6;}
@@ -578,14 +581,16 @@
     .s-brief{font-size:12.5px;flex:1 1 100%;}
     .sch-2col{grid-template-columns:1fr 1fr;gap:8px;}
     .sch-3col{grid-template-columns:1fr 1fr 1fr;gap:5px;align-items:start;}
+    .sch-4col{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;align-items:start;}
     .sch-block .field{margin-bottom:11px;}
-    .sch-2col .field label,.sch-3col .field label{font-size:11.5px;line-height:1.25;margin-bottom:5px;}
-    .sch-2col select,.sch-3col select{width:100%;}
-    .sch-2col .res-box,.sch-3col .res-box{padding:11px 11px;margin-bottom:9px;}
+    .sch-2col .field label,.sch-3col .field label,.sch-4col .field label{font-size:11.5px;line-height:1.25;margin-bottom:5px;}
+    .sch-2col select,.sch-3col select,.sch-4col select{width:100%;}
+    .sch-2col .res-box,.sch-3col .res-box,.sch-4col .res-box{padding:11px 8px;margin-bottom:9px;}
     .sch-2col .res-box .val{font-size:18px;}
     .sch-3col .res-box .val{font-size:13.5px;}
-    .sch-2col .res-box .tag,.sch-3col .res-box .tag{font-size:11px;line-height:1.3;}
-    .sch-2col .res-box .raw,.sch-3col .res-box .raw{font-size:11px;margin-top:4px;}
+    .sch-4col .res-box .val{font-size:12px;}
+    .sch-2col .res-box .tag,.sch-3col .res-box .tag,.sch-4col .res-box .tag{font-size:10.5px;line-height:1.25;}
+    .sch-2col .res-box .raw,.sch-3col .res-box .raw,.sch-4col .res-box .raw{font-size:11px;margin-top:4px;}
     .win-head,.win-row{grid-template-columns:1fr 1fr 50px 68px 26px;gap:5px;}
     .win-row input[type=number]{height:40px;font-size:15px;}
     .sch-table{font-size:11.5px;}
@@ -1565,13 +1570,11 @@
           <summary class="dl-fold-h"><span class="dl-fold-t">说明（国标及限值）</span><span class="dl-fold-cue" aria-hidden="true"></span></summary>
           <div class="dl-body"><div class="std">>GB/T 18205-2012 4.2.3.3：在抽样教室中测量教室面积及学生人数，按式(1) <b>S₁ = S₂ / a</b> 分别计算各教室的人均面积（S₁ 人均面积，S₂ 被测教室面积，a 该教室学生人数）。<br><b>卫生限值依据（GB 50099-2011 表 7.1.1）：</b>普通教室人均使用面积 小学 ≥1.36 m²/座、中学 ≥1.39 m²/座。</div></div>
         </details>
-        <div class="sch-2col">
+        <div class="sch-4col">
           <div class="field"><label>学校类型</label>
             <select id="schType"><option value="primary">小学</option><option value="middle">中学</option></select></div>
-          <div class="field"><label>该教室学生人数 a（人）</label>
+          <div class="field"><label>学生人数 a（人）</label>
             <input type="number" id="schA" step="any" placeholder="如 45"></div>
-        </div>
-        <div class="sch-2col">
           <div class="field"><label>教室长度 L（m）</label>
             <input type="number" id="schLen" step="any" placeholder="如 9"></div>
           <div class="field"><label>教室宽度 B（m）</label>
@@ -1721,7 +1724,7 @@
           <div class="field"><label>教室长度 L（m）</label><input type="number" id="dlLen" step="any" placeholder="如 9"></div>
           <div class="field"><label>教室宽度 B（m）</label><input type="number" id="dlWid" step="any" placeholder="如 6"></div>
         </div>
-        <div class="sch-2col" style="margin-top:10px">
+        <div class="sch-3col" style="margin-top:10px">
           <div class="res-box std sch-sub-res">
             <div class="tag">房间面积 S</div>
             <div class="val"><span id="dlAreaV">—</span><span class="unit">m²</span></div>
@@ -1732,11 +1735,11 @@
             <div class="val"><span id="dlSpV">—</span><span class="unit">m</span></div>
             <div class="raw" id="dlSpRaw"></div>
           </div>
-        </div>
-        <div class="res-box std">
-          <div class="tag">室内测点数</div>
-          <div class="val"><span id="dlNv">—</span><span class="unit">个</span></div>
-          <div class="raw" id="dlNRaw"></div>
+          <div class="res-box std">
+            <div class="tag">室内测点数</div>
+            <div class="val"><span id="dlNv">—</span><span class="unit">个</span></div>
+            <div class="raw" id="dlNRaw"></div>
+          </div>
         </div>
         <div class="dl-grid-fig portrait" id="dlGridFig"></div>
         </div><!-- /⑤-A 学校教室 -->
@@ -1750,7 +1753,7 @@
             <div class="field"><label>房间长度 L（m）</label><input type="number" id="dlLen2" step="any" placeholder="如 12"></div>
             <div class="field"><label>房间宽度 B（m）</label><input type="number" id="dlWid2" step="any" placeholder="如 8"></div>
           </div>
-          <div class="sch-2col" style="margin-top:10px">
+          <div class="sch-4col" style="margin-top:10px">
             <div class="res-box std sch-sub-res">
               <div class="tag">房间面积 S</div>
               <div class="val"><span id="dlAreaV2">—</span><span class="unit">m²</span></div>
@@ -1761,8 +1764,6 @@
               <div class="val"><span id="dlSpV2">—</span><span class="unit">m</span></div>
               <div class="raw" id="dlSpRaw2"></div>
             </div>
-          </div>
-          <div class="sch-2col" style="margin-top:10px">
             <div class="res-box std">
               <div class="tag">测点距墙 d<sub>q</sub>（m）</div>
               <div class="val"><span id="dlDqV2">—</span><span class="unit">m</span></div>
