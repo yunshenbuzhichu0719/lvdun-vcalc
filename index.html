@@ -4052,7 +4052,11 @@
            + ';color:' + color + ';font-size:11px;text-align:center">' + esc(txt) + '</th>';
     }
 
-    var COLS = 40;
+    var maxWin = Math.max.apply(null, schSavedRecords.map(function(r){ return r.wd.wins.length; }));
+    if(maxWin < 1) maxWin = 1;
+    var winCols = maxWin * 3;
+    var COLS = 3 + 6 + (5 + winCols) + 5 + 5 + 3;
+
     var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" '
       + 'xmlns:x="urn:schemas-microsoft-com:office:excel" '
       + 'xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"></head><body>'
@@ -4068,70 +4072,63 @@
     // 分组表头
     html += '<tr style="background:'+GRP+'">'
       + th('基础信息', 3)
-      + th('人均面积', 7)
-      + th('窗地面积比', 13)
-      + th('教室照度', 6)
-      + th('黑板照度', 6)
-      + th('采光系数', 5)
+      + th('人均面积', 6)
+      + th('窗地面积比', 5 + winCols)
+      + th('教室照度', 5)
+      + th('黑板照度', 5)
+      + th('采光系数', 3)
       + '</tr>';
 
     // 字段表头
     var heads = ['项目名称','检测日期','点位',
-      '学校类型','教室长(m)','教室宽(m)','教室面积(m²)','教室人数','人均面积(m²/人)','人均判定',
-      '光气候区','窗洞1高(m)','窗洞1宽(m)','窗洞1数量','窗洞2高(m)','窗洞2宽(m)','窗洞2数量',
-      '窗洞3高(m)','窗洞3宽(m)','窗洞3数量','地面净面积(m²)','窗洞口总面积(m²)','窗地面积比','窗地判定',
-      '课桌面长(m)','课桌面宽(m)','课桌面最低照度(lx)','课桌面平均照度(lx)','课桌面均匀度','课桌面判定',
-      '黑板长(m)','黑板高(m)','黑板最低照度(lx)','黑板平均照度(lx)','黑板均匀度','黑板判定',
-      '采光系数平均值(%)','采光系数最低值(%)','采光均匀度','采光判定','综合判定'];
+      '学校类型','教室长(m)','教室宽(m)','教室面积(m²)','教室人数','人均面积(m²/人)',
+      '光气候区'];
+    for(var wi = 1; wi <= maxWin; wi++){
+      heads.push('窗洞'+wi+'高(m)','窗洞'+wi+'宽(m)','窗洞'+wi+'数量');
+    }
+    heads = heads.concat(['地面净面积(m²)','窗洞口总面积(m²)','窗地面积比',
+      '课桌面长(m)','课桌面宽(m)','课桌面最低照度(lx)','课桌面平均照度(lx)','课桌面均匀度',
+      '黑板长(m)','黑板高(m)','黑板最低照度(lx)','黑板平均照度(lx)','黑板均匀度',
+      '采光系数平均值(%)','采光系数最低值(%)','采光均匀度']);
     html += '<tr style="background:'+SUB+'">' + heads.map(function(h){ return th(h, 1); }).join('') + '</tr>';
 
     schSavedRecords.forEach(function(rec, idx){
-      var allOk = rec.area.ok && rec.wd.ok && rec.cl.ok && rec.bd.ok && rec.cd.ok;
-      var w = rec.wd.wins;
-      while(w.length < 3) w.push({h:'',w:'',n:''});
-      html += '<tr>'
-        + td(rec.projName || '', false)
-        + td(rec.date || '', false)
-        + td(rec.point || '', false)
-        + td(rec.area.type || '', false)
-        + td(rec.area.len || '', false)
-        + td(rec.area.wid || '', false)
-        + td(rec.area.s2 || '', false)
-        + td(rec.area.a || '', false)
-        + td(rec.area.s1 || '', !rec.area.ok)
-        + td(rec.area.ok ? '达标' : '不达标', !rec.area.ok)
-        + td(rec.wd.qh || '', false)
-        + td(w[0].h || '', false)
-        + td(w[0].w || '', false)
-        + td(w[0].n || '', false)
-        + td(w[1].h || '', false)
-        + td(w[1].w || '', false)
-        + td(w[1].n || '', false)
-        + td(w[2].h || '', false)
-        + td(w[2].w || '', false)
-        + td(w[2].n || '', false)
-        + td(rec.wd.ad || '', false)
-        + td(rec.wd.ac || '', false)
-        + td(rec.wd.wd || '', !rec.wd.ok)
-        + td(rec.wd.ok ? '达标' : '不达标', !rec.wd.ok)
-        + td(rec.cl.a || '', false)
-        + td(rec.cl.b || '', false)
-        + td(rec.cl.min || '', false)
-        + td(rec.cl.avg || '', !rec.cl.ok)
-        + td(rec.cl.uni || '', !rec.cl.ok)
-        + td(rec.cl.ok ? '达标' : '不达标', !rec.cl.ok)
-        + td(rec.bd.l || '', false)
-        + td(rec.bd.h || '', false)
-        + td(rec.bd.min || '', false)
-        + td(rec.bd.avg || '', !rec.bd.ok)
-        + td(rec.bd.uni || '', !rec.bd.ok)
-        + td(rec.bd.ok ? '达标' : '不达标', !rec.bd.ok)
-        + td(rec.cd.avg || '', !rec.cd.ok)
-        + td(rec.cd.min || '', false)
-        + td(rec.cd.uni || '', !rec.cd.ok)
-        + td(rec.cd.ok ? '达标' : '不达标', !rec.cd.ok)
-        + td(allOk ? '合格' : '不合格', !allOk)
-        + '</tr>';
+      var w = rec.wd.wins.slice();
+      while(w.length < maxWin) w.push({h:'',w:'',n:''});
+      var row = '';
+      row += td(rec.projName || '', false);
+      row += td(rec.date || '', false);
+      row += td(rec.point || '', false);
+      // 人均面积
+      row += td(rec.area.type || '', false);
+      row += td(rec.area.len || '', false);
+      row += td(rec.area.wid || '', false);
+      row += td(rec.area.s2 || '', false);
+      row += td(rec.area.a || '', false);
+      row += td(rec.area.s1 || '', !rec.area.ok);
+      // 窗地面积比
+      row += td(rec.wd.qh || '', false);
+      w.forEach(function(win){ row += td(win.h || '', false); row += td(win.w || '', false); row += td(win.n || '', false); });
+      row += td(rec.wd.ad || '', false);
+      row += td(rec.wd.ac || '', false);
+      row += td(rec.wd.wd || '', !rec.wd.ok);
+      // 教室照度
+      row += td(rec.cl.a || '', false);
+      row += td(rec.cl.b || '', false);
+      row += td(rec.cl.min || '', false);
+      row += td(rec.cl.avg || '', !rec.cl.ok);
+      row += td(rec.cl.uni || '', !rec.cl.ok);
+      // 黑板照度
+      row += td(rec.bd.l || '', false);
+      row += td(rec.bd.h || '', false);
+      row += td(rec.bd.min || '', false);
+      row += td(rec.bd.avg || '', !rec.bd.ok);
+      row += td(rec.bd.uni || '', !rec.bd.ok);
+      // 采光系数
+      row += td(rec.cd.avg || '', !rec.cd.ok);
+      row += td(rec.cd.min || '', false);
+      row += td(rec.cd.uni || '', !rec.cd.ok);
+      html += '<tr>' + row + '</tr>';
     });
 
     html += '</table></body></html>';
