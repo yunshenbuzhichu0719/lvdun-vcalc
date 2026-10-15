@@ -4046,52 +4046,65 @@
 
     function td(txt, bad){
       var style = bad ? RED : '';
-      return '<td style="padding:3px 6px;' + style + '">' + esc(txt) + '</td>';
+      return '<td style="padding:2px 4px;' + style + '">' + esc(txt) + '</td>';
     }
     function th(txt, colspan, bg, color){
       bg = bg || SUB; color = color || '#1f3a5f';
-      return '<th colspan="' + (colspan || 1) + '" style="padding:3px 6px;background:' + bg
-           + ';color:' + color + ';font-size:11px;text-align:center">' + esc(txt) + '</th>';
+      return '<th colspan="' + (colspan || 1) + '" style="padding:2px 4px;background:' + bg
+           + ';color:' + color + ';font-size:10px;text-align:center;vertical-align:middle">' + txt + '</th>';
     }
+
+    // 是否有采光系数结果：全部点位均未录入时整组不导出
+    var hasCd = schSavedRecords.some(function(r){
+      return !!(r.cd && (r.cd.avg || r.cd.min || r.cd.uni));
+    });
 
     var maxWin = Math.max.apply(null, schSavedRecords.map(function(r){ return r.wd.wins.length; }));
     if(maxWin < 1) maxWin = 1;
     var winCols = maxWin * 3;
-    var COLS = 3 + 6 + (5 + winCols) + 5 + 5 + 3;
+    var COLS = 3 + 6 + (3 + winCols) + 3 + 3 + (hasCd ? 3 : 0);
+
+    // 字段表头（<br> 换行显示单位）与列宽（px）
+    var heads = [], widths = [];
+    function H(h, w){ heads.push(h); widths.push(w); }
+    H('项目名称', 90); H('检测日期', 72); H('点位', 72);
+    H('学校类型', 56);
+    H('教室长<br>(m)', 46); H('教室宽<br>(m)', 46); H('教室面积<br>(m²)', 52);
+    H('教室<br>人数', 42); H('人均面积<br>(m²/人)', 58);
+    for(var wi = 1; wi <= maxWin; wi++){
+      H('窗洞'+wi+'<br>高(m)', 46); H('窗洞'+wi+'<br>宽(m)', 46); H('窗洞'+wi+'<br>数量', 42);
+    }
+    H('地面净面积<br>(m²)', 58); H('窗洞口总面积<br>(m²)', 66); H('窗地<br>面积比', 58);
+    H('课桌面最低<br>照度(lx)', 62); H('课桌面平均<br>照度(lx)', 62); H('课桌面<br>均匀度', 56);
+    H('黑板最低<br>照度(lx)', 62); H('黑板平均<br>照度(lx)', 62); H('黑板<br>均匀度', 56);
+    if(hasCd){
+      H('采光系数<br>平均值(%)', 64); H('采光系数<br>最低值(%)', 64); H('采光<br>均匀度', 56);
+    }
 
     var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" '
       + 'xmlns:x="urn:schemas-microsoft-com:office:excel" '
       + 'xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"></head><body>'
       + '<table border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse;'
-      + 'font-family:Microsoft YaHei,SimSun,Arial;font-size:11px">';
+      + 'font-family:Microsoft YaHei,SimSun,Arial;font-size:10px">'
+      + '<colgroup>' + widths.map(function(w){ return '<col style="width:'+w+'px">'; }).join('') + '</colgroup>';
 
-    html += '<tr><th colspan="'+COLS+'" style="background:'+HDR+';color:#fff;font-size:15px;text-align:center;'
-      + 'padding:7px">学校综合评价检测结果汇总</th></tr>';
-    html += '<tr><th colspan="'+COLS+'" style="background:'+SUB+';color:#1f3a5f;font-size:11px;text-align:left;'
-      + 'padding:4px 8px">采样依据：GB/T 5700-2023《照明测量方法》、GB/T 5699-2025《采光测量方法》、'
+    html += '<tr><th colspan="'+COLS+'" style="background:'+HDR+';color:#fff;font-size:14px;text-align:center;'
+      + 'padding:5px">学校综合评价检测结果汇总</th></tr>';
+    html += '<tr><th colspan="'+COLS+'" style="background:'+SUB+';color:#1f3a5f;font-size:10px;text-align:left;'
+      + 'padding:3px 6px">采样依据：GB/T 5700-2023《照明测量方法》、GB/T 5699-2025《采光测量方法》、'
       + 'GB/T 18205-2012《学校卫生综合评价》</th></tr>';
 
     // 分组表头
     html += '<tr style="background:'+GRP+'">'
       + th('基础信息', 3)
       + th('人均面积', 6)
-      + th('窗地面积比', 5 + winCols)
-      + th('教室照度', 5)
-      + th('黑板照度', 5)
-      + th('采光系数', 3)
+      + th('窗地面积比', 3 + winCols)
+      + th('教室照度', 3)
+      + th('黑板照度', 3)
+      + (hasCd ? th('采光系数', 3) : '')
       + '</tr>';
 
     // 字段表头
-    var heads = ['项目名称','检测日期','点位',
-      '学校类型','教室长(m)','教室宽(m)','教室面积(m²)','教室人数','人均面积(m²/人)',
-      '光气候区'];
-    for(var wi = 1; wi <= maxWin; wi++){
-      heads.push('窗洞'+wi+'高(m)','窗洞'+wi+'宽(m)','窗洞'+wi+'数量');
-    }
-    heads = heads.concat(['地面净面积(m²)','窗洞口总面积(m²)','窗地面积比',
-      '课桌面长(m)','课桌面宽(m)','课桌面最低照度(lx)','课桌面平均照度(lx)','课桌面均匀度',
-      '黑板长(m)','黑板高(m)','黑板最低照度(lx)','黑板平均照度(lx)','黑板均匀度',
-      '采光系数平均值(%)','采光系数最低值(%)','采光均匀度']);
     html += '<tr style="background:'+SUB+'">' + heads.map(function(h){ return th(h, 1); }).join('') + '</tr>';
 
     schSavedRecords.forEach(function(rec, idx){
@@ -4109,27 +4122,24 @@
       row += td(rec.area.a || '', false);
       row += td(rec.area.s1 || '', !rec.area.ok);
       // 窗地面积比
-      row += td(rec.wd.qh || '', false);
       w.forEach(function(win){ row += td(win.h || '', false); row += td(win.w || '', false); row += td(win.n || '', false); });
       row += td(rec.wd.ad || '', false);
       row += td(rec.wd.ac || '', false);
       row += td(rec.wd.wd || '', !rec.wd.ok);
       // 教室照度
-      row += td(rec.cl.a || '', false);
-      row += td(rec.cl.b || '', false);
       row += td(rec.cl.min || '', false);
       row += td(rec.cl.avg || '', !rec.cl.ok);
       row += td(rec.cl.uni || '', !rec.cl.ok);
       // 黑板照度
-      row += td(rec.bd.l || '', false);
-      row += td(rec.bd.h || '', false);
       row += td(rec.bd.min || '', false);
       row += td(rec.bd.avg || '', !rec.bd.ok);
       row += td(rec.bd.uni || '', !rec.bd.ok);
-      // 采光系数
-      row += td(rec.cd.avg || '', !rec.cd.ok);
-      row += td(rec.cd.min || '', false);
-      row += td(rec.cd.uni || '', !rec.cd.ok);
+      // 采光系数（仅有结果时导出）
+      if(hasCd){
+        row += td(rec.cd.avg || '', !rec.cd.ok);
+        row += td(rec.cd.min || '', false);
+        row += td(rec.cd.uni || '', !rec.cd.ok);
+      }
       html += '<tr>' + row + '</tr>';
     });
 
