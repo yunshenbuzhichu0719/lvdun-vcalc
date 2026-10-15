@@ -492,11 +492,18 @@
   .sch-block{background:rgba(19,184,117,.035);border:1px solid var(--line);border-radius:12px;
     padding:14px;margin-top:14px;}
   .sch-meta{background:#ffffff;border:1px solid var(--line);border-radius:12px;
-    padding:13px 14px;margin-top:12px;box-shadow:0 1px 3px rgba(20,40,60,.04);}
-  .sch-point-row{display:flex;gap:8px;align-items:flex-end;}
+    padding:10px 12px;margin-top:10px;box-shadow:0 1px 3px rgba(20,40,60,.04);}
+  .sch-meta .field{margin-bottom:8px;}
+  .sch-meta label{font-size:12px;margin-bottom:3px;}
+  .sch-meta input[type=number],.sch-meta input[type=text],.sch-meta input[type=date],.sch-meta select{
+    height:40px;padding:0 10px;font-size:15px;}
+  .sch-meta .grid2{gap:8px 10px;}
+  .sch-point-row{display:flex;gap:6px;align-items:flex-end;}
   .sch-point-row input{flex:1 1 auto;min-width:0;}
-  .sch-point-row button{flex:0 0 auto;height:48px;padding:0 16px;font-size:14px;}
-  .sch-meta-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;}
+  .sch-point-row button{flex:0 0 auto;height:40px;padding:0 12px;font-size:13px;}
+  .sch-meta-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:6px;}
+  .sch-meta .accent{height:42px;font-size:14px;}
+  .sch-meta .sch-badge{font-size:10px;padding:1px 6px;}
   .sch-block h3{font-size:14px;color:var(--txt);margin:0 0 5px;font-weight:800;
     display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
   .sch-block .std{font-size:11.5px;color:var(--sub);line-height:1.65;margin-bottom:11px;}
@@ -591,6 +598,15 @@
     .sch-4col .res-box .val{font-size:12px;}
     .sch-2col .res-box .tag,.sch-3col .res-box .tag,.sch-4col .res-box .tag{font-size:10.5px;line-height:1.25;}
     .sch-2col .res-box .raw,.sch-3col .res-box .raw,.sch-4col .res-box .raw{font-size:11px;margin-top:4px;}
+    .sch-meta{padding:8px 10px;margin-top:8px;}
+    .sch-meta .field{margin-bottom:6px;}
+    .sch-meta label{font-size:11.5px;margin-bottom:2px;}
+    .sch-meta input[type=number],.sch-meta input[type=text],.sch-meta input[type=date],.sch-meta select{
+      height:38px;padding:0 9px;font-size:15px;}
+    .sch-point-row button{height:38px;padding:0 10px;font-size:12px;}
+    .sch-meta .accent{height:40px;font-size:13px;}
+    .sch-meta .sch-badge{font-size:9.5px;padding:1px 5px;}
+    .sch-meta-actions{margin-top:5px;gap:5px;}
     .win-head,.win-row{grid-template-columns:1fr 1fr 50px 68px 26px;gap:5px;}
     .win-row input[type=number]{height:40px;font-size:15px;}
     .sch-table{font-size:11.5px;}
